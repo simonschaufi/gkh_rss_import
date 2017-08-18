@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'gkh_rss_import'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tt_content.list_type_pi1">gkh_rss_import Plugin</label>
+			<label index="tt_content.pi_flexform.sheet_RSS Feed">RSS Feed settings</label>
+			<label index="tt_content.pi_flexform.sheet_url">RSS Feed URL</label>
+			<label index="tt_content.pi_flexform.max_feed">Maximum feeds to show</label>
+			<label index="tt_content.pi_flexform.item_lenght">Length of item content</label>
+			<label index="tt_content.pi_flexform.header_lenght">Length of header description</label>
+			<label index="tt_content.pi_flexform.target">Target of URL</label>
+			<label index="tt_content.pi_flexform.settings">Settings</label>
+			<label index="tt_content.pi_flexform.code_page">Page encoding</label>
+			<label index="tt_content.pi_flexform.date_format.I.1">Monday, 12. May 2008</label>
+			<label index="tt_content.pi_flexform.date_format.I.2">12. May 2008</label>
+			<label index="tt_content.pi_flexform.date_format.I.3">12/5-2008</label>
+			<label index="tt_content.pi_flexform.date_format">Date format</label>
+			<label index="tt_content.pi_flexform.striphtml">Remove HTML from RSS feed</label>
+			<label index="tt_content.pi_flexform.logowidth">Width of logo image</label>
+			<label index="tt_content.pi_flexform.target.I.1">top</label>
+			<label index="tt_content.pi_flexform.target.I.2">blank</label>
+			<label index="tt_content.pi_flexform.striphtml.I.1">Yes</label>
+			<label index="tt_content.pi_flexform.striphtml.I.2">No</label>
+			<label index="tt_content.pi_flexform.errorMessage">Error message</label>
+			<label index="tt_content.pi_flexform.errorM">It's not possible to reach the RSS file...</label>
+			<label index="tt_content.pi_flexform.cache">RSS Feed cache time</label>
+			<label index="tt_content.pi_flexform.cache.I.0">1 hour</label>
+			<label index="tt_content.pi_flexform.cache.I.1">2 hours</label>
+			<label index="tt_content.pi_flexform.cache.I.2">6 hours</label>
+			<label index="tt_content.pi_flexform.cache.I.3">12 hours</label>
+			<label index="tt_content.pi_flexform.cache.I.4">24 hours</label>
+			<label index="tt_content.pi_flexform.cache.I.off">Off</label>
+			<label index="tt_content.pi_flexform.cache.I.5">20 min</label>
+			<label index="tt_content.pi_flexform.template_title">Template</label>
+			<label index="tt_content.pi_flexform.template_file">Template File</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tt_content.list_type_pi1">gkh_rss_import Plugin</label>
+			<label index="tt_content.pi_flexform.sheet_RSS Feed">RSS-Feed-Einstellungen</label>
+			<label index="tt_content.pi_flexform.sheet_url">RSS-Feed-URL</label>
+			<label index="tt_content.pi_flexform.max_feed">Maximale Anzahl Feeds zum Anzeigen</label>
+			<label index="tt_content.pi_flexform.item_lenght">Textlänge der Einträge</label>
+			<label index="tt_content.pi_flexform.header_lenght">Textlänge der Feed-Beschreibung</label>
+			<label index="tt_content.pi_flexform.target">URL-Ziel</label>
+			<label index="tt_content.pi_flexform.settings">Einstellungen</label>
+			<label index="tt_content.pi_flexform.code_page">Seitencodierung</label>
+			<label index="tt_content.pi_flexform.date_format.I.1">Montag, 12. Mai 2008</label>
+			<label index="tt_content.pi_flexform.date_format.I.2">12. Mai 2008</label>
+			<label index="tt_content.pi_flexform.date_format.I.3">12/5-2008</label>
+			<label index="tt_content.pi_flexform.date_format">Datumsformat</label>
+			<label index="tt_content.pi_flexform.striphtml">HTML vom RSS-Feed entfernen</label>
+			<label index="tt_content.pi_flexform.logowidth">Breite vom Logo</label>
+			<label index="tt_content.pi_flexform.target.I.1">top</label>
+			<label index="tt_content.pi_flexform.target.I.2">blank</label>
+			<label index="tt_content.pi_flexform.striphtml.I.1">Ja</label>
+			<label index="tt_content.pi_flexform.striphtml.I.2">Nein</label>
+			<label index="tt_content.pi_flexform.errorMessage">Fehlermeldung</label>
+			<label index="tt_content.pi_flexform.errorM">Es ist nicht möglich, den RSS-Feed abzurufen...</label>
+			<label index="tt_content.pi_flexform.cache">RSS-Feed Cachezeit</label>
+			<label index="tt_content.pi_flexform.cache.I.0">1 Stunde</label>
+			<label index="tt_content.pi_flexform.cache.I.1">2 Stunden</label>
+			<label index="tt_content.pi_flexform.cache.I.2">6 Stunden</label>
+			<label index="tt_content.pi_flexform.cache.I.3">12 Stunden</label>
+			<label index="tt_content.pi_flexform.cache.I.4">24 Stunden</label>
+			<label index="tt_content.pi_flexform.cache.I.off">Aus</label>
+			<label index="tt_content.pi_flexform.cache.I.5">20 Minuten</label>
+			<label index="tt_content.pi_flexform.template_title">Template</label>
+			<label index="tt_content.pi_flexform.template_file">Templatedatei</label>
+		</languageKey>
+	</data>
+</T3locallang>

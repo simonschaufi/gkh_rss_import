@@ -1,0 +1,54 @@
+plugin.tx_gkhrssimport_pi1.item_stdWrap {
+	removeBadHTML = 1
+	HTMLparser = 1
+	HTMLparser {
+		keepNonMatchedTags = 1
+		tags.img.fixAttrib.src.userFunc = tx_gkhrssimport_pi1->fixRssURLs
+		tags.a.fixAttrib.href.userFunc = tx_gkhrssimport_pi1->fixRssURLs
+		tags.img.fixAttrib.style.unset = 1
+	}
+}
+
+plugin.tx_gkhrssimport_pi1.itemSummary_stdWrap < plugin.tx_gkhrssimport_pi1.item_stdWrap
+plugin.tx_gkhrssimport_pi1.itemSummary_stdWrap.parseFunc.userFunc = tx_gkhrssimport_pi1->smart_trim
+
+#Defauld CSS style
+plugin.tx_gkhrssimport_pi1._CSS_DEFAULT_STYLE (
+.tx-gkhrssimport-pi1-rss_title,
+.tx-gkhrssimport-pi1-rss_title a {
+	font-size: medium;
+	font-family: Georgia, Times New Roman, Times, serif;
+	font-weight: bold;
+	color: #FF6100;
+	width: 100px;
+	padding-bottom: 1px;
+}
+.tx-gkhrssimport-pi1-description {
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom-width: 0px;
+	border-bottom-style: solid;
+	border-bottom-color: #2763A5;
+	margin-bottom: 15px;
+}
+.tx-gkhrssimport-pi1-header {
+	font-weight: bold;
+}
+.tx-gkhrssimport-pi1-content,
+.tx-gkhrssimport-pi1-download {
+	margin-bottom:10px;
+}
+.tx-gkhrssimport-pi1-pubbox,
+.tx-gkhrssimport-pi1-date,
+.tx-gkhrssimport-pi1-author,
+.tx-gkhrssimport-pi1-category {
+	display: inline;
+}
+.tx-gkhrssimport-pi1-content p img {
+	float: left;
+	width: 150px;
+	height: 100px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+)

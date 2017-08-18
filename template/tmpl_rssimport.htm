@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>RSS Import template</title>
+</head>
+<body>
+<h3>TEMPLATE</h3>
+<p>This is a more complex HTML template</p>
+--- MARKERS ---
+	Class BOX				:							###BOX###
+	IMAGE					:							###IMAGE###
+    Class RSS TITLE			:							###CLASS_RSS_TITLE###
+    RSS Title				:							###RSS_TITLE###	
+    URL to page				:							###URL###
+    Target to URL			:							###TARGET###
+    RSS Description			:							###DESCRIPTION###
+	Class RSS Description	:							###CLASS_DESCRIPTION###
+    Class header			:							###CLASS_HEADER###
+	Header URL				:							###HEADER_URL###
+    Header Target			:							###HEADER_TARGET###
+    Header					:							###HEADER###
+    Class pubbox 			:							###CLASS_PUBBOX###
+    Class RSS Date 			:							###CLASS_RSS_DATE###
+    RSS pub date			:							###RSS_DATE###
+    Class author			:							###CLASS_AUTHOR###
+    Author 					:							###AUTHOR###
+    Class Category 			:							###CLASS_CATEGORY###
+    Category 				:							###CATEGORY###
+    Class Summary 			:							###CLASS_SUMMARY###
+    Summary					:							###SUMMARY###
+    Class Download			:							###CLASS_DOWNLOAD###
+    Download				:							###DOWNLOAD###
+    
+<!-- ###RSSIMPORT_TEMPLATE### begin -->
+<table ###BOX### border="0">
+  <tr>
+    <td colspan="3">###IMAGE###</td>
+  </tr>
+  <tr>
+    <td ###CLASS_RSS_TITLE### colspan="3" align="left" valign="top"><a href="###URL###" target="###TARGET###">###RSS_TITLE###</a></td>
+  </tr>
+  <tr>
+    <td ###CLASS_DESCRIPTION### colspan="3" align="left" valign="top">###DESCRIPTION###</td>
+  </tr>
+  <!-- ###ITEM### -->
+  <tr>
+    <td ###CLASS_HEADER### colspan="3"><a href="###HEADER_URL###" target="###HEADER_TARGET###">###HEADER###</a></td>
+  </tr>
+  <tr ###CLASS_PUBBOX###>
+    <td ###CLASS_RSS_DATE###>###RSS_DATE###</td>
+    <td ###CLASS_AUTHOR###>###AUTHOR###</td>
+    <td ###CLASS_CATEGORY###>###CATEGORY###</td>
+  </tr>
+  <tr>
+    <td ###CLASS_SUMMARY### colspan="3">###SUMMARY###</td>
+  </tr>
+  <tr>
+    <td ###CLASS_DOWNLOAD### colspan="3">###DOWNLOAD###</td>
+  </tr>
+  <!-- ###ITEM### -->
+</table>
+<!-- ###RSSIMPORT_TEMPLATE### end -->
+</body>
+</html>

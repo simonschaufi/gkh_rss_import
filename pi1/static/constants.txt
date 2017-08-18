@@ -1,0 +1,4 @@
+plugin.tx_gkhrssimport_pi1 {
+    # cat=plugin_tx_gkhrssimport_pi1/file/1; type=text; label= LLL:EXT:tx_gkhrssimport_pi1/locallang.xml:tsce.templateFile
+  file.templateFile = EXT:tx_gkhrssimport_pi1/template/tmpl_rssimport.htm
+}

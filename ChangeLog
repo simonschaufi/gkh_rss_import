@@ -1,0 +1,36 @@
+13-04-09 Gert Kaae Hansen  <gertkh@gmail.com> 1.2.5
+
+	* Support for generic typo3 configuration option "curlProxyServer" thanks to Laurent STEFF and Annie Dumont for this patch.
+	* Minor bug fixes
+	
+13-04-09 Gert Kaae Hansen  <gertkh@gmail.com> 1.2.5
+
+	* RSS Feed cache can now be disabled.
+	* If you in the same installation have different items to show on the same RSS feed the right item amount will now be  shown. Thanks to Katja Lampela for reporting this bug.
+
+22-12-08 Gert Kaae Hansen  <gertkh@gmail.com> 1.2.4
+
+	* Remove debug text. 
+	
+22-12-08 Gert Kaae Hansen  <gertkh@gmail.com> 1.2.3
+
+	* Layout problems fixed. Thanks to Sven Teuber for the bug report. RSS cache can now be changed from 1 hour to 24 hours, improve page load time. 
+
+15-11-08 Gert Kaae Hansen  <gertkh@gmail.com>
+
+	* Remove double http:// in urls, from some RSS feeds. Thanks to Vasyl Mosiychuk for the bug report.
+
+14-11-08 Gert Kaae Hansen  <gertkh@gmail.com>
+
+	* Remove double http:// in urls, from some RSS feeds. Thanks to Vasyl Mosiychuk for the bug report.
+	
+26-10-08 Gert Kaae Hansen  <gertkh@gmail.com>
+
+	* Add cache for rss feeds and images.
+	
+10-10-08 BH !!!!!!
+   * Enclosure Tag mit Properies einglesen und als Download anbieten
+
+07-07-08 Gert Kaae Hansen  <gertkh@gmail.com>
+
+	* Initial release

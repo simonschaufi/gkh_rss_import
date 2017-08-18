@@ -1,0 +1,26 @@
+{
+	"name": "gkh/gkh-rss-import",
+	"type": "typo3-cms-extension",
+	"version": "5.0.0",
+	"description": "Imports a RSS feed and show the content on a FE page.",
+	"license": [
+		"GPL-2.0"
+	],
+	"require": {
+		"typo3/cms-core": "^7.6.0 || ^8.7.0"
+	},
+	"autoload": {
+		"files": [
+			"Resources/PHP/lastRSS.php"
+		]
+	},
+	"replace": {
+		"gkh_rss_import": "self.version",
+		"typo3-ter/gkh-rss-import": "self.version"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "gkh_rss_import"
+		}
+	}
+}

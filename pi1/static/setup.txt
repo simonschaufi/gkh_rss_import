@@ -1,0 +1,32 @@
+#Default CSS style
+plugin.tx_gkhrssimport_pi1 = USER
+plugin.tx_gkhrssimport_pi1.templateFile = {$plugin.tx_gkhrssimport_pi1.file.templateFile}
+
+plugin.tx_gkhrssimport_pi1._CSS_DEFAULT_STYLE (
+.tx-gkhrssimport-pi1-rss_title, tx-gkhrssimport-pi1-rss_title a {
+	font-size: medium;
+	font-family: Georgia, Times New Roman, Times, serif;
+	font-weight: bold;
+	color: #FF6100;
+}
+.tx-gkhrssimport-pi1-description {
+	font-weight: bold;
+	padding-bottom: 1px;
+	border-bottom-width: 0px;
+	border-bottom-style: solid;
+	border-bottom-color: #2763A5;
+	margin-bottom: 15px;
+}
+.tx-gkhrssimport-pi1-header {
+	font-weight: bold;
+}
+.tx-gkhrssimport-pi1-description {
+	margin-bottom:10px;
+}
+.tx-gkhrssimport-pi1-pubbox, .tx-gkhrssimport-pi1-date, .tx-gkhrssimport-pi1-author, .tx-gkhrssimport-pi1-category {
+	display: inline;
+}
+.tx-gkhrssimport-pi1-content p img {
+	float: left;
+}
+)

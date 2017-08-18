@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>RSS Import template</title>
+</head>
+<body>
+<h3>TEMPLATE</h3>
+<p>This is a more complex HTML template</p>
+--- MARKERS ---
+	Class BOX				:							###BOX###
+	IMAGE					:							###IMAGE###
+    Class RSS TITLE			:							###CLASS_RSS_TITLE###
+    RSS Title				:							###RSS_TITLE###	
+    URL to page				:							###URL###
+    Target to URL			:							###TARGET###
+    RSS Description			:							###DESCRIPTION###
+	Class RSS Description	:							###CLASS_DESCRIPTION###
+    Class header			:							###CLASS_HEADER###
+	Header URL				:							###HEADER_URL###
+    Header Target			:							###HEADER_TARGET###
+    Header					:							###HEADER###
+    Class pubbox 			:							###CLASS_PUBBOX###
+    Class RSS Date 			:							###CLASS_RSS_DATE###
+    RSS pub date			:							###RSS_DATE###
+    Class author			:							###CLASS_AUTHOR###
+    Author 					:							###AUTHOR###
+    Class Category 			:							###CLASS_CATEGORY###
+    Category 				:							###CATEGORY###
+    Class Summary 			:							###CLASS_SUMMARY###
+    Summary					:							###SUMMARY###
+    Class Download			:							###CLASS_DOWNLOAD###
+    Download				:							###DOWNLOAD###
+    
+<!-- ###RSSIMPORT_TEMPLATE### begin -->
+<div###BOX###>
+  <!-- ###CONTENT### -->
+  ###IMAGE###
+  <div###CLASS_RSS_TITLE###><a href="###URL###" target="###TARGET###">###RSS_TITLE###</a></div>
+  <br />
+  <div###CLASS_DESCRIPTION###>###DESCRIPTION###</div>
+  <br />
+  <!-- ###ITEM### -->
+  <div###CLASS_HEADER###><a href="###HEADER_URL###" target="###HEADER_TARGET###">###HEADER###</a></div>
+  <div###CLASS_PUBBOX###>
+    <div###CLASS_RSS_DATE###>###RSS_DATE###</div>
+    <div###CLASS_AUTHOR###>###AUTHOR###</div>
+    <div###CLASS_CATEGORY###>###CATEGORY###</div>
+  </div>
+  <div###CLASS_SUMMARY###>###SUMMARY###</div>
+  <div###CLASS_DOWNLOAD###>###DOWNLOAD###</div>
+  <!-- ###ITEM### -->
+  <!-- ###CONTENT### -->
+</div>
+<!-- ###RSSIMPORT_TEMPLATE### end -->
+</body>
+</html>

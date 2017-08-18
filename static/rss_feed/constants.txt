@@ -1,0 +1,6 @@
+## RSS feed import
+plugin.tx_gkh_rss_import_pi1 {
+	RSSFeed =
+	RSSitems =
+	feedLenght =
+}
