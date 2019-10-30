@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="">
+		<header>
+			<type>module</type>
+			<description>Language labels for plugin &quot;tx_gkhrssimport_pi1&quot;</description>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="Download">
+			<source>Download</source>
+		</trans-unit>
+		<trans-unit id="pi1_plus_wiz_description">
+			<source>Shows the content of an RSS feed</source>
+		</trans-unit>
+		<trans-unit id="pi1_title">
+			<source>gkh RSS import</source>
+		</trans-unit>
+		<trans-unit id="tsce.templateFile">
+			<source>Template file</source>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

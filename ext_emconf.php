@@ -12,21 +12,19 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'gkh RSS Import',
     'description' => 'Imports a RSS feed and show the content on a FE page.',
     'category' => 'plugin',
-    'version' => '5.0.0',
+    'version' => '6.0.0',
     'state' => 'stable',
     'uploadfolder' => false,
     'createDirs' => 'uploads/tx_gkhrssimport/',
     'clearCacheOnLoad' => true,
-    'author' => 'Gert Kaae Hansen',
-    'author_email' => 'gertkh@gmail.com',
+    'author' => 'Simon Schaufelberger',
+    'author_email' => 'simonschaufi+typo3@gmail.com',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.0.0-7.9.99',
+            'typo3' => '7.6.0-8.7.99',
         ],
         'conflicts' => [],
         'suggests' => [],
-    ],
-    'user' => 'tyksak',
-    'comment' => 'Support for 7.x.x',
+    ]
 ];

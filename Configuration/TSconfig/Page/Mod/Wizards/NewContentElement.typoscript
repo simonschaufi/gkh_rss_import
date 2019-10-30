@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.plugins {
+    elements {
+        gkh_rss_import {
+            iconIdentifier = ext-gkhrssimport-wizard-icon
+            title = LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf:pi1_title
+            description = LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
+            tt_content_defValues {
+                CType = list
+                list_type = gkh_rss_import_pi1
+            }
+        }
+    }
+}

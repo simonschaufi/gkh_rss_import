@@ -1,0 +1,64 @@
+plugin.tx_gkhrssimport_pi1 = USER
+plugin.tx_gkhrssimport_pi1 {
+	userFunc = GertKaaeHansen\GkhRssImport\Controller\RssImportController->main
+
+	templateFile = {$plugin.tx_gkhrssimport_pi1.templateFile}
+
+	item_stdWrap {
+		HTMLparser = 1
+		HTMLparser {
+			keepNonMatchedTags = 1
+			tags {
+				img.fixAttrib {
+					src.userFunc = GertKaaeHansen\GkhRssImport\Controller\RssImportController->fixRssURLs
+					style.unset = 1
+				}
+				a.fixAttrib.href.userFunc = GertKaaeHansen\GkhRssImport\Controller\RssImportController->fixRssURLs
+			}
+		}
+	}
+	itemSummary_stdWrap < .item_stdWrap
+	itemSummary_stdWrap {
+		parseFunc.userFunc = GertKaaeHansen\GkhRssImport\Controller\RssImportController->cropHTML
+	}
+}
+
+plugin.tx_gkhrssimport_pi1._CSS_DEFAULT_STYLE (
+.tx-gkhrssimport-pi1-rss_title,
+.tx-gkhrssimport-pi1-rss_title a {
+	font-size: medium;
+	font-family: Georgia, Times New Roman, Times, serif;
+	font-weight: bold;
+	color: #FF6100;
+	width: 100px;
+	padding-bottom: 1px;
+}
+.tx-gkhrssimport-pi1-description {
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom-width: 0px;
+	border-bottom-style: solid;
+	border-bottom-color: #2763A5;
+	margin-bottom: 15px;
+}
+.tx-gkhrssimport-pi1-header {
+	font-weight: bold;
+}
+.tx-gkhrssimport-pi1-content,
+.tx-gkhrssimport-pi1-download {
+	margin-bottom:10px;
+}
+.tx-gkhrssimport-pi1-pubbox,
+.tx-gkhrssimport-pi1-date,
+.tx-gkhrssimport-pi1-author,
+.tx-gkhrssimport-pi1-category {
+	display: inline;
+}
+.tx-gkhrssimport-pi1-content p img {
+	float: left;
+	width: 150px;
+	height: 100px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+)

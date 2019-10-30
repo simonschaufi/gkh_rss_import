@@ -1,0 +1,250 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<rssFeed>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_RSS_Feed</sheetTitle>
+				</TCEforms>
+				<el>
+					<rssfeed>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_url</label>
+							<config>
+								<type>input</type>
+								<size>50</size>
+								<default>http://feeds.bbci.co.uk/news/rss.xml</default>
+								<placeholder>http://feeds.bbci.co.uk/news/rss.xml</placeholder>
+								<eval>required,nospace</eval>
+							</config>
+						</TCEforms>
+					</rssfeed>
+					<display>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.max_feed</label>
+							<config>
+								<type>input</type>
+								<eval>num</eval>
+								<size>3</size>
+								<default>10</default>
+								<placeholder>10</placeholder>
+							</config>
+						</TCEforms>
+					</display>
+					<lenght>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.item_lenght</label>
+							<config>
+								<type>input</type>
+								<eval>num</eval>
+								<size>3</size>
+								<default>500</default>
+								<placeholder>500</placeholder>
+							</config>
+						</TCEforms>
+					</lenght>
+					<hlenght>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.header_lenght</label>
+							<config>
+								<type>input</type>
+								<eval>num</eval>
+								<size>3</size>
+								<default>80</default>
+								<placeholder>80</placeholder>
+							</config>
+						</TCEforms>
+					</hlenght>
+					<target>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0"/>
+										<numIndex index="1"/>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target.I.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target.I.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target.I.3</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+								</items>
+								<default>2</default>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</target>
+					<logowidth>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.logowidth</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<default>140</default>
+								<placeholder>140</placeholder>
+							</config>
+						</TCEforms>
+					</logowidth>
+					<errorMessage>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.errorMessage</label>
+							<config>
+								<type>input</type>
+								<size>40</size>
+								<default>It's not possible to reach the RSS file...</default>
+								<placeholder>It's not possible to reach the RSS file...</placeholder>
+							</config>
+						</TCEforms>
+					</errorMessage>
+				</el>
+			</ROOT>
+		</rssFeed>
+		<rssSettings>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.settings</sheetTitle>
+				</TCEforms>
+				<el>
+					<dateformat>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.date_format</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0"/>
+										<numIndex index="1"/>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.date_format.I.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.date_format.I.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.date_format.I.3</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+								</items>
+								<default>3</default>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</dateformat>
+					<striphtml>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.striphtml</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0"/>
+										<numIndex index="1"/>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.striphtml.I.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.striphtml.I.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+								</items>
+								<default>2</default>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</striphtml>
+					<flexcache>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.off</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.5</numIndex>
+										<numIndex index="1">1200</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.0</numIndex>
+										<numIndex index="1">3600</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.1</numIndex>
+										<numIndex index="1">7200</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.2</numIndex>
+										<numIndex index="1">21600</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.3</numIndex>
+										<numIndex index="1">43200</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
+										<numIndex index="0">LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cache.I.4</numIndex>
+										<numIndex index="1">86400</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</flexcache>
+				</el>
+			</ROOT>
+		</rssSettings>
+		<templateS>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.template_title</sheetTitle>
+				</TCEforms>
+				<el>
+					<template>
+						<TCEforms>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.template_file</label>
+							<config>
+								<type>group</type>
+								<internal_type>file</internal_type>
+								<allowed>tmpl,tpl,html,htm</allowed>
+								<max_size>1000</max_size>
+								<uploadfolder>uploads/tx_gkhrssimport/</uploadfolder>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<selectedListStyle>width:180px</selectedListStyle>
+							</config>
+						</TCEforms>
+					</template>
+				</el>
+			</ROOT>
+		</templateS>
+	</sheets>
+</T3DataStructure>

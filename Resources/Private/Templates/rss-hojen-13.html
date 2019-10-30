@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>RSS Import template</title>
+</head>
+<body>
+<h3>TEMPLATE</h3>
+--- MARKERS ---
+Class BOX				:	###BOX###
+IMAGE					:	###IMAGE###
+Class RSS TITLE			:	###CLASS_RSS_TITLE###
+RSS Title				:	###RSS_TITLE###
+URL to page				:	###URL###
+Target to URL			:	###TARGET###
+RSS Description			:	###DESCRIPTION###
+Class RSS Description	:	###CLASS_DESCRIPTION###
+Class header			:	###CLASS_HEADER###
+Header URL				:	###HEADER_URL###
+Header Target			:	###HEADER_TARGET###
+Header					:	###HEADER###
+Class pubbox 			:	###CLASS_PUBBOX###
+Class RSS Date 			:	###CLASS_RSS_DATE###
+RSS pub date			:	###RSS_DATE###
+Class author			:	###CLASS_AUTHOR###
+Author 					:	###AUTHOR###
+Class Category 			:	###CLASS_CATEGORY###
+Category 				:	###CATEGORY###
+Class Summary 			:	###CLASS_SUMMARY###
+Summary					:	###SUMMARY###
+Class Download			:	###CLASS_DOWNLOAD###
+Download				:	###DOWNLOAD###
+
+<!-- ###RSSIMPORT_TEMPLATE### begin -->
+
+<!-- ###CONTENT### -->
+<!-- ###ITEM### -->
+<div class="large-4 columns project">
+    <figure>
+        <a href="###HEADER_URL###" class="th radius" target="###TARGET###">
+            <img src="http://nyhoejen.dk/fileadmin/templates/hoejen13/img/logo_vafo.png" alt="VAFO Vejle Amts Folkeblad"/>
+        </a>
+    </figure>
+    <h4><a href="###HEADER_URL###" target="###TARGET###">###HEADER###</a></h4>
+    <p>###SUMMARY###</p>
+    <a href="###HEADER_URL###" class="tiny button radius hide-for-small">L&aelig;s mere her</a>
+</div>
+<!-- ###ITEM### -->
+<!-- ###CONTENT### -->
+
+<!-- ###RSSIMPORT_TEMPLATE### end -->
+</body>
+</html>
