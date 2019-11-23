@@ -1,7 +1,6 @@
 {
 	"name": "gkh/gkh-rss-import",
 	"type": "typo3-cms-extension",
-	"version": "6.0.0",
 	"description": "Imports a RSS feed and show the content on a FE page.",
 	"license": [
 		"GPL-2.0"
@@ -44,9 +43,6 @@
 		"phpunit": "TYPO3_PATH_ROOT=$PWD/.Build/Web .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "6.0.x-dev"
-		},
 		"typo3/cms": {
 			"extension-key": "gkh_rss_import",
 			"cms-package-dir": "{$vendor-dir}/typo3/cms",
