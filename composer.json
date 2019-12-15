@@ -1,7 +1,7 @@
 {
   "name": "gkh/gkh-rss-import",
   "type": "typo3-cms-extension",
-  "description": "Imports a RSS feed and show the content on a FE page.",
+  "description": "Imports a RSS feed and show the content on a page.",
   "license": ["GPL-2.0-or-later"],
   "require": {
     "typo3/cms-core": "^7.6 || ^8.7",
