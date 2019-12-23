@@ -26,6 +26,7 @@ namespace GertKaaeHansen\GkhRssImport\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use GertKaaeHansen\GkhRssImport\Compatibility\Compatibility;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use GertKaaeHansen\GkhRssImport\Utility\ImageCache;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -84,7 +85,7 @@ class RssImportController extends AbstractPlugin
     protected $rssService;
 
     /**
-     * tx_gkhrssimport_pi1 constructor.
+     * Class Constructor
      *
      * @param null $_
      * @param TypoScriptFrontendController|null $frontendController
@@ -115,10 +116,13 @@ class RssImportController extends AbstractPlugin
 
         $this->rssService
             ->setUrl($this->conf['rssFeed'])
-            ->setCacheTime($this->conf['flexcache'])
             ->setCP('utf-8')
             ->setItemsLimit((int)$this->conf['itemsLimit'])
             ->setDateFormat('m/d/Y');
+
+        if ($this->conf['flexcache'] !== null) {
+            $this->rssService->setCacheTime($this->conf['flexcache']);
+        }
 
         if ((bool)$this->conf['stripHTML']) {
             $this->rssService->setStripHTML(true);
@@ -211,7 +215,9 @@ class RssImportController extends AbstractPlugin
                     'maxW' => $this->conf['logoWidth']
                 ]
             ]);
-            return '<div' . $this->pi_classParam('RSS_h_image') . '><a href="' . $this->removeDoubleHTTP($rss['image_link']) . '" target="' . $target . '">' . $imgOutput . '</a></div><br />';
+            return '<div' . $this->pi_classParam('RSS_h_image') . '><a href="'
+                . $this->removeDoubleHTTP($rss['image_link']) . '" target="' . $target . '">' . $imgOutput .
+                '</a></div><br />';
         }
 
         return '';
@@ -224,11 +230,11 @@ class RssImportController extends AbstractPlugin
      */
     protected function getSubPart(string $template, string $marker): string
     {
-        if (version_compare(TYPO3_version, '8.7.0', '>=')) {
+        if (Compatibility::isAtLeastVersion8Dot7Dot0()) {
             return $this->templateService->getSubpart($template, $marker);
         }
 
-        // compatibility for TYPO3 version lower than 8.7
+        // compatibility for TYPO3 version lower than 8.7.0
         return $this->cObj->getSubpart($template, $marker);
     }
 
@@ -255,9 +261,9 @@ class RssImportController extends AbstractPlugin
             $markerArray['###RSS_DATE###'] = htmlentities(strftime($this->getDateFormat(), strtotime($item['pubDate'])),ENT_QUOTES, 'utf-8');
         }
         $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
-        $markerArray['###AUTHOR###'] = $item['author']; // TODO: htmlspecialchars here?
+        $markerArray['###AUTHOR###'] = $item['author'] ?? ''; // TODO: htmlspecialchars here?
         $markerArray['###CLASS_CATEGORY###'] = $this->pi_classParam('category');
-        $markerArray['###CATEGORY###'] = htmlentities($item['category']); // TODO: htmlspecialchars here?
+        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? ''); // TODO: htmlspecialchars here?
 
         // Get item content
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
@@ -271,9 +277,9 @@ class RssImportController extends AbstractPlugin
 
         $markerArray['###CLASS_DOWNLOAD###'] = $this->pi_classParam('download');
         if (isset($item['enclosure']['prop']['url']) && $item['enclosure']['prop']['url'] !== '') {
-            $markerArray['###DOWNLOAD###'] = '<a href="' . htmlspecialchars($item['enclosure']['prop']['url']) . '">' .
-                htmlspecialchars($this->pi_getLL('Download')) . ' (' . round((float)$item['enclosure']['prop']['length'] / (1024 * 1024), 1) .
-                ' MB)</a>';
+            $markerArray['###DOWNLOAD###'] = '<a href="' . htmlspecialchars($item['enclosure']['prop']['url']) . '">'
+                . htmlspecialchars($this->pi_getLL('Download'))
+                . ' (' . round((float)$item['enclosure']['prop']['length'] / (1024 * 1024), 1) . ' MB)</a>';
         } else {
             $markerArray['###DOWNLOAD###'] = '';
         }
@@ -294,11 +300,11 @@ class RssImportController extends AbstractPlugin
      */
     protected function substituteMarkerArrayCached(string $subPart, array $markerArray, ?array $subPartArray = []): string
     {
-        if (version_compare(TYPO3_version, '8.7.0', '>=')) {
+        if (Compatibility::isAtLeastVersion8Dot7Dot0()) {
             return $this->templateService->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
         }
 
-        // compatibility for TYPO3 version lower than 8.7
+        // compatibility for TYPO3 version lower than 8.7.0
         return $this->cObj->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
     }
 
@@ -488,7 +494,7 @@ class RssImportController extends AbstractPlugin
     /**
      * @return TypoScriptFrontendController
      */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

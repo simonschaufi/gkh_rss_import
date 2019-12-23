@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class LastRssService
 {
-    const CACHE_DIR = 'typo3temp/var/lastRSS/';
+    protected const CACHE_DIR = 'typo3temp/var/lastRSS/';
 
     /**
      * @var lastRSS
@@ -56,7 +56,7 @@ class LastRssService
     }
 
     /**
-     * @param $cacheTime
+     * @param string $cacheTime
      * @return LastRssService
      */
     public function setCacheTime(string $cacheTime): self
