@@ -16,8 +16,12 @@ indent_style = space
 indent_size = 4
 indent_style = tab
 
-[*.{json,yml,txt,md,sql}]
+[*.{yml,txt,md,sql}]
 indent_size = 2
+indent_style = space
+
+[*.json]
+indent_size = 4
 indent_style = space
 
 [*.{xml,xlf,xsd}]
@@ -26,3 +30,7 @@ indent_style = tab
 
 [*.{yml,yaml}]
 indent_size = 2
+
+[*.typoscript]
+indent_size = 4
+indent_style = tab

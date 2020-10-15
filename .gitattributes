@@ -26,4 +26,3 @@
 /doc export-ignore
 /Tests export-ignore
 /.* export-ignore
-/phpunit.xml export-ignore

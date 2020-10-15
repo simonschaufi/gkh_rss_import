@@ -1,4 +1,5 @@
 <?php
+
 /*
  ======================================================================
  lastRSS 0.9.1
@@ -8,7 +9,7 @@
  by Vojtech Semecky, webmaster @ oslab . net
 
  Latest version, features, manual and examples:
- 	http://lastrss.oslab.net/
+ 	https://github.com/MikeVister/lastrss
 
  ----------------------------------------------------------------------
  LICENSE
@@ -30,7 +31,6 @@
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * lastRSS
  * Simple yet powerfull PHP class to parse RSS files.
  */
 class lastRSS
@@ -45,7 +45,7 @@ class lastRSS
     public $stripHTML = false;
     public $date_format = '';
     public $cache_dir = '';
-    public $cache_time = '';
+    public $cache_time = 0;
     public $rsscp;
 
     // -------------------------------------------------------------------
@@ -65,8 +65,8 @@ class lastRSS
         // If CACHE ENABLED
         if ($this->cache_dir != '') {
             $cache_file = $this->cache_dir . '/rsscache_' . $this->items_limit . '_' . md5($rss_url);
-            $timedif = @(time() - filemtime($cache_file));
-            if ($timedif < $this->cache_time) {
+            $timeDiff = @(time() - filemtime($cache_file));
+            if ($timeDiff < $this->cache_time) {
                 // cached file is fresh enough, return cached array
                 $result = unserialize(join('', file($cache_file)));
                 // set 'cached' to 1 only if cached file is correct
@@ -92,7 +92,6 @@ class lastRSS
                 $result['cached'] = 0;
             }
         }
-        // return result
         return $result;
     }
 
@@ -102,7 +101,6 @@ class lastRSS
     // -------------------------------------------------------------------
     public function my_preg_match($pattern, $subject)
     {
-        // start regular expression
         preg_match($pattern, $subject, $out);
 
         // if there is some result... process it and return it

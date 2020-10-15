@@ -1,0 +1,16 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+6.0.4
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+Bugfix release
+--------------
+
+Improve title and description

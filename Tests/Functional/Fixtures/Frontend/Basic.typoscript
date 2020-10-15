@@ -5,26 +5,18 @@ config {
 	admPanel = 0
 	disableAllHeaderCode = 1
 	sendCacheHeaders = 0
-	sys_language_uid = 0
-	sys_language_mode = ignore
-	sys_language_overlay = 1
 	absRefPrefix = /
-	linkVars = L
 	contentObjectExceptionHandler = 0
-
-	spamProtectEmailAddresses = 2
-	spamProtectEmailAddresses_atSubst = (AT)
-	spamProtectEmailAddresses_lastDotSubst = (DOT)
-
-	intTarget = _blank
 }
-
-[globalVar = GP:L = 1]
-	config.sys_language_uid = 1
-[end]
 
 page = PAGE
 page {
-	10 = FLUIDTEMPLATE
-	10.file = EXT:gkh_rss_import/Tests/Functional/Fixtures/Frontend/Template.html
+	10 = USER
+	10 {
+		userFunc = GertKaaeHansen\GkhRssImport\Controller\RssImportController->main
+		templateFile = EXT:gkh_rss_import/Resources/Private/Templates/RssImport.html
+		rssFeed = http://localhost/feed.xml
+		headerLength = 80
+		itemLength = 500
+	}
 }

@@ -8,8 +8,8 @@
 		</header>
 		<body>
 		<trans-unit id="tt_content.list_type_pi1" approved="yes">
-			<source>gkh_rss_import Plugin</source>
-			<target>gkh_rss_import Plugin</target>
+			<source>RSS Feed Import</source>
+			<target>RSS Feed Import</target>
 		</trans-unit>
 		<trans-unit id="tt_content.pi_flexform.cache" approved="yes">
 			<source>RSS Feed cache time</source>
@@ -71,15 +71,15 @@
 			<source>Error message</source>
 			<target>Fehlermeldung</target>
 		</trans-unit>
-		<trans-unit id="tt_content.pi_flexform.header_lenght" approved="yes">
+		<trans-unit id="tt_content.pi_flexform.header_length" approved="yes">
 			<source>Length of header description</source>
 			<target>Textlänge der Beschreibung</target>
 		</trans-unit>
-		<trans-unit id="tt_content.pi_flexform.item_lenght" approved="yes">
+		<trans-unit id="tt_content.pi_flexform.item_length" approved="yes">
 			<source>Length of item content</source>
 			<target>Textlänge der Einträge</target>
 		</trans-unit>
-		<trans-unit id="tt_content.pi_flexform.logowidth" approved="yes">
+		<trans-unit id="tt_content.pi_flexform.logo_width" approved="yes">
 			<source>Width of logo image</source>
 			<target>Breite vom Logo</target>
 		</trans-unit>

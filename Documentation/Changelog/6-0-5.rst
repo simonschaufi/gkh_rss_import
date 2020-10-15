@@ -1,0 +1,16 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+6.0.5
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+Bugfix release
+--------------
+
+Make category an optional field
