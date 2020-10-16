@@ -36,7 +36,7 @@ composer require gkh/gkh-rss-import
 
 Download and install the [extension][3] with the extension manager module in the TYPO3 backend.
 
-## Usage
+## Integration
 
 - Add the TypoScript configuration in the Template module
 - Add the Plugin on a page and configure it in the plugin settings right in the content element
