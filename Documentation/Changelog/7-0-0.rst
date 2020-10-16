@@ -1,0 +1,35 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+7.0.0
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+Support for TYPO3 9 & 10
+------------------------
+
+This version supports TYPO3 9 and 10 LTS only.
+
+Breaking changes
+----------------
+
+The following changes should be carefully checked.
+
+Renamed flexform keys
+^^^^^^^^^^^^^^^^^^^^^
+
+The following flexform keys have been renamed to fix the typo. To use the new key, simply edit the content element and set the values again in the plugin configuration.
+
++------------+------------+
+| Old key    | New key    |
++============+============+
+| lenght     | length     |
++------------+------------+
+| hlenght    | hlength    |
++------------+------------+
+

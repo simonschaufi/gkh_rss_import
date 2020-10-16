@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Utility;
 
@@ -16,15 +17,14 @@ class ImageCache
     /**
      * Cache image
      *
-     * @param  string $url : url to the image
-     * @param  string $location : Where to store the image
-     * @param  string $fileExtension : Type of the image (gif, jpg, png)
+     * @param string $url : url to the image
+     * @param string $location : Where to store the image
+     * @param string $fileExtension : Type of the image (gif, jpg, png)
      * @return string
      */
-    function get(string $url, string $location, string $fileExtension)
+    public function get(string $url, string $location, string $fileExtension): string
     {
-        $fileName = md5($url) . $fileExtension;
-        $fileUrl = GeneralUtility::getFileAbsFileName($location . $fileName);
+        $fileUrl = GeneralUtility::getFileAbsFileName($location . md5($url) . $fileExtension);
 
         $image = '';
         if (file_exists($fileUrl)) {
@@ -39,7 +39,7 @@ class ImageCache
 
         if (!file_exists($fileUrl)) {
             $buff = GeneralUtility::getURL($url, $includeHeader = 0);
-            if ($buff != '') {
+            if ($buff !== '') {
                 GeneralUtility::writeFile($fileUrl, $buff);
                 $image = $fileUrl;
             }

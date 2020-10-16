@@ -33,9 +33,9 @@
 							</config>
 						</TCEforms>
 					</display>
-					<lenght>
+					<length>
 						<TCEforms>
-							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.item_lenght</label>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.item_length</label>
 							<config>
 								<type>input</type>
 								<eval>num</eval>
@@ -44,10 +44,10 @@
 								<placeholder>500</placeholder>
 							</config>
 						</TCEforms>
-					</lenght>
-					<hlenght>
+					</length>
+					<hlength>
 						<TCEforms>
-							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.header_lenght</label>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.header_length</label>
 							<config>
 								<type>input</type>
 								<eval>num</eval>
@@ -56,7 +56,7 @@
 								<placeholder>80</placeholder>
 							</config>
 						</TCEforms>
-					</hlenght>
+					</hlength>
 					<target>
 						<TCEforms>
 							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target</label>
@@ -90,7 +90,7 @@
 					</target>
 					<logowidth>
 						<TCEforms>
-							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.logowidth</label>
+							<label>LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.logo_width</label>
 							<config>
 								<type>input</type>
 								<size>10</size>

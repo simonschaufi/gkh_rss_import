@@ -26,7 +26,6 @@ namespace GertKaaeHansen\GkhRssImport\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use GertKaaeHansen\GkhRssImport\Compatibility\Compatibility;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use GertKaaeHansen\GkhRssImport\Utility\ImageCache;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -49,7 +48,7 @@ require_once(ExtensionManagementUtility::extPath('gkh_rss_import') . 'Resources/
 class RssImportController extends AbstractPlugin
 {
     /**
-     * Same as class name
+     * Used for CSS classes, variables
      *
      * @var string
      */
@@ -94,8 +93,8 @@ class RssImportController extends AbstractPlugin
     {
         parent::__construct($_, $frontendController);
 
-        $this->imageCache = new ImageCache();
-        $this->rssService = new LastRssService();
+        $this->imageCache = GeneralUtility::makeInstance(ImageCache::class);
+        $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
     }
 
     /**
@@ -106,22 +105,26 @@ class RssImportController extends AbstractPlugin
      * @return string The content that is displayed on the website
      * @throws Exception
      */
-    function main(string $content, array $conf)
+    public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
-        $this->pi_loadLL('EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf');
+        $this->pi_loadLL('EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf');
         $this->pi_initPIflexForm();
         $this->mergeFlexFormValuesIntoConf();
+
+        if (empty($this->conf['rssFeed'])) {
+            throw new \ErrorException('No feed URL set', 1595545177);
+        }
 
         $this->rssService
             ->setUrl($this->conf['rssFeed'])
             ->setCP('utf-8')
-            ->setItemsLimit((int)$this->conf['itemsLimit'])
+            ->setItemsLimit((int)($this->conf['itemsLimit'] ?? 10))
             ->setDateFormat('m/d/Y');
 
-        if ($this->conf['flexcache'] !== null) {
-            $this->rssService->setCacheTime($this->conf['flexcache']);
+        if ($this->conf['flexCache'] !== null) {
+            $this->rssService->setCacheTime((int)$this->conf['flexCache']);
         }
 
         if ((bool)$this->conf['stripHTML']) {
@@ -140,7 +143,7 @@ class RssImportController extends AbstractPlugin
      */
     protected function getTemplate()
     {
-        $templateFile = $this->conf['templateFile'] ?: 'EXT:' . $this->extKey . '/Resources/Private/Templates/RssImport.html';
+        $templateFile = $this->conf['templateFile'] ?: 'EXT:gkh_rss_import/Resources/Private/Templates/RssImport.html';
         $template = GeneralUtility::getFileAbsFileName($templateFile);
         if ($template === '' || !file_exists($template)) {
             throw new Exception(sprintf('Template "%s" not found', $template), 1572458728);
@@ -148,9 +151,6 @@ class RssImportController extends AbstractPlugin
         return file_get_contents($template);
     }
 
-    /**
-     * @return string
-     */
     protected function render(): string
     {
         $markerArray['###BOX###'] = $this->pi_classParam('rss_box');
@@ -195,11 +195,6 @@ class RssImportController extends AbstractPlugin
         return $content;
     }
 
-    /**
-     * @param array $rss
-     * @param string $target
-     * @return string
-     */
     protected function getImage(array $rss, string $target): string
     {
         if (isset($rss['image_url']) && $rss['image_url'] !== '') {
@@ -223,27 +218,11 @@ class RssImportController extends AbstractPlugin
         return '';
     }
 
-    /**
-     * @param string $template
-     * @param string $marker
-     * @return string
-     */
     protected function getSubPart(string $template, string $marker): string
     {
-        if (Compatibility::isAtLeastVersion8Dot7Dot0()) {
-            return $this->templateService->getSubpart($template, $marker);
-        }
-
-        // compatibility for TYPO3 version lower than 8.7.0
-        return $this->cObj->getSubpart($template, $marker);
+        return $this->templateService->getSubpart($template, $marker);
     }
 
-    /**
-     * @param array $item
-     * @param string $itemSubpart
-     * @param string $target
-     * @return string
-     */
     protected function renderItem(array $item, string $itemSubpart, string $target): string
     {
         $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];  // for Userfunction fixRssURLs
@@ -292,25 +271,11 @@ class RssImportController extends AbstractPlugin
         return $contentSubPart;
     }
 
-    /**
-     * @param string $subPart
-     * @param array $markerArray
-     * @param array $subPartArray
-     * @return string
-     */
     protected function substituteMarkerArrayCached(string $subPart, array $markerArray, ?array $subPartArray = []): string
     {
-        if (Compatibility::isAtLeastVersion8Dot7Dot0()) {
-            return $this->templateService->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
-        }
-
-        // compatibility for TYPO3 version lower than 8.7.0
-        return $this->cObj->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
+        return $this->templateService->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
     }
 
-    /**
-     * @return string
-     */
     protected function getTarget(): string
     {
         switch ($this->conf['target']) {
@@ -324,9 +289,6 @@ class RssImportController extends AbstractPlugin
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getDateFormat(): string
     {
         switch ($this->conf['dateFormat']) {
@@ -335,13 +297,13 @@ class RssImportController extends AbstractPlugin
             case 2:
                 return '%d. %B %Y';
             case 3:
-                return ' %e/%m - %Y';
+                return '%e/%m - %Y';
             default:
                 if (!empty($this->conf['dateFormat'])) {
                     return $this->conf['dateFormat'];
                 }
 
-                return ' %e/%m - %Y';
+                return '%e/%m - %Y';
         }
     }
 
@@ -358,11 +320,11 @@ class RssImportController extends AbstractPlugin
         if ($this->flexFormValue('display', 'rssFeed')) {
             $flex['itemsLimit'] = $this->flexFormValue('display', 'rssFeed');
         }
-        if ($this->flexFormValue('lenght', 'rssFeed')) {
-            $flex['itemLength'] = $this->flexFormValue('lenght', 'rssFeed');
+        if ($this->flexFormValue('length', 'rssFeed')) {
+            $flex['itemLength'] = $this->flexFormValue('length', 'rssFeed');
         }
-        if ($this->flexFormValue('hlenght', 'rssFeed')) {
-            $flex['headerLength'] = $this->flexFormValue('hlenght', 'rssFeed');
+        if ($this->flexFormValue('hlength', 'rssFeed')) {
+            $flex['headerLength'] = $this->flexFormValue('hlength', 'rssFeed');
         }
         if ($this->flexFormValue('target', 'rssFeed')) {
             $flex['target'] = $this->flexFormValue('target', 'rssFeed');
@@ -382,7 +344,7 @@ class RssImportController extends AbstractPlugin
             $flex['stripHTML'] = $this->flexFormValue('striphtml', 'rssSettings');
         }
         if ($this->flexFormValue('flexcache', 'rssSettings')) {
-            $flex['flexcache'] = $this->flexFormValue('flexcache', 'rssSettings');
+            $flex['flexCache'] = $this->flexFormValue('flexcache', 'rssSettings');
         }
 
         # templateS
@@ -398,9 +360,9 @@ class RssImportController extends AbstractPlugin
      *
      * @param string $var Name of variable
      * @param string $sheet Name of sheet
-     * @return string Value of var
+     * @return string|null Value of var
      */
-    protected function flexFormValue($var, $sheet): string
+    protected function flexFormValue($var, $sheet): ?string
     {
         return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var, $sheet);
     }
@@ -432,29 +394,6 @@ class RssImportController extends AbstractPlugin
         return $linkURL['scheme'] . '://' . $linkURL['host'] . $linkURL['port'] . $imgURL['path'] . $imgURL['query'] . $imgURL['fragment'];
     }
 
-    /**
-     * Smart trim userfunction
-     *
-     * @param string $text
-     * @param array $conf
-     * @return string
-     * @deprecated use cropHTML instead as smartTrim does not respect HTML tags and returns invalid HTML
-     */
-    public function smartTrim(string $text, $conf): string
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];
-        if ($itemLength == 0) {
-            return $text;
-        }
-        return smart_trim($text, $itemLength);
-    }
-
-    /**
-     * @param string $text
-     * @param $conf
-     * @return string
-     */
     public function cropHTML(string $text, $conf): string
     {
         $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];

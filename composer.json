@@ -1,49 +1,54 @@
 {
-  "name": "gkh/gkh-rss-import",
-  "type": "typo3-cms-extension",
-  "description": "Imports a RSS feed and show the content on a page.",
-  "license": ["GPL-2.0-or-later"],
-  "require": {
-    "typo3/cms-core": "^7.6 || ^8.7",
-    "ezyang/htmlpurifier": "^4.9"
-  },
-  "require-dev": {
-    "ext-json": "*",
-    "namelesscoder/typo3-repository-client": "^2.0",
-    "nimut/testing-framework": "^3.0",
-    "helhum/typo3-composer-setup": "^0.5.4"
-  },
-  "autoload": {
-    "psr-4": {
-      "GertKaaeHansen\\GkhRssImport\\": "Classes"
+    "name": "gkh/gkh-rss-import",
+    "type": "typo3-cms-extension",
+    "description": "Imports an RSS feed and show the content on a page.",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "ezyang/htmlpurifier": "^4.13",
+        "typo3/cms-core": "^9.5 || ^10.4"
     },
-    "files": [
-      "Resources/PHP/lastRSS.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "GertKaaeHansen\\GkhRssImport\\Tests\\": "Tests"
+    "require-dev": {
+        "ext-json": "*",
+        "helhum/typo3-composer-setup": "^0.5.7",
+        "namelesscoder/typo3-repository-client": "^2.0",
+        "nimut/testing-framework": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "GertKaaeHansen\\GkhRssImport\\": "Classes"
+        },
+        "files": [
+            "Resources/PHP/lastRSS.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GertKaaeHansen\\GkhRssImport\\Tests\\": "Tests"
+        }
+    },
+    "replace": {
+        "typo3-ter/gkh-rss-import": "self.version"
+    },
+    "config": {
+        "bin-dir": ".Build/bin",
+        "vendor-dir": ".Build/vendor"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@prepare-extension-test-structure"
+        ],
+        "prepare-extension-test-structure": [
+            "Nimut\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+        ],
+        "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml --stop-on-failure Tests/Unit",
+        "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml --stop-on-failure Tests/Functional"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "gkh_rss_import",
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "app-dir": ".Build",
+            "web-dir": ".Build/public"
+        }
     }
-  },
-  "replace": {
-    "typo3-ter/gkh-rss-import": "self.version"
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor"
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "mkdir -p .Build/Web/typo3conf/ext/",
-      "[ -L .Build/Web/typo3conf/ext/gkh_rss_import ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/gkh_rss_import"
-    ],
-    "phpunit": "TYPO3_PATH_ROOT=$PWD/.Build/Web .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
-  },
-  "extra": {
-    "typo3/cms": {
-      "extension-key": "gkh_rss_import",
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
-    }
-  }
 }
