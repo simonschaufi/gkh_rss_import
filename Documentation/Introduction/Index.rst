@@ -17,7 +17,7 @@ Words are separated by space characters, and they are not chopped if possible.
 Logo from pages can be set to a maximum width.
 If the feed is encoded with a special language this can be set also.
 
-Several templates are shipped with the extension but you can easily define a new template in the flex form or via typoscript.
+Several templates are shipped with the extension but you can easily define a new template in the flex form or via TypoScript.
 
 The extension uses the RSS parser from `Last RSS <https://github.com/MikeVister/lastrss>`_ which is modified to work with TYPO3
 
