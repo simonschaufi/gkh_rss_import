@@ -23,6 +23,6 @@
 *.t3s text eol=lf
 *.txt text eol=lf
 
-/doc export-ignore
+/Documentation export-ignore
 /Tests export-ignore
 /.* export-ignore
