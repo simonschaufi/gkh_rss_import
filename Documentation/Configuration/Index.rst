@@ -97,7 +97,7 @@ TypoScript Reference
 
       **Example:** ::
 
-         plugin.tx_gkhrssimport_pi1.target = 80
+         plugin.tx_gkhrssimport_pi1.target = _blank
 
 .. container:: table-row
 
@@ -112,7 +112,7 @@ TypoScript Reference
 
       **Example:** ::
 
-         plugin.tx_gkhrssimport_pi1.logoWidth = 80
+         plugin.tx_gkhrssimport_pi1.logoWidth = 140
 
 .. container:: table-row
 
