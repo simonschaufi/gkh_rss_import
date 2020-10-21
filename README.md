@@ -69,7 +69,7 @@ is very helpful to understand what kind of issue the **PR** is going to solve.
 Bugfixes: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're going
 to accept only bugfixes if we can reproduce the issue.
 
-[1]: https://docs.typo3.org/typo3cms/extensions/gkh_rss_import/
+[1]: https://docs.typo3.org/p/gkh/gkh-rss-import/7.0/en-us
 [2]: https://getcomposer.org/
 [3]: https://extensions.typo3.org/extension/gkh_rss_import
 [4]: https://docs.typo3.org/p/simonschauif/gkh_rss_import/master/en-us/Changelog/Index.html
