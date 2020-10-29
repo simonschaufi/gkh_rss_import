@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Service;
@@ -26,7 +27,6 @@ class LastRssService
         $this->rss->CDATA = 'content';
 
         $path = Environment::getVarPath() . '/lastRSS';
-        // we check for existence of our targetDirectory
         if (!is_dir($path)) {
             GeneralUtility::mkdir_deep($path);
         }

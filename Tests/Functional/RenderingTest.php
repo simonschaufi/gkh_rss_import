@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Tests\Functional;
 
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
-use TYPO3\CMS\Core\Http\NullResponse;
-use TYPO3\CMS\Core\Http\SelfEmittableStreamInterface;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Http\RequestHandler;
 
 class RenderingTest extends FunctionalTestCase
 {
@@ -35,9 +31,14 @@ class RenderingTest extends FunctionalTestCase
 
     /**
      * @test
+     * @throws InvalidDataException
+     * @throws NoSuchCacheException
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function renderFeed(): void
     {
+        $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
+
         $lastRssServiceMock = $this->getMockBuilder(LastRssService::class)
             ->setMethods(['getFeed'])
             ->getMock();
@@ -46,12 +47,14 @@ class RenderingTest extends FunctionalTestCase
             'encoding' => 'UTF-8',
             'title' => 'RSS feed of example.com',
             'link' => 'http://localhost/',
-	        'description' => 'Example Description',
+            'description' => 'Example Description',
             'language' => 'de-DE',
             'lastBuildDate' => '05/19/2020',
-	        'items' => [
-	            [
-	                'title' => 'Example Title',
+            'image_url' => $imageUrl,
+            'image_link' => 'http://localhost/Images/1-10.png',
+            'items' => [
+                [
+                    'title' => 'Example Title',
                     'link' => 'http://localhost/example-title.html',
                     'description' => 'VERY LONG DESCRIPTION',
                     'category' => 'CATEGORY',
@@ -72,60 +75,100 @@ class RenderingTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
-        $response = $this->internalRequest(1);
+        $response = $this->getResponseContent($this->internalRequest(1));
+
+        $cacheIdentifier = sha1($imageUrl . '_.png') . '.png';
+        $expectedFilePath = '/typo3temp/assets/images/cache/data/gkh_rss_import_image/' . $cacheIdentifier;
 
         // Feed header
-        self::assertStringContainsString('RSS feed of example.com', $response, 'RSS title not found');
-        self::assertStringContainsString('Example Description', $response, 'RSS description not found');
+        self::assertStringContainsString('RSS feed of example.com', $response, 'Title not found');
+        self::assertStringContainsString('Example Description', $response, 'Description not found');
+        self::assertStringContainsString($expectedFilePath, $response, 'Image url not found');
+        self::assertStringContainsString('http://localhost/Images/1-10.png', $response, 'Image link not found');
 
         // Item
-        self::assertStringContainsString('31/01 - 2020', $response, 'RSS item pubDate not found');
-        self::assertStringContainsString('John Doe', $response, 'RSS item author not found');
-        self::assertStringContainsString('CATEGORY', $response, 'RSS item category not found');
-        self::assertStringContainsString('VERY LONG DESCRIPTION', $response, 'RSS item description not found');
-        self::assertStringContainsString('http://localhost/download.pdf', $response, 'RSS item download link not found');
-        self::assertStringContainsString('(2 MB)', $response, 'RSS item download size not found');
+        self::assertStringContainsString('31/01 - 2020', $response, 'Item pubDate not found');
+        self::assertStringContainsString('John Doe', $response, 'Item author not found');
+        self::assertStringContainsString('CATEGORY', $response, 'Item category not found');
+        self::assertStringContainsString('VERY LONG DESCRIPTION', $response, 'Item description not found');
+        self::assertStringContainsString('http://localhost/download.pdf', $response, 'Item download link not found');
+        self::assertStringContainsString('(2 MB)', $response, 'Item download size not found');
+
+        // File cache
+        self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    private function internalRequest(int $id = 1): ?string
+    /**
+     * @test
+     * @throws InvalidDataException
+     * @throws NoSuchCacheException
+     * @throws \TYPO3\CMS\Core\Exception
+     */
+    public function renderFeedWithImageEnclosure(): void
     {
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $_SERVER['REQUEST_URI'] = '/';
+        $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
 
-        $_GET['id'] = $id;
+        $lastRssServiceMock = $this->getMockBuilder(LastRssService::class)
+            ->setMethods(['getFeed'])
+            ->getMock();
 
-        SystemEnvironmentBuilder::run(3, SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $lastRssServiceMock->method('getFeed')->willReturn([
+            'encoding' => 'UTF-8',
+            'title' => 'RSS feed of example.com',
+            'link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
+            'description' => 'example.com Description',
+            'language' => 'de',
+            'lastBuildDate' => '10/30/2020',
+            'image_title' => 'example.com',
+            'image_url' => $imageUrl,
+            'image_link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
+            'image_width' => '273',
+            'image_height' => '121',
+            'items' => [
+                [
+                    'title' => 'Example Title',
+                    'link' => 'https://www.example.com/item.html',
+                    'description' => 'VERY LONG DESCRIPTION',
+                    'guid' => 'https://www.example.com/item.html',
+                    'pubDate' => '10/30/2020',
+                    'enclosure' => [
+                        'prop' => [
+                            'url' => 'https://www.example.com/typo3temp/pics/d69f9ef8c4.jpg',
+                            'type' => 'image/jpeg',
+                        ],
+                    ],
+                ]
+            ],
+            'items_count' => 1,
+        ]);
 
-        $requestHandler = $this->getRequestHandler(GeneralUtility::getContainer());
-        $response = $requestHandler->handle(ServerRequestFactory::fromGlobals());
+        GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
-        return $this->getResponseContent($response);
-    }
+        $response = $this->getResponseContent($this->internalRequest(1));
 
-    private function getResponseContent(ResponseInterface $response): ?string
-    {
-        if ($response instanceof NullResponse) {
-            return null;
-        }
+        $cacheIdentifier = sha1($imageUrl . '_.png') . '.png';
+        $expectedFilePath = '/typo3temp/assets/images/cache/data/gkh_rss_import_image/' . $cacheIdentifier;
 
-        $body = $response->getBody();
-        if ($body instanceof SelfEmittableStreamInterface) {
-            // Optimization for streams that use php functions like readfile() as fastpath for serving files.
-            $body->emit();
-        } else {
-            return $body->__toString();
-        }
-
-        return null;
-    }
-
-    private function getRequestHandler(ContainerInterface $container): MiddlewareDispatcher
-    {
-        return new MiddlewareDispatcher(
-            $container->get(RequestHandler::class),
-            $container->get('frontend.middlewares'),
-            $container
+        // Feed header
+        self::assertStringContainsString('RSS feed of example.com', $response, 'Title not found');
+        self::assertStringContainsString('example.com Description', $response, 'Description not found');
+        self::assertStringContainsString($expectedFilePath, $response, 'Image url not found');
+        self::assertStringContainsString(
+            'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
+            $response,
+            'Image link not found'
         );
+
+        // Item
+        self::assertStringContainsString('30/10 - 2020', $response, 'Item pubDate not found');
+        self::assertStringContainsString('VERY LONG DESCRIPTION', $response, 'Item description not found');
+        self::assertStringContainsString(
+            'https://www.example.com/typo3temp/pics/d69f9ef8c4.jpg',
+            $response,
+            'Item download link not found'
+        );
+
+        // File cache
+        self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 }

@@ -1,17 +1,20 @@
 {
     "name": "gkh/gkh-rss-import",
     "type": "typo3-cms-extension",
-    "description": "Imports an RSS feed and show the content on a page.",
+    "description": "Fetch an RSS / Atom Feed and display its content on the Frontend.",
     "license": "GPL-2.0-or-later",
     "require": {
-        "ezyang/htmlpurifier": "^4.13",
         "typo3/cms-core": "^9.5 || ^10.4"
     },
     "require-dev": {
         "ext-json": "*",
+        "ezyang/htmlpurifier": "^4.13",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "helhum/typo3-composer-setup": "^0.5.7",
+        "helmich/typo3-typoscript-lint": "^2.3",
         "namelesscoder/typo3-repository-client": "^2.0",
-        "nimut/testing-framework": "^5.1"
+        "nimut/testing-framework": "^5.1",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
         "psr-4": {
@@ -41,7 +44,20 @@
             "Nimut\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
         ],
         "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml --stop-on-failure Tests/Unit",
-        "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml --stop-on-failure Tests/Functional"
+        "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml --stop-on-failure Tests/Functional",
+        "test": [
+            "@test-php-lint",
+            "@test-php-cs-fixer",
+            "@test-typoscript-lint"
+        ],
+        "test-php-cs-fixer": [
+            ".Build/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no ./Classes/",
+            ".Build/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no ./Configuration/",
+            ".Build/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no ./Tests/"
+        ],
+        "test-typoscript-lint": [
+            ".Build/bin/typoscript-lint"
+        ]
     },
     "extra": {
         "typo3/cms": {
