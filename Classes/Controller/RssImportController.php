@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Controller;
@@ -26,9 +27,13 @@ namespace GertKaaeHansen\GkhRssImport\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
-use GertKaaeHansen\GkhRssImport\Utility\ImageCache;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -41,12 +46,12 @@ require_once(ExtensionManagementUtility::extPath('gkh_rss_import') . 'Resources/
 /**
  * Plugin 'gkh RSS import' for the 'gkh_rss_import' extension.
  *
- * @author    Gert Kaae Hansen <gertkh@gmail.com>
- * @package    TYPO3
- * @subpackage    tx_gkhrssimport
+ * @author Gert Kaae Hansen <gertkh@gmail.com>
  */
 class RssImportController extends AbstractPlugin
 {
+    public const CACHE_IDENTIFIER = 'gkh_rss_import_image';
+
     /**
      * Used for CSS classes, variables
      *
@@ -74,9 +79,9 @@ class RssImportController extends AbstractPlugin
     protected $template;
 
     /**
-     * @var ImageCache
+     * @var CacheManager
      */
-    protected $imageCache;
+    protected $cacheManager;
 
     /**
      * @var LastRssService
@@ -93,7 +98,7 @@ class RssImportController extends AbstractPlugin
     {
         parent::__construct($_, $frontendController);
 
-        $this->imageCache = GeneralUtility::makeInstance(ImageCache::class);
+        $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
     }
 
@@ -143,8 +148,35 @@ class RssImportController extends AbstractPlugin
      */
     protected function getTemplate()
     {
-        $templateFile = $this->conf['templateFile'] ?: 'EXT:gkh_rss_import/Resources/Private/Templates/RssImport.html';
-        $template = GeneralUtility::getFileAbsFileName($templateFile);
+        $templateFile = $this->conf['templateFile'];
+
+        // Check if template file is set via TypoScript
+        if (strpos($templateFile, 'EXT:') === 0) {
+            $template = GeneralUtility::getFileAbsFileName($templateFile);
+            if ($template === '' || !file_exists($template)) {
+                throw new Exception(sprintf('Template "%s" not found', $template), 1572458728);
+            }
+            return file_get_contents($template);
+        }
+
+        // Check if template is given via flex form
+        $uid = $this->cObj->data['uid'];
+
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $references = $fileRepository->findByRelation('tt_content', 'template', $uid);
+
+        if (!empty($references)) {
+            /* @var FileReference $fileReference */
+            $fileReference = reset($references);
+            $templateFile = $fileReference->getForLocalProcessing(false);
+            if (!file_exists($templateFile)) {
+                throw new Exception(sprintf('Template "%s" not found', $templateFile), 1572458728);
+            }
+            return file_get_contents($templateFile);
+        }
+
+        // Fallback if no template is set
+        $template = GeneralUtility::getFileAbsFileName('EXT:gkh_rss_import/Resources/Private/Templates/RssImport.html');
         if ($template === '' || !file_exists($template)) {
             throw new Exception(sprintf('Template "%s" not found', $template), 1572458728);
         }
@@ -170,10 +202,10 @@ class RssImportController extends AbstractPlugin
             $markerArray['###CLASS_RSS_TITLE###'] = $this->pi_classParam('rss_title');
             $markerArray['###URL###'] = $this->removeDoubleHTTP($rss['link']);
             $markerArray['###TARGET###'] = $target;
-            $markerArray['###RSS_TITLE###'] = $rss['title']; // TODO: htmlspecialchars here?
+            $markerArray['###RSS_TITLE###'] = $rss['title']; // TODO: htmlspecialchars?
             // description
             $markerArray['###CLASS_DESCRIPTION###'] = $this->pi_classParam('description');
-            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']); // TODO: htmlspecialchars here?
+            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']); // TODO: htmlspecialchars?
 
             $subPart = $this->getSubPart($this->template, '###RSSIMPORT_TEMPLATE###');
             $itemSubpart = $this->getSubPart($subPart, '###ITEM###');
@@ -195,11 +227,20 @@ class RssImportController extends AbstractPlugin
         return $content;
     }
 
+    /**
+     * @param array $rss
+     * @param string $target
+     * @return string
+     * @throws NoSuchCacheException
+     */
     protected function getImage(array $rss, string $target): string
     {
-        if (isset($rss['image_url']) && $rss['image_url'] !== '') {
-            $fileExtension = substr($this->getFileName($rss['image_url']), -4);
-            $location = $this->imageCache->get($rss['image_url'], 'uploads/tx_gkhrssimport/', $fileExtension);
+        if (isset($rss['image_url'], $rss['image_link']) && $rss['image_url'] !== '') {
+            $location = $this->getCachedImageLocation($rss['image_url']);
+
+            if (!file_exists($location)) {
+                throw new \RuntimeException(sprintf('File %s could not be found!', $location));
+            }
 
             // Pass the combination of TS-defined values and php processing through the IMAGE cObject function
             $imgOutput = $this->cObj->cObjGetSingle('IMAGE', [
@@ -210,12 +251,39 @@ class RssImportController extends AbstractPlugin
                     'maxW' => $this->conf['logoWidth']
                 ]
             ]);
-            return '<div' . $this->pi_classParam('RSS_h_image') . '><a href="'
-                . $this->removeDoubleHTTP($rss['image_link']) . '" target="' . $target . '">' . $imgOutput .
-                '</a></div><br />';
+            return sprintf(
+                '<div%s><a href="%s" target="%s">%s</a></div><br />',
+                $this->pi_classParam('RSS_h_image'),
+                $this->removeDoubleHTTP($rss['image_link']),
+                $target,
+                $imgOutput
+            );
         }
 
         return '';
+    }
+
+    /**
+     * @param string $imageUrl
+     * @return string
+     * @throws NoSuchCacheException
+     */
+    protected function getCachedImageLocation(string $imageUrl): string
+    {
+        $imageCache = $this->cacheManager->getCache(self::CACHE_IDENTIFIER);
+
+        $fileExtension = substr($this->getFileName($imageUrl), -4);
+        $cacheIdentifier = sha1($imageUrl . '_' . $fileExtension) . $fileExtension;
+        if (!$imageCache->has($cacheIdentifier)) {
+            $buff = GeneralUtility::getURL($imageUrl);
+            if ($buff !== false) {
+                $imageCache->set($cacheIdentifier, $buff);
+            }
+        }
+
+        /** @var Typo3TempSimpleFileBackend $imageCacheBackend */
+        $imageCacheBackend = $imageCache->getBackend();
+        return $imageCacheBackend->getCacheDirectory() . $cacheIdentifier;
     }
 
     protected function getSubPart(string $template, string $marker): string
@@ -225,29 +293,33 @@ class RssImportController extends AbstractPlugin
 
     protected function renderItem(array $item, string $itemSubpart, string $target): string
     {
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];  // for Userfunction fixRssURLs
+        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link']; // for Userfunction fixRssURLs
 
         // Get item header
         $markerArray['###CLASS_HEADER###'] = $this->pi_classParam('header');
         $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link']);
         $markerArray['###HEADER_TARGET###'] = $target;
-        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']); // TODO: htmlspecialchars here?
+        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']); // TODO: htmlspecialchars?
 
         // Get published date, author and category
         $markerArray['###CLASS_PUBBOX###'] = $this->pi_classParam('pubbox');
         if ($item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
-            $markerArray['###RSS_DATE###'] = htmlentities(strftime($this->getDateFormat(), strtotime($item['pubDate'])),ENT_QUOTES, 'utf-8');
+            $markerArray['###RSS_DATE###'] = htmlentities(
+                strftime($this->getDateFormat(), strtotime($item['pubDate'])),
+                ENT_QUOTES,
+                'utf-8'
+            );
         }
         $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
-        $markerArray['###AUTHOR###'] = $item['author'] ?? ''; // TODO: htmlspecialchars here?
+        $markerArray['###AUTHOR###'] = $item['author'] ?? ''; // TODO: htmlspecialchars?
         $markerArray['###CLASS_CATEGORY###'] = $this->pi_classParam('category');
-        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? ''); // TODO: htmlspecialchars here?
+        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? ''); // TODO: htmlspecialchars?
 
-        // Get item content
+        // Get item content/home/simon/Code/github/simonschaufi/gkh_rss_import/.Build/bin/phpcs
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
         $itemSummary = $item['description'];
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = $this->conf['itemLength'];  // for Userfunc smart_trim
+        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = $this->conf['itemLength']; // for Userfunc smart_trim
         if (isset($this->conf['itemSummary_stdWrap.'])) {
             $itemSummary = $this->cObj->stdWrap($itemSummary, $this->conf['itemSummary_stdWrap.']);
         }
@@ -256,9 +328,15 @@ class RssImportController extends AbstractPlugin
 
         $markerArray['###CLASS_DOWNLOAD###'] = $this->pi_classParam('download');
         if (isset($item['enclosure']['prop']['url']) && $item['enclosure']['prop']['url'] !== '') {
-            $markerArray['###DOWNLOAD###'] = '<a href="' . htmlspecialchars($item['enclosure']['prop']['url']) . '">'
-                . htmlspecialchars($this->pi_getLL('Download'))
-                . ' (' . round((float)$item['enclosure']['prop']['length'] / (1024 * 1024), 1) . ' MB)</a>';
+            $download = $this->pi_getLL('Download');
+            if (isset($item['enclosure']['prop']['length'])) {
+                $download .= ' (' . round((float)$item['enclosure']['prop']['length'] / (1024 * 1024), 1) . ' MB)';
+            }
+            $markerArray['###DOWNLOAD###'] = sprintf(
+                '<a href="%s">%s</a>',
+                htmlspecialchars($item['enclosure']['prop']['url']),
+                htmlspecialchars($download)
+            );
         } else {
             $markerArray['###DOWNLOAD###'] = '';
         }
@@ -271,8 +349,11 @@ class RssImportController extends AbstractPlugin
         return $contentSubPart;
     }
 
-    protected function substituteMarkerArrayCached(string $subPart, array $markerArray, ?array $subPartArray = []): string
-    {
+    protected function substituteMarkerArrayCached(
+        string $subPart,
+        array $markerArray,
+        ?array $subPartArray = []
+    ): string {
         return $this->templateService->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
     }
 
@@ -313,7 +394,7 @@ class RssImportController extends AbstractPlugin
     protected function mergeFlexFormValuesIntoConf(): void
     {
         $flex = [];
-        # rssFeed
+        // rssFeed
         if ($this->flexFormValue('rssfeed', 'rssFeed')) {
             $flex['rssFeed'] = $this->flexFormValue('rssfeed', 'rssFeed');
         }
@@ -336,7 +417,7 @@ class RssImportController extends AbstractPlugin
             $flex['errorMessage'] = $this->flexFormValue('errorMessage', 'rssFeed');
         }
 
-        # rssSettings
+        // rssSettings
         if ($this->flexFormValue('dateformat', 'rssSettings')) {
             $flex['dateFormat'] = $this->flexFormValue('dateformat', 'rssSettings');
         }
@@ -347,9 +428,9 @@ class RssImportController extends AbstractPlugin
             $flex['flexCache'] = $this->flexFormValue('flexcache', 'rssSettings');
         }
 
-        # templateS
+        // templateS
         if ($this->flexFormValue('template', 'templateS')) {
-            $flex['templateFile'] = 'uploads/tx_gkhrssimport/' . $this->flexFormValue('template', 'templateS');
+            $flex['templateFile'] = $this->flexFormValue('template', 'templateS');
         }
 
         $this->conf = array_merge($this->conf, $flex);
@@ -391,9 +472,17 @@ class RssImportController extends AbstractPlugin
 
         $linkURL = parse_url($this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK']);
 
-        return $linkURL['scheme'] . '://' . $linkURL['host'] . $linkURL['port'] . $imgURL['path'] . $imgURL['query'] . $imgURL['fragment'];
+        return $linkURL['scheme'] . '://' . $linkURL['host'] . $linkURL['port'] . $imgURL['path'] . $imgURL['query']
+            . $imgURL['fragment'];
     }
 
+    /**
+     * User function cropHTML
+     *
+     * @param string $text
+     * @param array $conf
+     * @return string
+     */
     public function cropHTML(string $text, $conf): string
     {
         $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];
@@ -419,10 +508,10 @@ class RssImportController extends AbstractPlugin
     /**
      * Remove double http://
      *
-     * @param string $url : url
+     * @param string $url
      * @return string return url with one http://
      */
-    protected function removeDoubleHTTP($url): string
+    protected function removeDoubleHTTP(string $url): string
     {
         if (substr($url, 14, 3) === 'www') {
             $url = 'http://' . substr($url, 14, strlen($url));
@@ -430,9 +519,6 @@ class RssImportController extends AbstractPlugin
         return $url;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];

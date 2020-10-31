@@ -7,7 +7,7 @@
 [![TYPO3](https://img.shields.io/badge/TYPO3-9.5.0-orange.svg)](https://get.typo3.org/version/9)
 [![TYPO3](https://img.shields.io/badge/TYPO3-10.4.0-orange.svg)](https://get.typo3.org/version/10)
 
-Import an RSS feed and show the content on a page.
+Fetch an RSS / Atom Feed and display its content on the Frontend.
 
 ## Features
 
@@ -69,8 +69,13 @@ is very helpful to understand what kind of issue the **PR** is going to solve.
 Bugfixes: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're going
 to accept only bugfixes if we can reproduce the issue.
 
+### Similar extensions
+
+* [rss_display][6] Based on extbase but with less configuration options
+
 [1]: https://docs.typo3.org/p/gkh/gkh-rss-import/master/en-us/
 [2]: https://getcomposer.org/
 [3]: https://extensions.typo3.org/extension/gkh_rss_import
 [4]: https://docs.typo3.org/p/simonschauif/gkh_rss_import/master/en-us/Changelog/Index.html
 [5]: https://semver.org/
+[6]: https://extensions.typo3.org/extension/rss_display/

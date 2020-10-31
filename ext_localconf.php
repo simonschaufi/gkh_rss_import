@@ -1,19 +1,13 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 call_user_func(static function () {
+    // Add default rendering for pi_layout plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
-        'GertKaaeHansen.GkhRssImport',
+        'gkh_rss_import',
         'setup',
-        '
-plugin.tx_gkhrssimport_pi1 = USER
-plugin.tx_gkhrssimport_pi1 {
-	userFunc = ' . \GertKaaeHansen\GkhRssImport\Controller\RssImportController::class . '->main
-}
-
-# Setting gkh_rss_import plugin TypoScript
-tt_content.list.20.gkh_rss_import_pi1 = < plugin.tx_gkhrssimport_pi1
-',
+        'tt_content.list.20.gkh_rss_import_pi1 =< plugin.tx_gkhrssimport_pi1',
         'defaultContentRendering'
     );
 
@@ -32,4 +26,16 @@ tt_content.list.20.gkh_rss_import_pi1 = < plugin.tx_gkhrssimport_pi1
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:gkh_rss_import/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.typoscript">'
     );
+
+    // Cache configuration
+    if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][\GertKaaeHansen\GkhRssImport\Controller\RssImportController::CACHE_IDENTIFIER])) {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][\GertKaaeHansen\GkhRssImport\Controller\RssImportController::CACHE_IDENTIFIER] = [
+            'frontend' => \GertKaaeHansen\GkhRssImport\Cache\Frontend\ImageFrontend::class,
+            'backend' => \GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend::class,
+            'groups' => [
+                'all',
+                'gkh_rss_import'
+            ]
+        ];
+    }
 });
