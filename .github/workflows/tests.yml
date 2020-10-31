@@ -39,7 +39,7 @@ jobs:
         run: find . -name \*.php ! -path "./.Build/*" -print0 | xargs -0 -n1 -P4 php -d display_errors=stderr -n -l > /dev/null
 
       - name: Run TypoScript linter
-        run: .Build/bin/typoscript-lint
+        run: .Build/bin/typoscript-lint -c .typoscript-lint.yml --fail-on-warnings
 
       - name: Execute unit tests
         run: .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
