@@ -132,7 +132,7 @@ class RssImportController extends AbstractPlugin
             $this->rssService->setCacheTime((int)$this->conf['flexCache']);
         }
 
-        if ((bool)$this->conf['stripHTML']) {
+        if ($this->conf['stripHTML'] == 1) {
             $this->rssService->setStripHTML(true);
         }
 
