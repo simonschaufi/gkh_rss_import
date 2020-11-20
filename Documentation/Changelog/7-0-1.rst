@@ -1,0 +1,38 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+7.0.1
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+Bugfix release
+--------------
+
+Use FAL to load the html template in the plugin settings. If you upgrade from TYPO3 9, the template needs to be
+reselected in the plugin configuration. If you set the template path via TypoScript, nothing needs to be done.
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+    2020-11-11 [BUGFIX] striphtml parameter interpretation (#6) (Commit 03ad532 by Stephan Tittel)
+    2020-11-06 Add pull_request_target event (Commit 2c755eb by Simon Schaufelberger)
+    2020-10-31 [TASK] Rename typoscript-lint config file (Commit 4a46769 by Simon Schaufelberger)
+    2020-10-31 [TASK] Add PAT to PHP CS fixer (Commit 511b2d4 by Simon Schaufelberger)
+    2020-10-31 [BUGFIX] Import template via FAL (#4) (Commit 2f37215 by Simon Schaufelberger)
+    2020-10-22 [TASK] Update link to documentation (Commit eaf33c8 by Simon Schaufelberger)
+    2020-10-22 [TASK] Update link to documentation (Commit 243281d by Simon Schaufelberger)
+    2020-10-21 [BUGFIX] Change release to master (Commit 7b25364 by Simon Schaufelberger)
+    2020-10-21 Update Index.rst (Commit e6549ac by Simon Schaufelberger)
+    2020-10-17 [TASK] Exclude Documentation for archive (Commit 0f9c739 by Simon Schaufelberger)
+    2020-10-16 [BUGFIX] Typo in documentation (Commit 46b859d by Simon Schaufelberger)
+    2020-10-16 Update issue search url (Commit f1496a3 by Simon Schaufelberger)
+    2020-10-16 Add PR and issue templates (Commit a62dbcb by Simon Schaufelberger)
+    2020-10-16 [BUGFIX] Update README (Commit 6fddb1a by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.

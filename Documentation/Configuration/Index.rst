@@ -198,8 +198,10 @@ TypoScript Reference
    Default
       EXT:gkh_rss_import/Resources/Private/Templates/RssImport.html
    Description
-      Template File
+      Template File (the path needs to start with "EXT:" if you set it via TypoScript, otherwise set the template via
+      Plugin settings in the backend)
 
       **Example:** ::
 
          plugin.tx_gkhrssimport_pi1.templateFile = EXT:gkh_rss_import/Resources/Private/Templates/RssImport.html
+

@@ -29,7 +29,7 @@ RSS feed import
    `CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__ (Creative Commons)
    license
 
-Import an RSS feed and show the content on a page.
+Fetch an RSS / Atom Feed and display its content on the Frontend.
 
 **TYPO3**
 
