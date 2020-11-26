@@ -14,10 +14,7 @@ List of versions
 .. toctree::
    :maxdepth: 5
    :titlesonly:
+   :reversed:
    :glob:
 
-   7-0-0
-   6-0-5
-   6-0-4
-   6-0-3
-   6-0-1
+   * 
