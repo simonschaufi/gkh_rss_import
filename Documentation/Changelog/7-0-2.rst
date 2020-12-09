@@ -1,0 +1,25 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+7.0.2
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+Bugfix release
+--------------
+
+Add publish GitHub workflow and use globbing in toctree changelog.
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+    2020-12-09 [TASK] Add publish GitHub workflow (Commit c412754 by Simon Schaufelberger)
+    2020-11-26 [TASK] Use globbing in toctree changelog (#7) (Commit 97c612b by Sybille Peters)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
