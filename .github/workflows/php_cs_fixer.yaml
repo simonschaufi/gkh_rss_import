@@ -35,7 +35,7 @@ jobs:
         run: composer install --no-progress
 
       - name: Run php-cs-fixer
-        run: .Build/bin/php-cs-fixer fix --config=./.php_cs.dist --diff
+        run: .Build/bin/php-cs-fixer fix --config=./.php_cs --diff
 
       - name: Commit changed files
         uses: stefanzweifel/git-auto-commit-action@v4
