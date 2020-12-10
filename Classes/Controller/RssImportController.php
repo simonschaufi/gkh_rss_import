@@ -219,7 +219,12 @@ class RssImportController extends AbstractPlugin
             $content = $this->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
         } else {
             // If feed is not found show this message
-            $content = '<div class="rss_box">' . htmlspecialchars($this->conf['errorMessage']) . '</div>';
+            if (isset($this->conf['errorMessage.'])) {
+                $errorMessage = $this->cObj->stdWrap('', $this->conf['errorMessage.']);
+            } else {
+                $errorMessage = $this->conf['errorMessage'] ?? '';
+            }
+            $content = '<div class="rss_box">' . htmlspecialchars($errorMessage) . '</div>';
         }
         if (isset($this->conf['stdWrap.'])) {
             $content = $this->cObj->stdWrap($content, $this->conf['stdWrap.']);
@@ -293,7 +298,8 @@ class RssImportController extends AbstractPlugin
 
     protected function renderItem(array $item, string $itemSubpart, string $target): string
     {
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link']; // for Userfunction fixRssURLs
+        // for UserFunction fixRssURLs
+        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];
 
         // Get item header
         $markerArray['###CLASS_HEADER###'] = $this->pi_classParam('header');
@@ -319,7 +325,9 @@ class RssImportController extends AbstractPlugin
         // Get item content/home/simon/Code/github/simonschaufi/gkh_rss_import/.Build/bin/phpcs
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
         $itemSummary = $item['description'];
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = $this->conf['itemLength']; // for Userfunc smart_trim
+
+        // for UserFunction smart_trim
+        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = $this->conf['itemLength'];
         if (isset($this->conf['itemSummary_stdWrap.'])) {
             $itemSummary = $this->cObj->stdWrap($itemSummary, $this->conf['itemSummary_stdWrap.']);
         }
@@ -383,7 +391,6 @@ class RssImportController extends AbstractPlugin
                 if (!empty($this->conf['dateFormat'])) {
                     return $this->conf['dateFormat'];
                 }
-
                 return '%e/%m - %Y';
         }
     }

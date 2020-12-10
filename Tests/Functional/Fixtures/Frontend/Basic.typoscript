@@ -18,5 +18,8 @@ page {
 		rssFeed = http://localhost/feed.xml
 		headerLength = 80
 		itemLength = 500
+
+		errorMessage = TEXT
+		errorMessage.data = LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf:errorMessage
 	}
 }

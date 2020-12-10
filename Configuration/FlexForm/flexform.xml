@@ -105,8 +105,7 @@
 							<config>
 								<type>input</type>
 								<size>40</size>
-								<default>It's not possible to reach the RSS file...</default>
-								<placeholder>It's not possible to reach the RSS file...</placeholder>
+								<placeholder>It's not possible to reach the RSS feed.</placeholder>
 							</config>
 						</TCEforms>
 					</errorMessage>

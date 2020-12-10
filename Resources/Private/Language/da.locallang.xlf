@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="da" datatype="plaintext" original="messages" date="">
+	<file source-language="en" target-language="da" datatype="plaintext" original="messages" date="2020-12-10T21:14:42Z">
 		<header>
 			<type>module</type>
-			<description>Language labels for plugin &quot;tx_gkhrssimport_pi1&quot;</description>
+			<description>Language labels for extension gkh_rss_import</description>
 			<generator>LFEditor</generator>
+			<authorName>Simon Schaufelberger</authorName>
 		</header>
 		<body>
-		<trans-unit id="pi1_plus_wiz_description" approved="yes">
-			<source>Shows the content of an RSS feed</source>
-			<target>Viser indholdet fra et RSS feed</target>
-		</trans-unit>
-		<trans-unit id="pi1_title" approved="yes">
-			<source>gkh RSS import</source>
-			<target>gkh RSS import</target>
-		</trans-unit>
-		<trans-unit id="tsce.templateFile" approved="yes">
-			<source>Template file</source>
-			<target>Template file</target>
-		</trans-unit>
+			<trans-unit id="pi1_plus_wiz_description" approved="yes">
+				<source><![CDATA[Shows the content of an RSS feed]]></source>
+				<target><![CDATA[Viser indholdet fra et RSS feed]]></target>
+			</trans-unit>
+			<trans-unit id="pi1_title" approved="yes">
+				<source><![CDATA[gkh RSS import]]></source>
+				<target><![CDATA[gkh RSS import]]></target>
+			</trans-unit>
+			<trans-unit id="tsce.templateFile" approved="yes">
+				<source><![CDATA[Template file]]></source>
+				<target><![CDATA[Template file]]></target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

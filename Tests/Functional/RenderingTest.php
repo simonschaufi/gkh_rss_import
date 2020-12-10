@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class RenderingTest extends FunctionalTestCase
@@ -33,7 +34,7 @@ class RenderingTest extends FunctionalTestCase
      * @test
      * @throws InvalidDataException
      * @throws NoSuchCacheException
-     * @throws \TYPO3\CMS\Core\Exception
+     * @throws CoreException
      */
     public function renderFeed(): void
     {
@@ -102,7 +103,7 @@ class RenderingTest extends FunctionalTestCase
      * @test
      * @throws InvalidDataException
      * @throws NoSuchCacheException
-     * @throws \TYPO3\CMS\Core\Exception
+     * @throws CoreException
      */
     public function renderFeedWithImageEnclosure(): void
     {
@@ -170,5 +171,30 @@ class RenderingTest extends FunctionalTestCase
 
         // File cache
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
+    }
+
+    /**
+     * @test
+     * @throws InvalidDataException
+     * @throws NoSuchCacheException
+     * @throws CoreException
+     */
+    public function renderFeedWithErrorMessage(): void
+    {
+        $lastRssServiceMock = $this->getMockBuilder(LastRssService::class)
+            ->setMethods(['getFeed'])
+            ->getMock();
+
+        $lastRssServiceMock->method('getFeed')->willReturn(false);
+
+        GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
+
+        $response = $this->getResponseContent($this->internalRequest(1));
+
+        self::assertStringContainsString(
+            'It\'s not possible to reach the RSS feed.',
+            $response,
+            'Error message not found'
+        );
     }
 }
