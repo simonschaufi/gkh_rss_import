@@ -67,6 +67,7 @@ class RenderingTest extends FunctionalTestCase
             'language' => 'de-DE',
             'lastBuildDate' => '05/19/2020',
             'image_url' => $imageUrl,
+            'image_title' => 'Image Title',
             'image_link' => 'http://localhost/Images/1-10.png',
             'items' => [
                 [
@@ -100,6 +101,7 @@ class RenderingTest extends FunctionalTestCase
         self::assertStringContainsString('RSS feed of example.com', $response, 'Title not found');
         self::assertStringContainsString('Example Description', $response, 'Description not found');
         self::assertStringContainsString($expectedFilePath, $response, 'Image url not found');
+        self::assertStringContainsString('Image Title', $response, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $response, 'Image link not found');
 
         // Item
@@ -135,8 +137,8 @@ class RenderingTest extends FunctionalTestCase
             'description' => 'example.com Description',
             'language' => 'de',
             'lastBuildDate' => '10/30/2020',
-            'image_title' => 'example.com',
             'image_url' => $imageUrl,
+            'image_title' => 'Image Title',
             'image_link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
             'image_width' => '273',
             'image_height' => '121',
@@ -169,6 +171,7 @@ class RenderingTest extends FunctionalTestCase
         self::assertStringContainsString('RSS feed of example.com', $response, 'Title not found');
         self::assertStringContainsString('example.com Description', $response, 'Description not found');
         self::assertStringContainsString($expectedFilePath, $response, 'Image url not found');
+        self::assertStringContainsString('Image Title', $response, 'Image title not found');
         self::assertStringContainsString(
             'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
             $response,
