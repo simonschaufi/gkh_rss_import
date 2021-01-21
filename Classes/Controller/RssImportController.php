@@ -220,6 +220,8 @@ class RssImportController extends AbstractPlugin
     }
 
     /**
+     * Get the channel image. Image url, title and link are required.
+     *
      * @param array $rss
      * @param string $target
      * @return string
@@ -227,7 +229,7 @@ class RssImportController extends AbstractPlugin
      */
     protected function getImage(array $rss, string $target): string
     {
-        if (isset($rss['image_url'], $rss['image_link']) && $rss['image_url'] !== '') {
+        if (isset($rss['image_url'], $rss['image_title'], $rss['image_link']) && $rss['image_url'] !== '') {
             $location = $this->getCachedImageLocation($rss['image_url']);
 
             if (!file_exists($location)) {
