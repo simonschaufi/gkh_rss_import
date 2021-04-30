@@ -44,5 +44,8 @@ jobs:
           php-version: 7.4
           extensions: intl, mbstring, json, zip, curl
 
+      - name: Install tailor
+        run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
+
       - name: Publish to TER
-        run: php .Build/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{ steps.get-version.outputs.version }}
+        run: php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{ steps.get-version.outputs.version }}
