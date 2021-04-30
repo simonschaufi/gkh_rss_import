@@ -1,0 +1,30 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+7.0.3
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2021-04-30 [RELEASE] Release v7.0.3 (Commit a33b6b9 by Simon Schaufelberger)
+   2021-04-30 [TASK] Install tailor locally and limit the maximum TYPO3 version in dev mode (Commit dd81304 by Simon Schaufelberger)
+   2021-04-30 [BUGFIX] Description should be optional (#14) (Commit 267ac76 by Kees Sonnema)
+   2021-04-26 [TASK] Use short TYPO3 versions (Commit c271e18 by Simon Schaufelberger)
+   2021-04-23 Update .crowdin.yml (Commit 535b2be by Simon Schaufelberger)
+   2021-04-23 Update Crowdin configuration file (Commit 77d7208 by Simon Schaufelberger)
+   2021-04-23 Update Crowdin configuration file (Commit 141d095 by Simon Schaufelberger)
+   2021-01-21 [BUGFIX] Use older TYPO3 version for testing purposes (#12) (Commit 96d7422 by Simon Schaufelberger)
+   2021-01-21 [BUGFIX] Make image title required (Commit 0a83f67 by Simon Schaufelberger)
+   2020-12-10 [TASK] Apply TYPO3 coding standards (Commit a36c488 by Simon Schaufelberger)
+   2020-12-10 [BUGFIX] Proper handling of error message (Commit 3e85db4 by Simon Schaufelberger)
+   2020-12-09 [BUGFIX] Remove tailor as dev dependency (Commit 4e1de9b by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
