@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
+use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -157,5 +158,18 @@ class RssImportControllerTest extends UnitTestCase
         $result = $this->subject->cropHTML($input, []);
 
         self::assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getCachedImageLocation(): void
+    {
+        $subject = new RssImportControllerFixture();
+        $result = $subject->getFileExtensionFromUrl(
+            'https://i1.wp.com/example.com/wp-content/uploads/2020/cropped-logo.png?fit=32%2C32&#038;ssl=1'
+        );
+
+        self::assertEquals('png', $result);
     }
 }

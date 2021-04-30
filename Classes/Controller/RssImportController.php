@@ -184,6 +184,8 @@ class RssImportController extends AbstractPlugin
             $rss['title'] = strip_tags($this->rssService->unHtmlEntities(strip_tags($rss['title'])));
             if (isset($rss['description'])) {
                 $rss['description'] = strip_tags($this->rssService->unHtmlEntities(strip_tags($rss['description'])));
+            } else {
+                $rss['description'] = '';
             }
 
             $target = $this->getTarget();
@@ -272,7 +274,7 @@ class RssImportController extends AbstractPlugin
     {
         $imageCache = $this->cacheManager->getCache(self::CACHE_IDENTIFIER);
 
-        $fileExtension = substr($this->getFileName($imageUrl), -4);
+        $fileExtension = '.' . $this->getFileExtensionFromUrl($imageUrl);
         $cacheIdentifier = sha1($imageUrl . '_' . $fileExtension) . $fileExtension;
         if (!$imageCache->has($cacheIdentifier)) {
             $buff = GeneralUtility::getURL($imageUrl);
@@ -284,6 +286,12 @@ class RssImportController extends AbstractPlugin
         /** @var Typo3TempSimpleFileBackend $imageCacheBackend */
         $imageCacheBackend = $imageCache->getBackend();
         return $imageCacheBackend->getCacheDirectory() . $cacheIdentifier;
+    }
+
+    protected function getFileExtensionFromUrl(string $url): string
+    {
+        $urlParts = parse_url($url);
+        return pathinfo($urlParts['path'], PATHINFO_EXTENSION);
     }
 
     protected function getSubPart(string $template, string $marker): string
@@ -492,19 +500,6 @@ class RssImportController extends AbstractPlugin
             return $text;
         }
         return $this->cObj->cropHTML($text, $itemLength . '|...|1');
-    }
-
-    /**
-     * Get filename from url
-     *
-     * @param string $url : url to the file
-     *
-     * @return string
-     */
-    protected function getFileName(string $url): string
-    {
-        $parts = explode('/', $url);
-        return ($parts[count($parts) - 1] === '') ? $parts[count($parts) - 2] : $parts[count($parts) - 1];
     }
 
     /**
