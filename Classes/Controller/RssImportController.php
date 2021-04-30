@@ -170,6 +170,10 @@ class RssImportController extends AbstractPlugin
         return file_get_contents($template);
     }
 
+    /**
+     * @return string
+     * @throws NoSuchCacheException
+     */
     protected function render(): string
     {
         $markerArray['###BOX###'] = $this->pi_classParam('rss_box');
@@ -178,7 +182,9 @@ class RssImportController extends AbstractPlugin
         $rss = $this->rssService->getFeed();
         if (is_array($rss)) {
             $rss['title'] = strip_tags($this->rssService->unHtmlEntities(strip_tags($rss['title'])));
-            $rss['description'] = strip_tags($this->rssService->unHtmlEntities(strip_tags($rss['description'])));
+            if (isset($rss['description'])) {
+                $rss['description'] = strip_tags($this->rssService->unHtmlEntities(strip_tags($rss['description'])));
+            }
 
             $target = $this->getTarget();
 
