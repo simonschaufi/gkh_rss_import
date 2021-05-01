@@ -12,6 +12,7 @@
         "friendsofphp/php-cs-fixer": "^2.18",
         "helhum/typo3-composer-setup": "^0.5.7",
         "helmich/typo3-typoscript-lint": "^2.5",
+        "helmich/typo3-typoscript-parser": "v2.2.1",
         "nimut/testing-framework": "^5.2",
         "squizlabs/php_codesniffer": "^3.6",
         "typo3/cms-core": "^9.5 || 10.4.10",
@@ -58,7 +59,7 @@
             ".Build/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation --using-cache=no ./Tests/"
         ],
         "test-typoscript-lint": [
-            ".Build/bin/typoscript-lint"
+            ".Build/bin/typoscript-lint -c .typoscript-lint.yml"
         ]
     },
     "extra": {
