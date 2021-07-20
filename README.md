@@ -48,7 +48,7 @@ Download and install the [extension][3] with the extension manager module in the
 
 | Branch      | TYPO3      | PHP       | Support / Development                   |
 | ----------- | ---------- | ----------|---------------------------------------- |
-| dev-master  | 9.5 - 10.x | 7.0 - 7.4 | unstable development branch             |
+| dev-master  | 9.5 - 11.x | 7.0 - 7.4 | unstable development branch             |
 | 6.x         | 8.7 - 8.7  | 7.0 - 7.4 | bugfixes, security updates              |
 
 ### Changelog
