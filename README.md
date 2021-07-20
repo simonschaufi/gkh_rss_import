@@ -6,6 +6,7 @@
 [![License](https://poser.pugx.org/gkh/gkh-rss-import/license)](https://packagist.org/packages/gkh/gkh-rss-import)
 [![TYPO3](https://img.shields.io/badge/TYPO3-9.5-orange.svg)](https://get.typo3.org/version/9)
 [![TYPO3](https://img.shields.io/badge/TYPO3-10.4-orange.svg)](https://get.typo3.org/version/10)
+[![TYPO3](https://img.shields.io/badge/TYPO3-11.0-orange.svg)](https://get.typo3.org/version/11)
 
 Fetch an RSS / Atom Feed and display its content on the Frontend.
 
