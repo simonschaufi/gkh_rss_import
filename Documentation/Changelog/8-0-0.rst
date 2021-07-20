@@ -1,0 +1,22 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+8.0.0
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2021-07-20 [RELEASE] Release v8.0.0 (Commit f9c8ebf by Simon Schaufelberger)
+   2021-07-20 [FEATURE] TYPO3 11 compatibility (#16) (Commit eb80b12 by Simon Schaufelberger)
+   2021-07-07 [TASK] Remove extension key (Commit 07a37c2 by Simon Schaufelberger)
+   2021-05-01 [BUGFIX] Lock typoscript parser to v2.2.1 (Commit 1d94cbf by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
