@@ -54,26 +54,15 @@ class RssImportController extends AbstractPlugin
     public $extKey = 'gkh_rss_import';
 
     /**
-     * @var bool
-     */
-    public $pi_checkCHash = true;
-
-    /**
      * Holds the template for FE rendering
      *
      * @var string
      */
-    protected $template;
+    protected string $template;
 
-    /**
-     * @var CacheManager
-     */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /**
-     * @var LastRssService
-     */
-    protected $rssService;
+    protected LastRssService $rssService;
 
     /**
      * Class Constructor
@@ -96,6 +85,7 @@ class RssImportController extends AbstractPlugin
      * @param array $conf : The PlugIn configuration
      * @return string The content that is displayed on the website
      * @throws Exception
+     * @throws NoSuchCacheException|\ErrorException
      */
     public function main(string $content, array $conf): string
     {
@@ -453,7 +443,7 @@ class RssImportController extends AbstractPlugin
      * @param string $sheet Name of sheet
      * @return string|null Value of var
      */
-    protected function flexFormValue($var, $sheet): ?string
+    protected function flexFormValue(string $var, string $sheet): ?string
     {
         return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var, $sheet);
     }
@@ -493,7 +483,7 @@ class RssImportController extends AbstractPlugin
      * @param array $conf
      * @return string
      */
-    public function cropHTML(string $text, $conf): string
+    public function cropHTML(string $text, array $conf): string
     {
         $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];
         if ($itemLength == 0) {

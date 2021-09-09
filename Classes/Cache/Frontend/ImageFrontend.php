@@ -33,7 +33,7 @@ class ImageFrontend extends AbstractFrontend
      * @param string $entryIdentifier Something which identifies the data - depends on concrete cache
      * @param mixed $data The data to cache - also depends on the concrete cache implementation
      * @param array $tags Tags to associate with this cache entry
-     * @param null $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
+     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws \TYPO3\CMS\Core\Cache\Exception
      * @throws InvalidDataException
      */

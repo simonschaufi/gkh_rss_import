@@ -21,13 +21,14 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
@@ -36,91 +37,88 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RssImportControllerTest extends UnitTestCase
 {
-    /**
-     * @var RssImportController
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected RssImportController $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class)->getVersion();
-        if (VersionNumberUtility::convertVersionNumberToInteger($typo3Version) >= 10000000) {
-            /** @see https://github.com/TYPO3/TYPO3.CMS/blob/67dde9c018909997833f50d1b4deeb48dede1770/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L59-L92 */
-            $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com', 'GET');
+        /** @see https://github.com/TYPO3/typo3/blob/e4da4be7d06b36ef3abef1c82ec9f9a7f0d3dce0/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L61-L95 */
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
-            $site = new Site(
-                'test',
-                1,
-                [
-                    'base' => 'https://www.example.com',
-                    'languages' => [
-                        [
-                            'languageId' => 0,
-                            'title' => 'English',
-                            'locale' => 'en_UK',
-                            'base' => '/'
-                        ]
+        $site = new Site(
+            'test',
+            1,
+            [
+                'base' => 'https://www.example.com',
+                'languages' => [
+                    [
+                        'languageId' => 0,
+                        'title' => 'English',
+                        'locale' => 'en_UK',
+                        'base' => '/'
                     ]
                 ]
-            );
+            ]
+        );
 
-            $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-            GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
-            $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-            $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-            $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-            $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        /** @var FrontendInterface|ObjectProphecy $cacheFrontendProphecy */
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
 
-            $languageService = new LanguageService(
-                new Locales(),
-                new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal())
-            );
+        $languageService = new LanguageService(
+            new Locales(),
+            new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()),
+            $cacheFrontendProphecy->reveal()
+        );
 
-            $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-            $languageServiceFactoryProphecy->create(Argument::any())->willReturn($languageService);
-            GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        /** @var LanguageServiceFactory|ObjectProphecy $languageServiceFactoryProphecy */
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
 
-            $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
+        $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
 
-            $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-                ->setConstructorArgs(
-                    [
-                        new Context(),
-                        $site,
-                        $site->getDefaultLanguage(),
-                        new PageArguments(1, '1', []),
-                        $frontendUserProphecy->reveal()
-                    ]
-                )
-                ->setMethods(['initCaches'])
-                ->getMock();
-        } else {
-            // Can be removed when TYPO3 9 support is dropped
-            $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-                ->setConstructorArgs([
-                    $GLOBALS['TYPO3_CONF_VARS'],
-                    1,
-                    1
-                ])
-                ->setMethods(['initCaches'])
-                ->getMock();
-        }
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->setConstructorArgs(
+                [
+                    new Context(),
+                    $site,
+                    $site->getDefaultLanguage(),
+                    new PageArguments(1, '1', []),
+                    $frontendUserProphecy->reveal()
+                ]
+            )
+            ->onlyMethods(['initCaches'])
+            ->getMock();
 
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
         $GLOBALS['TSFE']->page = [];
 
         $this->subject = new RssImportController();
-        $this->subject->cObj = $GLOBALS['TSFE']->cObj;
+        $this->subject->setContentObjectRenderer($GLOBALS['TSFE']->cObj);
+    }
+
+    protected function tearDown(): void
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
     }
 
     public function cropHTMLDataProvider(): array

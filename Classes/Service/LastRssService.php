@@ -26,15 +26,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class LastRssService
 {
-    /**
-     * @var lastRSS
-     */
-    protected $rss;
+    protected lastRSS $rss;
 
-    /**
-     * @var string
-     */
-    protected $url;
+    protected ?string $url = null;
 
     public function __construct()
     {

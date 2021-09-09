@@ -4,19 +4,18 @@
     "description": "Fetch an RSS / Atom Feed and display its content on the Frontend.",
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^9.5 || ^10.4 || ^11.0"
+        "typo3/cms-core": "^11.4"
     },
     "require-dev": {
         "ext-json": "*",
         "ezyang/htmlpurifier": "^4.13",
-        "friendsofphp/php-cs-fixer": "^2.18",
-        "helhum/typo3-composer-setup": "^0.5.7",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "helmich/typo3-typoscript-lint": "^2.5",
-        "nimut/testing-framework": "^5.2",
+        "phpspec/prophecy-phpunit": "^2.0",
         "squizlabs/php_codesniffer": "^3.6",
-        "typo3/cms-core": "^9.5 || 10.4.10",
-        "typo3/coding-standards": "^0.3.0",
-        "typo3/tailor": "^1.3"
+        "typo3/cms-install": "^11.4",
+        "typo3/tailor": "^1.3",
+        "typo3/testing-framework": "^6.10"
     },
     "autoload": {
         "psr-4": {
@@ -43,19 +42,18 @@
             "@prepare-extension-test-structure"
         ],
         "prepare-extension-test-structure": [
-            "Nimut\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
         ],
-        "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml --stop-on-failure Tests/Unit",
-        "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml --stop-on-failure Tests/Functional",
+        "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/UnitTests.xml --stop-on-failure",
+        "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c Build/FunctionalTests.xml --stop-on-failure",
         "test": [
-            "@test-php-lint",
             "@test-php-cs-fixer",
-            "@test-typoscript-lint"
+            "@test-typoscript-lint",
+			"@unit-tests",
+			"@functional-tests"
         ],
         "test-php-cs-fixer": [
-            ".Build/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation --using-cache=no ./Classes/",
-            ".Build/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation --using-cache=no ./Configuration/",
-            ".Build/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation --using-cache=no ./Tests/"
+            ".Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation"
         ],
         "test-typoscript-lint": [
             ".Build/bin/typoscript-lint -c .typoscript-lint.yml"

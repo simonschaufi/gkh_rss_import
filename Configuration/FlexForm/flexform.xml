@@ -15,8 +15,8 @@
 							<config>
 								<type>input</type>
 								<size>50</size>
-								<default>http://feeds.bbci.co.uk/news/rss.xml</default>
-								<placeholder>http://feeds.bbci.co.uk/news/rss.xml</placeholder>
+								<default>https://feeds.bbci.co.uk/news/rss.xml</default>
+								<placeholder>https://feeds.bbci.co.uk/news/rss.xml</placeholder>
 								<eval>required,nospace</eval>
 							</config>
 						</TCEforms>
