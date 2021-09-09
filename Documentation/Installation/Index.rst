@@ -7,7 +7,7 @@ Installation
 
 .. important::
 
-   Use the versions 6.x for TYPO3 8 and 7.x for TYPO3 9 and 10.
+   Use the versions 6.x for TYPO3 8, 7.x for TYPO3 9 and 10 and 9.x for TYPO3 11.
 
 The extension needs to be installed as any other extension of TYPO3 CMS:
 

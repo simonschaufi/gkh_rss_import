@@ -17,10 +17,12 @@
 
 defined('TYPO3') or die();
 
-call_user_func(static function () {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+(static function () {
+    ExtensionManagementUtility::addStaticFile(
         'gkh_rss_import',
         'Configuration/TypoScript/',
         'RSS Feed Import'
     );
-});
+})();

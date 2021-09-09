@@ -1,0 +1,22 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+9.0.0
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2021-09-09 [RELEASE] Release v9.0.0 (Commit bbd93fa by Simon Schaufelberger)
+   2021-09-09 [TASK] Make extension fully compatible with TYPO3 11.4 (Commit 5f71b79 by Simon Schaufelberger)
+   2021-07-20 [TASK] Mark master branch as compatible with TYPO3 11 (Commit 89ff600 by Simon Schaufelberger)
+   2021-07-20 [TASK] Add TYPO3 11 badge (Commit 9769374 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.

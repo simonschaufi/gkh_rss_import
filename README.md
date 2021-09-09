@@ -46,10 +46,11 @@ Download and install the [extension][3] with the extension manager module in the
 
 ### Versions and support
 
-| Branch      | TYPO3      | PHP       | Support / Development                   |
-| ----------- | ---------- | ----------|---------------------------------------- |
-| dev-master  | 9.5 - 11.x | 7.0 - 7.4 | unstable development branch             |
-| 6.x         | 8.7 - 8.7  | 7.0 - 7.4 | bugfixes, security updates              |
+| Branch      | TYPO3       | PHP       | Support / Development        |
+| ----------- | ----------- | ----------|----------------------------- |
+| dev-master  | 11.4 - 11.x | 7.4 - 8.0 | unstable development branch  |
+| 8.x         | 9.5 - 11.x  | 7.2 - 7.4 | bugfixes, security updates   |
+| 6.x         | 8.7 - 8.7   | 7.0 - 7.4 | no more support              |
 
 ### Changelog
 
