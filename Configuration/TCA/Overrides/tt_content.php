@@ -15,7 +15,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 call_user_func(static function () {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
