@@ -45,3 +45,11 @@ Screenshots
    :width: 932px
 
    Rendered feed example
+
+.. toctree::
+   :maxdepth: 5
+   :titlesonly:
+   :hidden:
+
+   Support/Index
+   Sponsor/Index
