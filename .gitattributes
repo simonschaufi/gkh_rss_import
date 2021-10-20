@@ -26,3 +26,4 @@
 /Documentation export-ignore
 /Tests export-ignore
 /.* export-ignore
+/crowdin.yml export-ignore
