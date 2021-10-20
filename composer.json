@@ -22,7 +22,8 @@
             "GertKaaeHansen\\GkhRssImport\\": "Classes"
         },
         "files": [
-            "Resources/PHP/lastRSS.php"
+            "Resources/PHP/lastRSS.php",
+            "Resources/PHP/smarttrim.php"
         ]
     },
     "autoload-dev": {
@@ -61,9 +62,10 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "gkh_rss_import",
-            "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "app-dir": ".Build",
+			"app-dir": ".Build",
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"extension-key": "gkh_rss_import",
+			"ignore-as-root": false,
             "web-dir": ".Build/public"
         }
     }

@@ -23,8 +23,8 @@ use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -48,6 +48,9 @@ class RssImportControllerTest extends UnitTestCase
 
     protected RssImportController $subject;
 
+    /**
+     * @throws NoSuchCacheException
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -72,11 +75,9 @@ class RssImportControllerTest extends UnitTestCase
             ]
         );
 
-        /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
-        /** @var FrontendInterface|ObjectProphecy $cacheFrontendProphecy */
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
@@ -88,7 +89,6 @@ class RssImportControllerTest extends UnitTestCase
             $cacheFrontendProphecy->reveal()
         );
 
-        /** @var LanguageServiceFactory|ObjectProphecy $languageServiceFactoryProphecy */
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());

@@ -5,6 +5,7 @@ defined('TYPO3') or die();
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Cache\Frontend\ImageFrontend;
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 (static function () {
@@ -30,5 +31,10 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
                 'gkh_rss_import'
             ]
         ];
+    }
+
+    if (!Environment::isComposerMode()) {
+        require_once(ExtensionManagementUtility::extPath('gkh_rss_import') . 'Resources/PHP/lastRSS.php');
+        require_once(ExtensionManagementUtility::extPath('gkh_rss_import') . 'Resources/PHP/smarttrim.php');
     }
 })();
