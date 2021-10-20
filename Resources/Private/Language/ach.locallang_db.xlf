@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="" target-language="ach">
+    <header>
+      <type>database</type>
+      <description>Language labels for database tables/fields belonging to extension 'gkh_rss_import'</description>
+      <generator>LFEditor</generator>
+    </header>
+    <body>
+      <trans-unit id="tt_content.list_type_pi1">
+        <source>RSS Feed Import</source>
+        <target>crwdns92:0crwdne92:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache">
+        <source>RSS Feed cache time</source>
+        <target>crwdns94:0crwdne94:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.0">
+        <source>1 hour</source>
+        <target>crwdns96:0crwdne96:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.1">
+        <source>2 hours</source>
+        <target>crwdns98:0crwdne98:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.2">
+        <source>6 hours</source>
+        <target>crwdns100:0crwdne100:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.3">
+        <source>12 hours</source>
+        <target>crwdns102:0crwdne102:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.4">
+        <source>24 hours</source>
+        <target>crwdns104:0crwdne104:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.5">
+        <source>20 min</source>
+        <target>crwdns106:0crwdne106:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.off">
+        <source>Off</source>
+        <target>crwdns108:0crwdne108:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.code_page">
+        <source>Page encoding</source>
+        <target>crwdns110:0crwdne110:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format">
+        <source>Date format</source>
+        <target>crwdns112:0crwdne112:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format.I.1">
+        <source>Monday, 12. May 2008</source>
+        <target>crwdns114:0crwdne114:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format.I.2">
+        <source>12. May 2008</source>
+        <target>crwdns116:0crwdne116:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format.I.3">
+        <source>12/5-2008</source>
+        <target>crwdns118:0crwdne118:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.errorM">
+        <source>It's not possible to reach the RSS file...</source>
+        <target>crwdns120:0crwdne120:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.errorMessage">
+        <source>Error message</source>
+        <target>crwdns122:0crwdne122:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.header_length">
+        <source>Length of header description</source>
+        <target>crwdns124:0crwdne124:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.item_length">
+        <source>Length of item content</source>
+        <target>crwdns126:0crwdne126:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logo_width">
+        <source>Width of logo image</source>
+        <target>crwdns128:0crwdne128:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.max_feed">
+        <source>Maximum items to show</source>
+        <target>crwdns130:0crwdne130:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.settings">
+        <source>Settings</source>
+        <target>crwdns132:0crwdne132:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_RSS_Feed">
+        <source>RSS Feed settings</source>
+        <target>crwdns134:0crwdne134:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_url">
+        <source>RSS Feed URL</source>
+        <target>crwdns136:0crwdne136:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.striphtml">
+        <source>Remove HTML from RSS feed</source>
+        <target>crwdns138:0crwdne138:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.striphtml.I.1">
+        <source>Yes</source>
+        <target>crwdns140:0crwdne140:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.striphtml.I.2">
+        <source>No</source>
+        <target>crwdns142:0crwdne142:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target">
+        <source>Target of URL</source>
+        <target>crwdns144:0crwdne144:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target.I.1">
+        <source>top</source>
+        <target>crwdns146:0crwdne146:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target.I.2">
+        <source>blank</source>
+        <target>crwdns148:0crwdne148:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target.I.3">
+        <source>self</source>
+        <target>crwdns150:0crwdne150:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_file">
+        <source>Template File</source>
+        <target>crwdns152:0crwdne152:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_title">
+        <source>Template</source>
+        <target>crwdns154:0crwdne154:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
