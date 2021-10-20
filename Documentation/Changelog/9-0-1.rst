@@ -1,0 +1,24 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+9.0.1
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2021-10-20 [RELEASE] Release v9.0.1 (Commit 38053b2 by Simon Schaufelberger)
+   2021-10-20 [TASK] Rename crowdin file (Commit ce0fe68 by Simon Schaufelberger)
+   2021-10-20 [TASK] Run tests with ^11.5 (Commit 90f5ab4 by Simon Schaufelberger)
+   2021-10-20 [BUGFIX] Fix broken compatibility with TYPO3 11.5 (Commit 7effe7a by Simon Schaufelberger)
+   2021-10-18 [DOCS] Add toc tree (Commit d4dca03 by Simon Schaufelberger)
+   2021-10-18 [DOCS] Improve documentation (Commit 46fa9c3 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
