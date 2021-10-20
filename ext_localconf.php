@@ -34,7 +34,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
     }
 
     if (!Environment::isComposerMode()) {
-        require_once(ExtensionManagementUtility::extPath('gkh_rss_import') . 'Resources/PHP/lastRSS.php');
-        require_once(ExtensionManagementUtility::extPath('gkh_rss_import') . 'Resources/PHP/smarttrim.php');
+        $extPath = ExtensionManagementUtility::extPath('gkh_rss_import');
+        require_once($extPath . 'Resources/PHP/lastRSS.php');
+        require_once($extPath . 'Resources/PHP/smarttrim.php');
     }
 })();
