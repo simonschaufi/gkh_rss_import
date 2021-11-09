@@ -7,133 +7,133 @@
       <generator>LFEditor</generator>
     </header>
     <body>
-      <trans-unit id="tt_content.list_type_pi1">
+      <trans-unit id="tt_content.list_type_pi1" approved="yes">
         <source>RSS Feed Import</source>
-        <target state="needs-translation">RSS Feed Import</target>
+        <target state="final">RSS Feed Import</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache">
+      <trans-unit id="tt_content.pi_flexform.cache" approved="yes">
         <source>RSS Feed cache time</source>
-        <target state="needs-translation">RSS Feed cache time</target>
+        <target state="final">RSS Feed cache tid</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.0">
+      <trans-unit id="tt_content.pi_flexform.cache.I.0" approved="yes">
         <source>1 hour</source>
-        <target state="needs-translation">1 hour</target>
+        <target state="final">1 time</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.1">
+      <trans-unit id="tt_content.pi_flexform.cache.I.1" approved="yes">
         <source>2 hours</source>
-        <target state="needs-translation">2 hours</target>
+        <target state="final">2 timer</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.2">
+      <trans-unit id="tt_content.pi_flexform.cache.I.2" approved="yes">
         <source>6 hours</source>
-        <target state="needs-translation">6 hours</target>
+        <target state="final">6 timer</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.3">
+      <trans-unit id="tt_content.pi_flexform.cache.I.3" approved="yes">
         <source>12 hours</source>
-        <target state="needs-translation">12 hours</target>
+        <target state="final">12 timer</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.4">
+      <trans-unit id="tt_content.pi_flexform.cache.I.4" approved="yes">
         <source>24 hours</source>
-        <target state="needs-translation">24 hours</target>
+        <target state="final">24 timer</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.5">
+      <trans-unit id="tt_content.pi_flexform.cache.I.5" approved="yes">
         <source>20 min</source>
-        <target state="needs-translation">20 min</target>
+        <target state="final">20 min</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.cache.I.off">
+      <trans-unit id="tt_content.pi_flexform.cache.I.off" approved="yes">
         <source>Off</source>
-        <target state="needs-translation">Off</target>
+        <target state="final">Fra</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.code_page">
+      <trans-unit id="tt_content.pi_flexform.code_page" approved="yes">
         <source>Page encoding</source>
-        <target state="needs-translation">Page encoding</target>
+        <target state="final">Side kodning</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.date_format">
+      <trans-unit id="tt_content.pi_flexform.date_format" approved="yes">
         <source>Date format</source>
-        <target state="needs-translation">Date format</target>
+        <target state="final">Datoformat</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.date_format.I.1">
+      <trans-unit id="tt_content.pi_flexform.date_format.I.1" approved="yes">
         <source>Monday, 12. May 2008</source>
-        <target state="needs-translation">Monday, 12. May 2008</target>
+        <target state="final">Mandag den 12. maj 2008</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.date_format.I.2">
+      <trans-unit id="tt_content.pi_flexform.date_format.I.2" approved="yes">
         <source>12. May 2008</source>
-        <target state="needs-translation">12. May 2008</target>
+        <target state="final">12. maj 2008</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.date_format.I.3">
+      <trans-unit id="tt_content.pi_flexform.date_format.I.3" approved="yes">
         <source>12/5-2008</source>
-        <target state="needs-translation">12/5-2008</target>
+        <target state="final">12/5-2008</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.errorM">
+      <trans-unit id="tt_content.pi_flexform.errorM" approved="yes">
         <source>It's not possible to reach the RSS file...</source>
-        <target state="needs-translation">It's not possible to reach the RSS file...</target>
+        <target state="final">Det er ikke muligt at hente RSS-filen...</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.errorMessage">
+      <trans-unit id="tt_content.pi_flexform.errorMessage" approved="yes">
         <source>Error message</source>
-        <target state="needs-translation">Error message</target>
+        <target state="final">Fejlmeddelelse</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.header_length">
+      <trans-unit id="tt_content.pi_flexform.header_length" approved="yes">
         <source>Length of header description</source>
-        <target state="needs-translation">Length of header description</target>
+        <target state="final">Længde af header beskrivelse</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.item_length">
+      <trans-unit id="tt_content.pi_flexform.item_length" approved="yes">
         <source>Length of item content</source>
-        <target state="needs-translation">Length of item content</target>
+        <target state="final">Længde af elementets indhold</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.logo_width">
+      <trans-unit id="tt_content.pi_flexform.logo_width" approved="yes">
         <source>Width of logo image</source>
-        <target state="needs-translation">Width of logo image</target>
+        <target state="final">Bredde på logobillede</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.max_feed">
+      <trans-unit id="tt_content.pi_flexform.max_feed" approved="yes">
         <source>Maximum items to show</source>
-        <target state="needs-translation">Maximum items to show</target>
+        <target state="final">Maksimum elementer der vises</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.settings">
+      <trans-unit id="tt_content.pi_flexform.settings" approved="yes">
         <source>Settings</source>
-        <target state="needs-translation">Settings</target>
+        <target state="final">Indstillinger</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.sheet_RSS_Feed">
+      <trans-unit id="tt_content.pi_flexform.sheet_RSS_Feed" approved="yes">
         <source>RSS Feed settings</source>
-        <target state="needs-translation">RSS Feed settings</target>
+        <target state="final">RSS Feed indstillinger</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.sheet_url">
+      <trans-unit id="tt_content.pi_flexform.sheet_url" approved="yes">
         <source>RSS Feed URL</source>
-        <target state="needs-translation">RSS Feed URL</target>
+        <target state="final">RSS Feed URL</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.striphtml">
+      <trans-unit id="tt_content.pi_flexform.striphtml" approved="yes">
         <source>Remove HTML from RSS feed</source>
-        <target state="needs-translation">Remove HTML from RSS feed</target>
+        <target state="final">Fjern HTML fra RSS feed</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.striphtml.I.1">
+      <trans-unit id="tt_content.pi_flexform.striphtml.I.1" approved="yes">
         <source>Yes</source>
-        <target state="needs-translation">Yes</target>
+        <target state="final">Ja</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.striphtml.I.2">
+      <trans-unit id="tt_content.pi_flexform.striphtml.I.2" approved="yes">
         <source>No</source>
-        <target state="needs-translation">No</target>
+        <target state="final">Nej</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.target">
+      <trans-unit id="tt_content.pi_flexform.target" approved="yes">
         <source>Target of URL</source>
-        <target state="needs-translation">Target of URL</target>
+        <target state="final">Mål for URL</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.target.I.1">
+      <trans-unit id="tt_content.pi_flexform.target.I.1" approved="yes">
         <source>top</source>
-        <target state="needs-translation">top</target>
+        <target state="final">top</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.target.I.2">
+      <trans-unit id="tt_content.pi_flexform.target.I.2" approved="yes">
         <source>blank</source>
-        <target state="needs-translation">blank</target>
+        <target state="final">blank</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.target.I.3">
+      <trans-unit id="tt_content.pi_flexform.target.I.3" approved="yes">
         <source>self</source>
-        <target state="needs-translation">self</target>
+        <target state="final">self</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.template_file">
+      <trans-unit id="tt_content.pi_flexform.template_file" approved="yes">
         <source>Template File</source>
-        <target state="needs-translation">Template File</target>
+        <target state="final">Skabelonfil</target>
       </trans-unit>
-      <trans-unit id="tt_content.pi_flexform.template_title">
+      <trans-unit id="tt_content.pi_flexform.template_title" approved="yes">
         <source>Template</source>
-        <target state="needs-translation">Template</target>
+        <target state="final">Skabelon</target>
       </trans-unit>
     </body>
   </file>
