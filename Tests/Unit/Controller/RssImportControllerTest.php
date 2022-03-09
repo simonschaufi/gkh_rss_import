@@ -127,24 +127,22 @@ class RssImportControllerTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function cropHTMLDataProvider(): array
+    public function cropHTMLDataProvider(): \Generator
     {
-        return [
-            '10 characters' => [
-                10,
-                'Lorem ipsum dolor sit amet',
-                'Lorem...',
-            ],
-            '20 characters' => [
-                20,
-                'Lorem ipsum dolor sit amet',
-                'Lorem ipsum dolor...',
-            ],
-            '20 characters with HTML' => [
-                20,
-                'Lorem <strong>ipsum dolor</strong> sit amet',
-                'Lorem <strong>ipsum dolor</strong>...',
-            ],
+        yield '10 characters' => [
+            10,
+            'Lorem ipsum dolor sit amet',
+            'Lorem...',
+        ];
+        yield '20 characters' => [
+            20,
+            'Lorem ipsum dolor sit amet',
+            'Lorem ipsum dolor...',
+        ];
+        yield '20 characters with HTML' => [
+            20,
+            'Lorem <strong>ipsum dolor</strong> sit amet',
+            'Lorem <strong>ipsum dolor</strong>...',
         ];
     }
 

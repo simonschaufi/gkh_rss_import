@@ -132,7 +132,11 @@ class RenderingTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PAGE_ID));
+        $request = (new InternalRequest())->withPageId(self::VALUE_PAGE_ID);
+
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame(200, $response->getStatusCode());
+
         $content = (string)$response->getBody();
 
         $cacheIdentifier = sha1($imageUrl . '_.png') . '.png';
@@ -203,7 +207,11 @@ class RenderingTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PAGE_ID));
+        $request = (new InternalRequest())->withPageId(self::VALUE_PAGE_ID);
+
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame(200, $response->getStatusCode());
+
         $content = (string)$response->getBody();
 
         $cacheIdentifier = sha1($imageUrl . '_.png') . '.png';
@@ -249,7 +257,11 @@ class RenderingTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PAGE_ID));
+        $request = (new InternalRequest())->withPageId(self::VALUE_PAGE_ID);
+
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame(200, $response->getStatusCode());
+
         $content = (string)$response->getBody();
 
         self::assertStringContainsString(
