@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,6 +76,8 @@ class RssImportControllerTest extends UnitTestCase
             ]
         );
 
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
@@ -85,7 +88,10 @@ class RssImportControllerTest extends UnitTestCase
 
         $languageService = new LanguageService(
             new Locales(),
-            new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()),
+            new LocalizationFactory(
+                new LanguageStore($packageManagerProphecy->reveal()),
+                $cacheManagerProphecy->reveal()
+            ),
             $cacheFrontendProphecy->reveal()
         );
 
