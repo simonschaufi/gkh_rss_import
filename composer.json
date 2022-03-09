@@ -35,6 +35,10 @@
         "typo3-ter/gkh-rss-import": "self.version"
     },
     "config": {
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
         "bin-dir": ".Build/bin",
         "vendor-dir": ".Build/vendor"
     },
