@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 if (PHP_SAPI !== 'cli') {
@@ -30,7 +31,7 @@ $finder = (new \PhpCsFixer\Finder())
         ]
     )
     ->in(__DIR__)
-    ->depth('> 1');
+    ->depth('> 0');
 
 return (new \PhpCsFixer\Config())
     ->setRiskyAllowed(true)
