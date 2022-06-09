@@ -43,12 +43,6 @@
         "vendor-dir": ".Build/vendor"
     },
     "scripts": {
-        "post-autoload-dump": [
-            "@prepare-extension-test-structure"
-        ],
-        "prepare-extension-test-structure": [
-            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
-        ],
         "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/UnitTests.xml --stop-on-failure",
         "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c Build/FunctionalTests.xml --stop-on-failure",
         "test": [
@@ -57,19 +51,13 @@
 			"@unit-tests",
 			"@functional-tests"
         ],
-        "test-php-cs-fixer": [
-            ".Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation"
-        ],
-        "test-typoscript-lint": [
-            ".Build/bin/typoscript-lint -c .typoscript-lint.yml"
-        ]
+        "test-php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation",
+        "test-typoscript-lint": ".Build/bin/typoscript-lint -c .typoscript-lint.yml"
     },
     "extra": {
         "typo3/cms": {
 			"app-dir": ".Build",
-			"cms-package-dir": "{$vendor-dir}/typo3/cms",
 			"extension-key": "gkh_rss_import",
-			"ignore-as-root": false,
             "web-dir": ".Build/public"
         }
     }
