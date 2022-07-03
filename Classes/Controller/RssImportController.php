@@ -460,7 +460,7 @@ class RssImportController extends AbstractPlugin
         if ($itemLength === 0) {
             return $text;
         }
-        return $this->cObj->cropHTML($text, $itemLength . '|...|1');
+        return $this->cObj->stdWrap_cropHTML($text, ['cropHTML' => $itemLength . '|...|1']);
     }
 
     /**
