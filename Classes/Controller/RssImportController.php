@@ -60,12 +60,6 @@ class RssImportController extends AbstractPlugin
 
     protected LastRssService $rssService;
 
-    /**
-     * Class Constructor
-     *
-     * @param null $_
-     * @param TypoScriptFrontendController|null $frontendController
-     */
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
         parent::__construct($_, $frontendController);
@@ -77,8 +71,8 @@ class RssImportController extends AbstractPlugin
     /**
      * The main method of the PlugIn
      *
-     * @param string $content : The PlugIn content
-     * @param array $conf : The PlugIn configuration
+     * @param string $content The PlugIn content
+     * @param array $conf The PlugIn configuration
      * @return string The content that is displayed on the website
      * @throws Exception
      * @throws NoSuchCacheException|\ErrorException
@@ -157,7 +151,6 @@ class RssImportController extends AbstractPlugin
     }
 
     /**
-     * @return string
      * @throws NoSuchCacheException
      */
     protected function render(): string
@@ -217,9 +210,6 @@ class RssImportController extends AbstractPlugin
     /**
      * Get the channel image. Image url, title and link are required.
      *
-     * @param array $rss
-     * @param string $target
-     * @return string
      * @throws NoSuchCacheException
      */
     protected function getImage(array $rss, string $target): string
@@ -253,8 +243,6 @@ class RssImportController extends AbstractPlugin
     }
 
     /**
-     * @param string $imageUrl
-     * @return string
      * @throws NoSuchCacheException
      */
     protected function getCachedImageLocation(string $imageUrl): string
@@ -436,10 +424,6 @@ class RssImportController extends AbstractPlugin
 
     /**
      * Loads a variable from the flexform
-     *
-     * @param string $var Name of variable
-     * @param string $sheet Name of sheet
-     * @return string|null Value of var
      */
     protected function flexFormValue(string $var, string $sheet): ?string
     {
@@ -456,10 +440,6 @@ class RssImportController extends AbstractPlugin
      * </item>
      * In this case the img-src is relative to the remote domain http://www.example.com. If they're not fixed,
      * they would point to the local domain.
-     *
-     * @param string $attrib
-     * @param HtmlParser $htmlParser
-     * @return string
      */
     public function fixRssURLs(string $attrib, HtmlParser $htmlParser): string
     {
@@ -474,13 +454,6 @@ class RssImportController extends AbstractPlugin
             . $imgURL['fragment'];
     }
 
-    /**
-     * User function cropHTML
-     *
-     * @param string $text
-     * @param array $conf
-     * @return string
-     */
     public function cropHTML(string $text, array $conf): string
     {
         $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];

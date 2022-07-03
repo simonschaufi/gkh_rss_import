@@ -61,9 +61,6 @@ class LastRssService
 
     /**
      * Cache time in seconds
-     *
-     * @param int $cacheTime
-     * @return $this
      */
     public function setCacheTime(int $cacheTime): self
     {

@@ -49,10 +49,7 @@ class RenderingTest extends FunctionalTestCase
     }
 
     /**
-     * Create a simple site config for the tests that
-     * call a frontend page.
-     *
-     * @param int $pageId
+     * Create a simple site config for the tests that call a frontend page.
      */
     protected function setUpFrontendSite(int $pageId): void
     {

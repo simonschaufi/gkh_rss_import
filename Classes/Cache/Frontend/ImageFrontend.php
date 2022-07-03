@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Cache\Frontend;
 
+use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 
@@ -33,8 +34,8 @@ class ImageFrontend extends AbstractFrontend
      * @param string $entryIdentifier Something which identifies the data - depends on concrete cache
      * @param mixed $data The data to cache - also depends on the concrete cache implementation
      * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @param int|null $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
+     * @throws Exception
      * @throws InvalidDataException
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
