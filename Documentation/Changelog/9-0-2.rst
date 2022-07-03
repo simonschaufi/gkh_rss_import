@@ -1,0 +1,39 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+9.0.2
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2022-07-03 [RELEASE] Release v9.0.2 (Commit dcfb347 by Simon Schaufelberger)
+   2022-07-03 [TASK] Use official TYPO3 API method (Commit 96b387c by Simon Schaufelberger)
+   2022-07-03 [TASK] Use more verbose variable names (Commit 038f816 by Simon Schaufelberger)
+   2022-07-03 [TASK] Improve cache path (Commit 08ed6b1 by Simon Schaufelberger)
+   2022-07-03 [TASK] Use correct variable data type (Commit 7e65f15 by Simon Schaufelberger)
+   2022-07-03 [TASK] Cleanup doc header (Commit e1c9984 by Simon Schaufelberger)
+   2022-07-03 [TASK] Ignore false positives from extension scanner (Commit c138dc6 by Simon Schaufelberger)
+   2022-07-03 [TASK] Ignore Build folder from export (Commit be31c2c by Simon Schaufelberger)
+   2022-06-09 Apply php-cs-fixer changes (Commit d0847bc by simonschaufi)
+   2022-06-09 [BUGFIX] Scan also files 1 level deep (Commit aba18c9 by Simon Schaufelberger)
+   2022-06-09 [TASK] Cleanup composer.json with things not needed anymore (Commit 2b0a49f by Simon Schaufelberger)
+   2022-06-09 [TASK] Import namespace (Commit 897d19b by Simon Schaufelberger)
+   2022-06-09 [TASK] Remove unnecessary function wrap (Commit a2a2656 by Simon Schaufelberger)
+   2022-06-09 [TASK] Update PHP and TYPO3 versions (Commit 861c8fe by Simon Schaufelberger)
+   2022-03-09 [TASK] Improve tests (Commit b6137f7 by Simon Schaufelberger)
+   2022-03-09 [BUGFIX] Adjust LanguageStore constructor arguments which changed in TYPO3 11.5.3 (Commit a8982da by Simon Schaufelberger)
+   2022-03-09 [TASK] Add allowed composer plugins (Commit 39c2034 by Simon Schaufelberger)
+   2021-11-11 [TASK] New Crowdin updates (#21) (Commit f0465cb by Simon Schaufelberger)
+   2021-11-02 New translations locallang_db.xlf (German) (Commit 8ec2eb1 by Simon Schaufelberger)
+   2021-11-02 New translations locallang.xlf (German) (Commit 8f065ca by Simon Schaufelberger)
+   2021-10-20 [TASK] Adjust TYPO3 badges (Commit d465961 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
