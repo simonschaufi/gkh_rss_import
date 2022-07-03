@@ -31,10 +31,11 @@ class Typo3TempSimpleFileBackend extends SimpleFileBackend
      */
     public function initializeObject(): void
     {
-        $this->setCacheDirectory(Environment::getPublicPath() . '/typo3temp/assets/images/');
+        $cacheDir = Environment::getPublicPath() . '/typo3temp/assets/images/';
+        $this->setCacheDirectory($cacheDir);
 
-        if (!@is_dir(Environment::getPublicPath() . '/typo3temp/assets/images/')) {
-            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
+        if (!@is_dir($cacheDir)) {
+            GeneralUtility::mkdir_deep($cacheDir);
         }
     }
 }
