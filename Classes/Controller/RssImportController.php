@@ -425,9 +425,9 @@ class RssImportController extends AbstractPlugin
     /**
      * Loads a variable from the flexform
      */
-    protected function flexFormValue(string $var, string $sheet): ?string
+    protected function flexFormValue(string $variable, string $sheet): ?string
     {
-        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var, $sheet);
+        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $variable, $sheet);
     }
 
     /**
@@ -441,11 +441,11 @@ class RssImportController extends AbstractPlugin
      * In this case the img-src is relative to the remote domain http://www.example.com. If they're not fixed,
      * they would point to the local domain.
      */
-    public function fixRssURLs(string $attrib, HtmlParser $htmlParser): string
+    public function fixRssURLs(string $attribute, HtmlParser $htmlParser): string
     {
-        $imgURL = parse_url($attrib);
+        $imgURL = parse_url($attribute);
         if ($imgURL['scheme'] && $imgURL['host']) {
-            return $attrib;
+            return $attribute;
         }
 
         $linkURL = parse_url($this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK']);
