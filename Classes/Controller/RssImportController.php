@@ -197,6 +197,7 @@ class RssImportController extends AbstractPlugin
             }
             $subPartArray['###ITEM###'] = $contentItem;
 
+            // @extensionScannerIgnoreLine
             $content = $this->substituteMarkerArrayCached($subPart, $markerArray, $subPartArray);
         } else {
             // If feed is not found show this message
@@ -338,6 +339,7 @@ class RssImportController extends AbstractPlugin
             $markerArray['###DOWNLOAD###'] = '';
         }
 
+        // @extensionScannerIgnoreLine
         $contentSubPart = $this->substituteMarkerArrayCached($itemSubpart, $markerArray);
 
         if (isset($this->conf['item_stdWrap.'])) {
