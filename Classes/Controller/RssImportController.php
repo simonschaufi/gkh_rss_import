@@ -305,11 +305,11 @@ class RssImportController extends AbstractPlugin
         $itemSummary = $item['description'];
 
         // for UserFunction smart_trim
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = $this->conf['itemLength'];
+        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = (int)$this->conf['itemLength'];
         if (isset($this->conf['itemSummary_stdWrap.'])) {
             $itemSummary = $this->cObj->stdWrap($itemSummary, $this->conf['itemSummary_stdWrap.']);
         }
-        $itemSummary = smart_trim($itemSummary, $this->conf['itemLength']);
+        $itemSummary = smart_trim($itemSummary, (int)$this->conf['itemLength']);
         $markerArray['###SUMMARY###'] = $itemSummary; // no htmlspecialchars as this might contain html which should be rendered
 
         $markerArray['###CLASS_DOWNLOAD###'] = $this->pi_classParam('download');
@@ -388,7 +388,7 @@ class RssImportController extends AbstractPlugin
             $flex['itemsLimit'] = $this->flexFormValue('display', 'rssFeed');
         }
         if ($this->flexFormValue('length', 'rssFeed')) {
-            $flex['itemLength'] = $this->flexFormValue('length', 'rssFeed');
+            $flex['itemLength'] = (int)$this->flexFormValue('length', 'rssFeed');
         }
         if ($this->flexFormValue('hlength', 'rssFeed')) {
             $flex['headerLength'] = $this->flexFormValue('hlength', 'rssFeed');
@@ -457,7 +457,7 @@ class RssImportController extends AbstractPlugin
     public function cropHTML(string $text, array $conf): string
     {
         $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];
-        if ($itemLength == 0) {
+        if ($itemLength === 0) {
             return $text;
         }
         return $this->cObj->cropHTML($text, $itemLength . '|...|1');
