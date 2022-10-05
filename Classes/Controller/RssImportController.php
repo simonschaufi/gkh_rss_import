@@ -95,11 +95,11 @@ class RssImportController extends AbstractPlugin
             ->setItemsLimit((int)($this->conf['itemsLimit'] ?? 10))
             ->setDateFormat('m/d/Y');
 
-        if ($this->conf['flexCache'] !== null) {
+        if (($this->conf['flexCache'] ?? null) !== null) {
             $this->rssService->setCacheTime((int)$this->conf['flexCache']);
         }
 
-        if ($this->conf['stripHTML'] == 1) {
+        if ((bool)($this->conf['stripHTML'] ?? false) === true) {
             $this->rssService->setStripHTML(true);
         }
 
@@ -118,7 +118,7 @@ class RssImportController extends AbstractPlugin
         $templateFile = $this->conf['templateFile'];
 
         // Check if template file is set via TypoScript
-        if (strpos($templateFile, 'EXT:') === 0) {
+        if (str_starts_with($templateFile, 'EXT:')) {
             $template = GeneralUtility::getFileAbsFileName($templateFile);
             if ($template === '' || !file_exists($template)) {
                 throw new Exception(sprintf('Template "%s" not found', $template), 1572458728);
@@ -227,7 +227,7 @@ class RssImportController extends AbstractPlugin
                 'titleText' => $rss['image_title'],
                 'file' => $location,
                 'file.' => [
-                    'maxW' => $this->conf['logoWidth']
+                    'maxW' => $this->conf['logoWidth'] ?? 0
                 ]
             ]);
             return sprintf(
@@ -346,20 +346,16 @@ class RssImportController extends AbstractPlugin
 
     protected function getTarget(): string
     {
-        switch ($this->conf['target']) {
-            case 1:
-                return '_top';
-            case 3:
-                return '_self';
-            case 2:
-            default:
-                return '_blank';
-        }
+        return match ($this->conf['target'] ?? null) {
+            1 => '_top',
+            3 => '_self',
+            default => '_blank',
+        };
     }
 
     protected function getDateFormat(): string
     {
-        switch ($this->conf['dateFormat']) {
+        switch ($this->conf['dateFormat'] ?? null) {
             case 1:
                 return '%A, %d. %B %Y';
             case 2:
@@ -427,7 +423,7 @@ class RssImportController extends AbstractPlugin
      */
     protected function flexFormValue(string $variable, string $sheet): ?string
     {
-        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $variable, $sheet);
+        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'] ?? null, $variable, $sheet);
     }
 
     /**

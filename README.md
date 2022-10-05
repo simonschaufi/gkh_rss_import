@@ -4,7 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/gkh/gkh-rss-import/v/stable)](https://packagist.org/packages/gkh/gkh-rss-import)
 [![Total Downloads](https://poser.pugx.org/gkh/gkh-rss-import/downloads)](https://packagist.org/packages/gkh/gkh-rss-import)
 [![License](https://poser.pugx.org/gkh/gkh-rss-import/license)](https://packagist.org/packages/gkh/gkh-rss-import)
-[![TYPO3](https://img.shields.io/badge/TYPO3-11-orange.svg)](https://get.typo3.org/version/11)
+[![TYPO3](https://img.shields.io/badge/TYPO3-12-orange.svg)](https://get.typo3.org/version/11)
 
 Fetch an RSS / Atom Feed and display its content on the Frontend.
 
@@ -46,8 +46,9 @@ Download and install the [extension][3] with the extension manager module in the
 
 | Branch     | TYPO3       | PHP       | Support / Development       |
 |------------|-------------|-----------|-----------------------------|
-| dev-master | 11.4 - 11.5 | 7.4 - 8.0 | unstable development branch |
-| 8.x        | 9.5 - 11.5  | 7.2 - 7.4 | bugfixes, security updates  |
+| dev-master | 12.0 - 12.0 | 8.1       | unstable development branch |
+| 9.x        | 11.5 - 11.5 | 7.4 - 8.1 | bugfixes, security updates  |
+| 8.x        | 9.5 - 11.5  | 7.2 - 7.4 | no more support             |
 | 6.x        | 8.7 - 8.7   | 7.0 - 7.4 | no more support             |
 
 ### Changelog

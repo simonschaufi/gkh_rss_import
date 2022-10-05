@@ -1,4 +1,4 @@
-name: tests
+name: Tests
 
 on:
   push:
@@ -16,8 +16,8 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [7.4, 8.0]
-        typo3: [^11.5]
+        php: [8.1]
+        typo3: [^12.0]
 
     name: P${{ matrix.php }} - T${{ matrix.typo3 }}
 
@@ -44,8 +44,8 @@ jobs:
       - name: Check PHP syntax errors
         run: find . -name \*.php ! -path "./.Build/*" -print0 | xargs -0 -n1 -P4 php -d display_errors=stderr -n -l > /dev/null
 
-      - name: Run TypoScript linter
-        run: .Build/bin/typoscript-lint -c .typoscript-lint.yml --fail-on-warnings
+      #- name: Run TypoScript linter
+      #  run: .Build/bin/typoscript-lint -c .typoscript-lint.yml --fail-on-warnings
 
       - name: Execute unit tests
         run: .Build/bin/phpunit --colors -c Build/UnitTests.xml --stop-on-failure

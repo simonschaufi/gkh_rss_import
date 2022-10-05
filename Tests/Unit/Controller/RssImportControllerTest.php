@@ -21,11 +21,13 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
+use GertKaaeHansen\GkhRssImport\Tests\Unit\Page\PageRendererFactoryTrait;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -35,7 +37,11 @@ use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Page\ImportMapFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -46,17 +52,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RssImportControllerTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use PageRendererFactoryTrait;
 
     protected RssImportController $subject;
 
     /**
      * @throws NoSuchCacheException
+     * @throws \JsonException
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        /** @see https://github.com/TYPO3/typo3/blob/e4da4be7d06b36ef3abef1c82ec9f9a7f0d3dce0/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L61-L95 */
+        /** @see https://github.com/TYPO3/typo3/blob/36096733dea4bd6f6168209609fa879dc25c0138/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L68-L112 */
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
@@ -70,9 +78,9 @@ class RssImportControllerTest extends UnitTestCase
                         'languageId' => 0,
                         'title' => 'English',
                         'locale' => 'en_UK',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]
         );
 
@@ -99,6 +107,17 @@ class RssImportControllerTest extends UnitTestCase
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
 
+        $importMapProphecy = $this->prophesize(ImportMap::class);
+        $importMapProphecy->render(Argument::type('string'), Argument::type('string'))->willReturn('');
+
+        $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
+        $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
+
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
 
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
@@ -115,7 +134,19 @@ class RssImportControllerTest extends UnitTestCase
             ->getMock();
 
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
+
+        // Can be removed as soon as TYPO3 12.1.0 gets released
+        $GLOBALS['TSFE']->cObj->data = [
+            'pi_flexform' => null,
+        ];
+        // END
+
         $GLOBALS['TSFE']->page = [];
+
+        GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
+            new NullFrontend('hash'),
+            new NullFrontend('runtime'),
+        ));
 
         $this->subject = new RssImportController();
         $this->subject->setContentObjectRenderer($GLOBALS['TSFE']->cObj);
@@ -167,6 +198,11 @@ class RssImportControllerTest extends UnitTestCase
      */
     public function getCachedImageLocation(): void
     {
+        GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
+            new NullFrontend('hash'),
+            new NullFrontend('runtime'),
+        ));
+
         $subject = new RssImportControllerFixture();
         $result = $subject->getFileExtensionFromUrl(
             'https://i1.wp.com/example.com/wp-content/uploads/2020/cropped-logo.png?fit=32%2C32&#038;ssl=1'
