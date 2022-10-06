@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2020-12-10T21:14:42Z">
-		<header>
-			<type>module</type>
-			<description>Language labels for extension gkh_rss_import</description>
-			<generator>LFEditor</generator>
-			<authorName>Simon Schaufelberger</authorName>
-		</header>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages">
+		<header/>
 		<body>
 			<trans-unit id="Download">
 				<source><![CDATA[Download]]></source>
