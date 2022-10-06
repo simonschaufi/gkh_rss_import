@@ -21,15 +21,17 @@ namespace GertKaaeHansen\GkhRssImport\Controller;
 
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Localization\DateFormatter;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Exception;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 class RssImportController extends AbstractPlugin
 {
@@ -40,14 +42,14 @@ class RssImportController extends AbstractPlugin
      *
      * @var string
      */
-    public $prefixId = 'tx_gkhrssimport_pi1';
+    protected $prefixId = 'tx_gkhrssimport_pi1';
 
     /**
      * The extension key.
      *
      * @var string
      */
-    public $extKey = 'gkh_rss_import';
+    protected $extKey = 'gkh_rss_import';
 
     /**
      * Holds the template for FE rendering
@@ -60,12 +62,15 @@ class RssImportController extends AbstractPlugin
 
     protected LastRssService $rssService;
 
+    protected DateFormatter $dateFormatter;
+
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
         parent::__construct($_, $frontendController);
 
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
+        $this->dateFormatter = GeneralUtility::makeInstance(DateFormatter::class);
     }
 
     /**
@@ -74,13 +79,11 @@ class RssImportController extends AbstractPlugin
      * @param string $content The PlugIn content
      * @param array $conf The PlugIn configuration
      * @return string The content that is displayed on the website
-     * @throws Exception
-     * @throws NoSuchCacheException|\ErrorException
+     * @throws Exception|NoSuchCacheException|\ErrorException
      */
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
-        $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf');
         $this->pi_initPIflexForm();
         $this->mergeFlexFormValuesIntoConf();
@@ -95,11 +98,11 @@ class RssImportController extends AbstractPlugin
             ->setItemsLimit((int)($this->conf['itemsLimit'] ?? 10))
             ->setDateFormat('m/d/Y');
 
-        if ($this->conf['flexCache'] !== null) {
+        if (($this->conf['flexCache'] ?? null) !== null) {
             $this->rssService->setCacheTime((int)$this->conf['flexCache']);
         }
 
-        if ($this->conf['stripHTML'] == 1) {
+        if ((bool)($this->conf['stripHTML'] ?? false) === true) {
             $this->rssService->setStripHTML(true);
         }
 
@@ -118,7 +121,7 @@ class RssImportController extends AbstractPlugin
         $templateFile = $this->conf['templateFile'];
 
         // Check if template file is set via TypoScript
-        if (strpos($templateFile, 'EXT:') === 0) {
+        if (str_starts_with($templateFile, 'EXT:')) {
             $template = GeneralUtility::getFileAbsFileName($templateFile);
             if ($template === '' || !file_exists($template)) {
                 throw new Exception(sprintf('Template "%s" not found', $template), 1572458728);
@@ -176,17 +179,22 @@ class RssImportController extends AbstractPlugin
             $markerArray['###CLASS_RSS_TITLE###'] = $this->pi_classParam('rss_title');
             $markerArray['###URL###'] = $this->removeDoubleHTTP($rss['link']);
             $markerArray['###TARGET###'] = $target;
-            $markerArray['###RSS_TITLE###'] = $rss['title']; // TODO: htmlspecialchars?
+            // TODO: htmlspecialchars?
+            $markerArray['###RSS_TITLE###'] = $rss['title'];
             // description
             $markerArray['###CLASS_DESCRIPTION###'] = $this->pi_classParam('description');
-            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']); // TODO: htmlspecialchars?
+            // TODO: htmlspecialchars?
+            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']);
 
             $subPart = $this->getSubPart($this->template, '###RSSIMPORT_TEMPLATE###');
             $itemSubpart = $this->getSubPart($subPart, '###ITEM###');
 
+            $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
+            $locale = $this->conf['formattedDate.']['locale'] ?? $language->getLocale();
+
             $contentItem = '';
             foreach ($rss['items'] as $item) {
-                $contentItem .= $this->renderItem($item, $itemSubpart, $target);
+                $contentItem .= $this->renderItem($item, $itemSubpart, $target, $locale);
             }
             $subPartArray['###ITEM###'] = $contentItem;
 
@@ -210,7 +218,7 @@ class RssImportController extends AbstractPlugin
     /**
      * Get the channel image. Image url, title and link are required.
      *
-     * @throws NoSuchCacheException
+     * @throws NoSuchCacheException|\RuntimeException
      */
     protected function getImage(array $rss, string $target): string
     {
@@ -227,8 +235,8 @@ class RssImportController extends AbstractPlugin
                 'titleText' => $rss['image_title'],
                 'file' => $location,
                 'file.' => [
-                    'maxW' => $this->conf['logoWidth']
-                ]
+                    'maxW' => $this->conf['logoWidth'] ?? 0,
+                ],
             ]);
             return sprintf(
                 '<div%s><a href="%s" target="%s">%s</a></div><br />',
@@ -274,7 +282,7 @@ class RssImportController extends AbstractPlugin
         return $this->templateService->getSubpart($template, $marker);
     }
 
-    protected function renderItem(array $item, string $itemSubpart, string $target): string
+    protected function renderItem(array $item, string $itemSubpart, string $target, Locale|string $locale): string
     {
         // for UserFunction fixRssURLs
         $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];
@@ -283,24 +291,34 @@ class RssImportController extends AbstractPlugin
         $markerArray['###CLASS_HEADER###'] = $this->pi_classParam('header');
         $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link']);
         $markerArray['###HEADER_TARGET###'] = $target;
-        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']); // TODO: htmlspecialchars?
+        // TODO: htmlspecialchars?
+        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']);
 
         // Get published date, author and category
         $markerArray['###CLASS_PUBBOX###'] = $this->pi_classParam('pubbox');
         if ($item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
-            $markerArray['###RSS_DATE###'] = htmlentities(
-                strftime($this->getDateFormat(), strtotime($item['pubDate'])),
-                ENT_QUOTES,
-                'utf-8'
-            );
+
+            $pubDate = strtotime($item['pubDate']);
+            if ($pubDate !== false) {
+                $date = \DateTimeImmutable::createFromFormat('U', (string)$pubDate);
+                $markerArray['###RSS_DATE###'] = htmlentities(
+                    $this->dateFormatter->strftime($this->getDateFormat(), $date, $locale),
+                    ENT_QUOTES,
+                    'utf-8'
+                );
+            } else {
+                $markerArray['###RSS_DATE###'] = '';
+            }
         }
         $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
-        $markerArray['###AUTHOR###'] = $item['author'] ?? ''; // TODO: htmlspecialchars?
+        // TODO: htmlspecialchars?
+        $markerArray['###AUTHOR###'] = $item['author'] ?? '';
         $markerArray['###CLASS_CATEGORY###'] = $this->pi_classParam('category');
-        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? ''); // TODO: htmlspecialchars?
+        // TODO: htmlspecialchars?
+        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? '');
 
-        // Get item content/home/simon/Code/github/simonschaufi/gkh_rss_import/.Build/bin/phpcs
+        // Get item content
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
         $itemSummary = $item['description'];
 
@@ -310,7 +328,8 @@ class RssImportController extends AbstractPlugin
             $itemSummary = $this->cObj->stdWrap($itemSummary, $this->conf['itemSummary_stdWrap.']);
         }
         $itemSummary = smart_trim($itemSummary, (int)$this->conf['itemLength']);
-        $markerArray['###SUMMARY###'] = $itemSummary; // no htmlspecialchars as this might contain html which should be rendered
+        // no htmlspecialchars as this might contain html which should be rendered
+        $markerArray['###SUMMARY###'] = $itemSummary;
 
         $markerArray['###CLASS_DOWNLOAD###'] = $this->pi_classParam('download');
         if (isset($item['enclosure']['prop']['url']) && $item['enclosure']['prop']['url'] !== '') {
@@ -346,32 +365,21 @@ class RssImportController extends AbstractPlugin
 
     protected function getTarget(): string
     {
-        switch ($this->conf['target']) {
-            case 1:
-                return '_top';
-            case 3:
-                return '_self';
-            case 2:
-            default:
-                return '_blank';
-        }
+        return match ($this->conf['target'] ?? null) {
+            1 => '_top',
+            3 => '_self',
+            default => '_blank',
+        };
     }
 
     protected function getDateFormat(): string
     {
-        switch ($this->conf['dateFormat']) {
-            case 1:
-                return '%A, %d. %B %Y';
-            case 2:
-                return '%d. %B %Y';
-            case 3:
-                return '%e/%m - %Y';
-            default:
-                if (!empty($this->conf['dateFormat'])) {
-                    return $this->conf['dateFormat'];
-                }
-                return '%e/%m - %Y';
-        }
+        return match ($this->conf['dateFormat'] ?? null) {
+            1 => '%A, %d. %B %Y',
+            2 => '%d. %B %Y',
+            3 => '%e/%m - %Y',
+            default => $this->conf['dateFormat'] ?? '%e/%m - %Y',
+        };
     }
 
     /**
@@ -427,7 +435,7 @@ class RssImportController extends AbstractPlugin
      */
     protected function flexFormValue(string $variable, string $sheet): ?string
     {
-        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $variable, $sheet);
+        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'] ?? null, $variable, $sheet);
     }
 
     /**
@@ -480,5 +488,10 @@ class RssImportController extends AbstractPlugin
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

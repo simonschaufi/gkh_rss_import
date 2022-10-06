@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +17,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-defined('TYPO3') or die();
+defined('TYPO3') || die();
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
@@ -23,7 +25,7 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 ExtensionManagementUtility::addPlugin(
     [
         'LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
-        'gkh_rss_import_pi1'
+        'gkh_rss_import_pi1',
     ],
     ExtensionUtility::PLUGIN_TYPE_PLUGIN,
     'gkh_rss_import'
