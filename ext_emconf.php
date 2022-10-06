@@ -4,7 +4,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'RSS feed import',
     'description' => 'Fetch an RSS / Atom Feed and display its content on the Frontend.',
     'category' => 'plugin',
-    'version' => '9.0.2',
+    'version' => '10.0.0',
     'state' => 'stable',
     'uploadfolder' => false,
     'clearCacheOnLoad' => true,
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.4.0-11.5.99',
+            'typo3' => '12.0.0-12.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],

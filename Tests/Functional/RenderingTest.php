@@ -33,16 +33,13 @@ class RenderingTest extends FunctionalTestCase
 {
     protected const VALUE_PAGE_ID = 1;
 
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/gkh_rss_import'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/gkh_rss_import'];
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/Fixtures/Database/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Database/pages.csv');
         $this->setUpFrontendRootPage(1, ['EXT:gkh_rss_import/Tests/Functional/Fixtures/Frontend/Basic.typoscript']);
 
         $this->setUpFrontendSite(1);
@@ -262,7 +259,7 @@ class RenderingTest extends FunctionalTestCase
         $content = (string)$response->getBody();
 
         self::assertStringContainsString(
-            'It\'s not possible to reach the RSS feed.',
+            'It&#039;s not possible to reach the RSS feed.',
             $content,
             'Error message not found'
         );
