@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Controller;
 
+use DateTimeImmutable;
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -29,7 +30,6 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Exception;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 class RssImportController extends AbstractPlugin
 {
@@ -40,14 +40,14 @@ class RssImportController extends AbstractPlugin
      *
      * @var string
      */
-    public $prefixId = 'tx_gkhrssimport_pi1';
+    protected $prefixId = 'tx_gkhrssimport_pi1';
 
     /**
      * The extension key.
      *
      * @var string
      */
-    public $extKey = 'gkh_rss_import';
+    protected $extKey = 'gkh_rss_import';
 
     /**
      * Holds the template for FE rendering
@@ -80,7 +80,6 @@ class RssImportController extends AbstractPlugin
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
-        $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf');
         $this->pi_initPIflexForm();
         $this->mergeFlexFormValuesIntoConf();
@@ -289,8 +288,10 @@ class RssImportController extends AbstractPlugin
         $markerArray['###CLASS_PUBBOX###'] = $this->pi_classParam('pubbox');
         if ($item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
+
+            $date = DateTimeImmutable::createFromFormat('U', (string)strtotime($item['pubDate']));
             $markerArray['###RSS_DATE###'] = htmlentities(
-                strftime($this->getDateFormat(), strtotime($item['pubDate'])),
+                $date->format($this->getDateFormat()),
                 ENT_QUOTES,
                 'utf-8'
             );
@@ -357,16 +358,16 @@ class RssImportController extends AbstractPlugin
     {
         switch ($this->conf['dateFormat'] ?? null) {
             case 1:
-                return '%A, %d. %B %Y';
+                return 'l, d. F Y';
             case 2:
-                return '%d. %B %Y';
+                return 'd. F Y';
             case 3:
-                return '%e/%m - %Y';
+                return 'j/m - Y';
             default:
                 if (!empty($this->conf['dateFormat'])) {
                     return $this->conf['dateFormat'];
                 }
-                return '%e/%m - %Y';
+                return 'j/m - Y';
         }
     }
 

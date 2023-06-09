@@ -35,6 +35,12 @@ class RenderingTest extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/gkh_rss_import'];
 
+    protected array $configurationToUseInTestInstance = [
+        'GFX' => [
+            'processor' => 'ImageMagick', // This is only needed for GitHub actions because gm is not installed
+        ],
+    ];
+
     public function setUp(): void
     {
         parent::setUp();
@@ -139,7 +145,7 @@ class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('Example Description', $content, 'Description not found');
-        self::assertStringContainsString($expectedFilePath, $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $content, 'Image link not found');
 
@@ -214,7 +220,7 @@ class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('example.com Description', $content, 'Description not found');
-        self::assertStringContainsString($expectedFilePath, $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString(
             'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
