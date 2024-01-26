@@ -1,14 +1,33 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Extend PhpStorms code completion capabilities by providing a meta file
- *
- * Kudos to Alexander Schnitzler's work, see https://github.com/alexanderschnitzler/phpstorm.meta.php-typo3
- * @link https://www.jetbrains.com/help/phpstorm/ide-advanced-metadata.html
+ * @see https://www.jetbrains.com/help/phpstorm/ide-advanced-metadata.html
  */
-
 namespace PHPSTORM_META {
+
     override(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(0), type(0));
+
+    // TYPO3 testing framework
+    // The accesible mock will be of type `self` as well as `MockObject` and `AccessibleObjectInterface`.
+    override(
+        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMock(0),
+        map(
+            [
+                '' => '@|\\PHPUnit\\Framework\\MockObject\\MockObject'
+                    . '|\\TYPO3\\TestingFramework\\Core\\AccessibleObjectInterface',
+            ]
+        )
+    );
+    override(
+        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMockForAbstractClass(0),
+        map(
+            [
+                '' => '@|\\PHPUnit\\Framework\\MockObject\\MockObject'
+                    . '|\\TYPO3\TestingFramework\\Core\\AccessibleObjectInterface',
+            ]
+        )
+    );
 
     // Contexts
     // @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
@@ -88,39 +107,62 @@ namespace PHPSTORM_META {
         'forcedTemplateParsing'
     );
 
-    // TYPO3 testing framework
-    // The accesible mock will be of type "self" as well as "MockObject" and "AccessibleObjectInterface"
-    override(
-        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMock(0),
-        map([
-            '' => '@|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface',
-        ])
-    );
-    override(
-        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMockForAbstractClass(0),
-        map([
-            '' => '@|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface',
-        ])
-    );
-    override(
-        \Prophecy\PhpUnit\ProphecyTrait::prophesize(0),
-        map([
-            '' => '@|\Prophecy\Prophecy\ObjectProphecy',
-        ])
+    expectedArguments(
+        \Psr\Http\Message\ServerRequestInterface::getAttribute(),
+        0,
+        'backend.user',
+        'frontend.user',
+        'normalizedParams',
+        'site',
+        'language',
+        'routing',
+        'module',
+        'moduleData'
     );
 
-    // Nimut testing framework
-    // The accesible mock will be of type "self" as well as "MockObject" and "AccessibleMockObjectInterface"
-    override(
-        \Nimut\TestingFramework\TestCase\AbstractTestCase::getAccessibleMock(0),
-        map([
-            '' => '@|\PHPUnit\Framework\MockObject\MockObject|\Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface',
-        ])
+    override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
+        'backend.user' => \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class,
+        'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
+        'normalizedParams' => \TYPO3\CMS\Core\Http\NormalizedParams::class,
+        'site' => \TYPO3\CMS\Core\Site\Entity\SiteInterface::class,
+        'language' => \TYPO3\CMS\Core\Site\Entity\SiteLanguage::class,
+        'routing' => '\TYPO3\CMS\Core\Routing\SiteRouteResult|\TYPO3\CMS\Core\Routing\PageArguments',
+        'module' => \TYPO3\CMS\Backend\Module\ModuleInterface::class,
+        'moduleData' => \TYPO3\CMS\Backend\Module\ModuleData::class,
+    ]));
+
+    expectedArguments(
+        \TYPO3\CMS\Core\Http\ServerRequest::getAttribute(),
+        0,
+        'backend.user',
+        'frontend.user',
+        'normalizedParams',
+        'site',
+        'language',
+        'routing',
+        'module',
+        'moduleData'
     );
-    override(
-        \Nimut\TestingFramework\TestCase\AbstractTestCase::getAccessibleMockForAbstractClass(0),
-        map([
-            '' => '@|\PHPUnit\Framework\MockObject\MockObject|\Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface',
-        ])
+
+    override(\TYPO3\CMS\Core\Http\ServerRequest::getAttribute(), map([
+        'backend.user' => \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class,
+        'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
+        'normalizedParams' => \TYPO3\CMS\Core\Http\NormalizedParams::class,
+        'site' => \TYPO3\CMS\Core\Site\Entity\SiteInterface::class,
+        'language' => \TYPO3\CMS\Core\Site\Entity\SiteLanguage::class,
+        'routing' => '\TYPO3\CMS\Core\Routing\SiteRouteResult|\TYPO3\CMS\Core\Routing\PageArguments',
+        'module' => \TYPO3\CMS\Backend\Module\ModuleInterface::class,
+        'moduleData' => \TYPO3\CMS\Backend\Module\ModuleData::class,
+    ]));
+
+    override(\TYPO3\CMS\Core\Routing\SiteMatcher::matchRequest(), type(
+            \TYPO3\CMS\Core\Routing\SiteRouteResult::class,
+            \TYPO3\CMS\Core\Routing\RouteResultInterface::class
+        )
     );
+
+    override(\TYPO3\CMS\Core\Routing\PageRouter::matchRequest(), type(
+        \TYPO3\CMS\Core\Routing\PageArguments::class,
+        \TYPO3\CMS\Core\Routing\RouteResultInterface::class
+    ));
 }

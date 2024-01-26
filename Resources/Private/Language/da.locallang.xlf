@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xliff version="1.0">
-  <file source-language="en" datatype="plaintext" original="messages" date="2020-12-10T21:14:42Z" target-language="da">
-    <header>
-      <type>module</type>
-      <description>Language labels for extension gkh_rss_import</description>
-      <generator>LFEditor</generator>
-      <authorName>Simon Schaufelberger</authorName>
-    </header>
-    <body>
-      <trans-unit id="Download" approved="yes">
-        <source><![CDATA[Download]]></source>
-        <target state="final"><![CDATA[Download]]></target>
-      </trans-unit>
-      <trans-unit id="errorMessage" approved="yes">
-        <source><![CDATA[It's not possible to reach the RSS feed.]]></source>
-        <target state="final"><![CDATA[Det er ikke muligt at hente RSS-feedet.]]></target>
-      </trans-unit>
-      <trans-unit id="pi1_plus_wiz_description" approved="yes">
-        <source><![CDATA[Shows the content of an RSS feed]]></source>
-        <target state="final"><![CDATA[Viser indholdet af et RSS-feed]]></target>
-      </trans-unit>
-      <trans-unit id="pi1_title" approved="yes">
-        <source><![CDATA[gkh RSS import]]></source>
-        <target state="final"><![CDATA[gkh RSS import]]></target>
-      </trans-unit>
-      <trans-unit id="tsce.templateFile" approved="yes">
-        <source><![CDATA[Template file]]></source>
-        <target state="final"><![CDATA[Skabelon fil]]></target>
-      </trans-unit>
-    </body>
-  </file>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" target-language="da">
+		<header/>
+		<body>
+			<trans-unit id="Download" approved="yes">
+				<source><![CDATA[Download]]></source>
+				<target state="final"><![CDATA[Download]]></target>
+			</trans-unit>
+			<trans-unit id="errorMessage" approved="yes">
+				<source><![CDATA[It's not possible to reach the RSS feed.]]></source>
+				<target state="final"><![CDATA[Det er ikke muligt at hente RSS-feedet.]]></target>
+			</trans-unit>
+			<trans-unit id="pi1_plus_wiz_description" approved="yes">
+				<source><![CDATA[Shows the content of an RSS feed]]></source>
+				<target state="final"><![CDATA[Viser indholdet af et RSS-feed]]></target>
+			</trans-unit>
+			<trans-unit id="pi1_title" approved="yes">
+				<source><![CDATA[gkh RSS import]]></source>
+				<target state="final"><![CDATA[gkh RSS import]]></target>
+			</trans-unit>
+			<trans-unit id="tsce.templateFile" approved="yes">
+				<source><![CDATA[Template file]]></source>
+				<target state="final"><![CDATA[Skabelon fil]]></target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

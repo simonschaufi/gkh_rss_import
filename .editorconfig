@@ -23,16 +23,18 @@ indent_style = tab
 [composer.json]
 indent_style = space
 
-# ReST-Files
-[*.rst]
-indent_size = 3
+# ReST files
+[{*.rst,*.rst.txt}]
+indent_size = 4
+max_line_length = 80
 
 # MD-Files
 [*.md]
 indent_size = 4
+max_line_length = 80
 
 # YAML-Files
-[*.{yaml,yml}]
+[{*.yml,*.yaml}]
 indent_size = 2
 
 # package.json

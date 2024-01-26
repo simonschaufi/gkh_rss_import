@@ -19,20 +19,18 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Service;
 
-use lastRSS;
-use RuntimeException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class LastRssService
 {
-    protected lastRSS $rss;
+    protected \lastRSS $rss;
 
     protected ?string $url = null;
 
     public function __construct()
     {
-        $this->rss = new lastRSS();
+        $this->rss = new \lastRSS();
         $this->rss->CDATA = 'content';
 
         $path = Environment::getVarPath() . '/lastRSS';
@@ -44,11 +42,12 @@ class LastRssService
 
     /**
      * @return bool|string
+     * @throws \RuntimeException
      */
     public function getFeed()
     {
         if (empty($this->url)) {
-            throw new RuntimeException('Feed URL is not set.', 1526816720);
+            throw new \RuntimeException('Feed URL is not set.', 1526816720);
         }
         return $this->rss->Get($this->url);
     }

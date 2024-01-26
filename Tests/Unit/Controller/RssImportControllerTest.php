@@ -125,7 +125,7 @@ class RssImportControllerTest extends UnitTestCase
                     $site,
                     $site->getDefaultLanguage(),
                     new PageArguments(1, '1', []),
-                    $frontendUserMock
+                    $frontendUserMock,
                 ]
             )
             ->onlyMethods(['initCaches'])

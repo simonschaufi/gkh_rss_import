@@ -34,7 +34,7 @@ class Typo3TempSimpleFileBackend extends SimpleFileBackend
         $cacheDir = Environment::getPublicPath() . '/typo3temp/assets/images/';
         $this->setCacheDirectory($cacheDir);
 
-        if (!@is_dir($cacheDir)) {
+        if (!is_dir($cacheDir)) {
             GeneralUtility::mkdir_deep($cacheDir);
         }
     }

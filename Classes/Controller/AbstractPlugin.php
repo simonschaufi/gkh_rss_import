@@ -244,14 +244,16 @@ class AbstractPlugin
     public function pi_getLL($key, $alternativeLabel = '')
     {
         $word = null;
-        if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])
+        if (
+            !empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])
             || isset($this->LOCAL_LANG_UNSET[$this->LLkey][$key])
         ) {
             $word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
         } elseif ($this->altLLkey) {
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
             foreach ($alternativeLanguageKeys as $languageKey) {
-                if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])
+                if (
+                    !empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])
                     || isset($this->LOCAL_LANG_UNSET[$languageKey][$key])
                 ) {
                     // Alternative language translation for key exists
@@ -261,7 +263,8 @@ class AbstractPlugin
             }
         }
         if ($word === null) {
-            if (!empty($this->LOCAL_LANG['default'][$key][0]['target'])
+            if (
+                !empty($this->LOCAL_LANG['default'][$key][0]['target'])
                 || isset($this->LOCAL_LANG_UNSET['default'][$key])
             ) {
                 // Get default translation (without charset conversion, english)
