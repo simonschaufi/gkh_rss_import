@@ -37,7 +37,8 @@ class RenderingTest extends FunctionalTestCase
 
     protected array $configurationToUseInTestInstance = [
         'GFX' => [
-            'processor' => 'ImageMagick', // This is only needed for GitHub actions because gm is not installed
+            // This is only needed for GitHub actions because gm is not installed
+            'processor' => 'ImageMagick',
         ],
     ];
 
@@ -74,7 +75,7 @@ class RenderingTest extends FunctionalTestCase
                     'hreflang' => '',
                     'direction' => '',
                     'flag' => 'us',
-                ]
+                ],
             ],
             'errorHandling' => [],
             'routes' => [],
@@ -122,12 +123,12 @@ class RenderingTest extends FunctionalTestCase
                     'enclosure' => [
                         'prop' => [
                             'url' => 'http://localhost/download.pdf',
-                            'length' => 2097152
-                        ]
-                    ]
-                ]
+                            'length' => 2097152,
+                        ],
+                    ],
+                ],
             ],
-            'items_count' => 1
+            'items_count' => 1,
         ]);
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
@@ -200,7 +201,7 @@ class RenderingTest extends FunctionalTestCase
                             'type' => 'image/jpeg',
                         ],
                     ],
-                ]
+                ],
             ],
             'items_count' => 1,
         ]);

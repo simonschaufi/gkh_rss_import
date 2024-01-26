@@ -1,20 +1,33 @@
 {
     "name": "gkh/gkh-rss-import",
-    "type": "typo3-cms-extension",
     "description": "Fetch an RSS / Atom Feed and display its content on the Frontend.",
     "license": "GPL-2.0-or-later",
+    "type": "typo3-cms-extension",
+    "keywords": [
+        "TYPO3",
+        "Atom Feed",
+        "RSS Feed"
+    ],
     "require": {
+        "php": "^8.1",
         "ext-intl": "*",
-        "typo3/cms-core": "^12.0"
+        "typo3/cms-core": "^12.4"
     },
     "require-dev": {
         "ext-json": "*",
-        "ezyang/htmlpurifier": "^4.13",
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "helmich/typo3-typoscript-lint": "^3.1",
-        "squizlabs/php_codesniffer": "^3.6",
-        "typo3/tailor": "^1.5",
-        "typo3/testing-framework": "^8.0.0"
+        "ergebnis/composer-normalize": "^2.28.3",
+        "ezyang/htmlpurifier": "^4.17.0",
+        "friendsofphp/php-cs-fixer": "^3.48.0",
+        "helmich/typo3-typoscript-lint": "^3.1.0",
+        "phpunit/phpunit": "^10.5",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.8.1",
+        "symfony/translation": "^5.4 || ^6.4 || ^7.0",
+        "typo3/tailor": "^1.5.0",
+        "typo3/testing-framework": "^8.0.8"
+    },
+    "replace": {
+        "typo3-ter/gkh-rss-import": "self.version"
     },
     "autoload": {
         "psr-4": {
@@ -30,33 +43,126 @@
             "GertKaaeHansen\\GkhRssImport\\Tests\\": "Tests"
         }
     },
-    "replace": {
-        "typo3-ter/gkh-rss-import": "self.version"
-    },
     "config": {
         "allow-plugins": {
+            "ergebnis/composer-normalize": true,
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true
         },
         "bin-dir": ".Build/bin",
+        "sort-packages": true,
         "vendor-dir": ".Build/vendor"
-    },
-    "scripts": {
-        "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/UnitTests.xml --testsuite Unit --stop-on-failure",
-        "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/FunctionalTests.xml --testsuite Functional --stop-on-failure",
-        "test": [
-            "@test-php-cs-fixer",
-            "@test-typoscript-lint",
-            "@unit-tests",
-            "@functional-tests"
-        ],
-        "test-php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation",
-        "test-typoscript-lint": ".Build/bin/typoscript-lint -c .typoscript-lint.yml"
     },
     "extra": {
         "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "extension-key": "gkh_rss_import",
             "web-dir": ".Build/public"
         }
+    },
+    "scripts": {
+        "ci:composer:normalize": "@composer normalize --no-check-lock --dry-run",
+        "ci:composer:psr-verify": "@composer dumpautoload --optimize --strict-psr --no-plugins",
+        "ci:coverage": [
+            "@ci:coverage:unit",
+            "@ci:coverage:functional"
+        ],
+        "ci:coverage:functional": [
+            "@ci:tests:create-directories",
+            "@coverage:create-directories",
+            ".Build/bin/phpunit -c ./Configuration/FunctionalTests.xml --whitelist Classes --coverage-php=.Build/coverage/functional.cov Tests/Functional"
+        ],
+        "ci:coverage:merge": [
+            "@coverage:create-directories",
+            "@php tools/phpcov merge --clover=./.Build/logs/clover.xml ./.Build/coverage/"
+        ],
+        "ci:coverage:unit": [
+            "@coverage:create-directories",
+            ".Build/bin/phpunit -c ./Configuration/UnitTests.xml --whitelist Classes --coverage-php=.Build/coverage/unit.cov Tests/Unit"
+        ],
+        "ci:json:lint": "find . ! -path '*/.cache/*' ! -path '*/.Build/*' ! -path '*/node_modules/*' -name '*.json' | xargs -r php .Build/bin/jsonlint -q",
+        "ci:php": [
+            "@ci:php:cs-fixer",
+            "@ci:php:lint",
+            "@ci:php:sniff",
+            "@ci:php:stan"
+        ],
+        "ci:php:cs-fixer": "php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --diff",
+        "ci:php:lint": "find .*.php *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
+        "ci:php:sniff": "phpcs Classes Configuration Tests",
+        "ci:php:stan": "phpstan --no-progress",
+        "ci:static": [
+            "@ci:composer:normalize",
+            "@ci:json:lint",
+            "@ci:php:cs-fixer",
+            "@ci:php:lint",
+            "@ci:php:sniff",
+            "@ci:php:stan",
+            "@ci:ts:lint",
+            "@ci:yaml:lint"
+        ],
+        "ci:tests:create-directories": "mkdir -p .Build/Web/typo3temp/var/tests",
+        "ci:tests:functional": [
+            "@ci:tests:create-directories",
+            "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/bin/phpunit -c ./Configuration/FunctionalTests.xml {}';"
+        ],
+        "ci:tests:unit": ".Build/bin/phpunit -c ./Configuration/UnitTests.xml Tests/Unit",
+        "ci:ts:lint": "typoscript-lint -c Configuration/TsLint.yml --ansi -n --fail-on-warnings -vvv Configuration/TypoScript",
+        "ci:xliff:lint": "php Build/bin/console lint:xliff Resources/Private/Language",
+        "ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -regextype egrep -regex '.*.ya?ml$' | xargs -r php ./.Build/bin/yaml-lint",
+        "coverage:create-directories": "mkdir -p .Build/logs .Build/coverage",
+        "docs:generate": [
+            "@docs:generate:pullimage",
+            "docker run --rm ghcr.io/t3docs/render-documentation show-shell-commands > tempfile.sh; echo 'dockrun_t3rd makehtml' >> tempfile.sh; bash tempfile.sh; rm tempfile.sh"
+        ],
+        "docs:generate:pullimage": [
+            "docker pull ghcr.io/t3docs/render-documentation",
+            "docker tag ghcr.io/t3docs/render-documentation t3docs/render-documentation"
+        ],
+        "fix:composer:normalize": "@composer normalize --no-check-lock",
+        "fix:php": [
+            "@fix:php:cs",
+            "@fix:php:sniff"
+        ],
+        "fix:php:cs": "php-cs-fixer fix --config .php-cs-fixer.php",
+        "fix:php:sniff": "phpcbf Classes Configuration Tests",
+        "local:functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/FunctionalTests.xml --testsuite Functional --stop-on-failure",
+        "local:test-php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation",
+        "local:test-typoscript-lint": ".Build/bin/typoscript-lint -c .typoscript-lint.yml",
+        "local:unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/UnitTests.xml --testsuite Unit --stop-on-failure",
+        "phpstan:baseline": ".Build/bin/phpstan --generate-baseline --allow-empty-baseline",
+        "test": [
+            "@local:test-php-cs-fixer",
+            "@local:test-typoscript-lint",
+            "@local:unit-tests",
+            "@local:functional-tests"
+        ]
+    },
+    "scripts-descriptions": {
+        "ci:composer:normalize": "Checks the composer.json.",
+        "ci:composer:psr-verify": "Verifies PSR-4 namespace correctness.",
+        "ci:coverage:functional": "Generates the code coverage report for functional tests.",
+        "ci:coverage:merge": "Merges the code coverage reports for unit and functional tests.",
+        "ci:coverage:unit": "Generates the code coverage report for unit tests.",
+        "ci:json:lint": "Lints the JSON files.",
+        "ci:php": "Runs all static checks for the PHP files.",
+        "ci:php:cs-fixer": "Checks the code style with the PHP Coding Standards Fixer (PHP-CS-Fixer).",
+        "ci:php:lint": "Lints the PHP files for syntax errors.",
+        "ci:php:sniff": "Checks the code style with PHP_CodeSniffer (PHPCS).",
+        "ci:php:stan": "Checks the PHP types using PHPStan.",
+        "ci:static": "Runs all static code checks (syntax, style, types).",
+        "ci:tests:create-directories": "Creates the directories required to smoothely run the functional tests.",
+        "ci:tests:functional": "Runs the functional tests.",
+        "ci:tests:unit": "Runs the unit tests.",
+        "ci:ts:lint": "Lints the TypoScript files.",
+        "ci:xliff:lint": "Lints the XLIFF files.",
+        "ci:yaml:lint": "Lints the YAML files.",
+        "coverage:create-directories": "Creates the directories needed for recording and merging the code coverage reports.",
+        "docs:generate": "Renders the extension ReST documentation.",
+        "fix:composer:normalize": "Normalizes composer.json file content.",
+        "fix:php": "Runs all fixers for the PHP code.",
+        "fix:php:cs": "Fixes the code style with PHP-CS-Fixer.",
+        "fix:php:sniff": "Fixes the code style with PHP_CodeSniffer.",
+        "phpstan:baseline": "Updates the PHPStan baseline file to match the code."
     }
 }

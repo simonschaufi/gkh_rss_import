@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Controller;
 
-use DateTimeImmutable;
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -74,8 +73,7 @@ class RssImportController extends AbstractPlugin
      * @param string $content The PlugIn content
      * @param array $conf The PlugIn configuration
      * @return string The content that is displayed on the website
-     * @throws Exception
-     * @throws NoSuchCacheException|\ErrorException
+     * @throws Exception|NoSuchCacheException|\ErrorException
      */
     public function main(string $content, array $conf): string
     {
@@ -175,10 +173,12 @@ class RssImportController extends AbstractPlugin
             $markerArray['###CLASS_RSS_TITLE###'] = $this->pi_classParam('rss_title');
             $markerArray['###URL###'] = $this->removeDoubleHTTP($rss['link']);
             $markerArray['###TARGET###'] = $target;
-            $markerArray['###RSS_TITLE###'] = $rss['title']; // TODO: htmlspecialchars?
+            // TODO: htmlspecialchars?
+            $markerArray['###RSS_TITLE###'] = $rss['title'];
             // description
             $markerArray['###CLASS_DESCRIPTION###'] = $this->pi_classParam('description');
-            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']); // TODO: htmlspecialchars?
+            // TODO: htmlspecialchars?
+            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']);
 
             $subPart = $this->getSubPart($this->template, '###RSSIMPORT_TEMPLATE###');
             $itemSubpart = $this->getSubPart($subPart, '###ITEM###');
@@ -209,7 +209,7 @@ class RssImportController extends AbstractPlugin
     /**
      * Get the channel image. Image url, title and link are required.
      *
-     * @throws NoSuchCacheException
+     * @throws NoSuchCacheException|\RuntimeException
      */
     protected function getImage(array $rss, string $target): string
     {
@@ -226,8 +226,8 @@ class RssImportController extends AbstractPlugin
                 'titleText' => $rss['image_title'],
                 'file' => $location,
                 'file.' => [
-                    'maxW' => $this->conf['logoWidth'] ?? 0
-                ]
+                    'maxW' => $this->conf['logoWidth'] ?? 0,
+                ],
             ]);
             return sprintf(
                 '<div%s><a href="%s" target="%s">%s</a></div><br />',
@@ -282,14 +282,15 @@ class RssImportController extends AbstractPlugin
         $markerArray['###CLASS_HEADER###'] = $this->pi_classParam('header');
         $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link']);
         $markerArray['###HEADER_TARGET###'] = $target;
-        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']); // TODO: htmlspecialchars?
+        // TODO: htmlspecialchars?
+        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']);
 
         // Get published date, author and category
         $markerArray['###CLASS_PUBBOX###'] = $this->pi_classParam('pubbox');
         if ($item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
 
-            $date = DateTimeImmutable::createFromFormat('U', (string)strtotime($item['pubDate']));
+            $date = \DateTimeImmutable::createFromFormat('U', (string)strtotime($item['pubDate']));
             $markerArray['###RSS_DATE###'] = htmlentities(
                 $date->format($this->getDateFormat()),
                 ENT_QUOTES,
@@ -297,9 +298,11 @@ class RssImportController extends AbstractPlugin
             );
         }
         $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
-        $markerArray['###AUTHOR###'] = $item['author'] ?? ''; // TODO: htmlspecialchars?
+        // TODO: htmlspecialchars?
+        $markerArray['###AUTHOR###'] = $item['author'] ?? '';
         $markerArray['###CLASS_CATEGORY###'] = $this->pi_classParam('category');
-        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? ''); // TODO: htmlspecialchars?
+        // TODO: htmlspecialchars?
+        $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? '');
 
         // Get item content/home/simon/Code/github/simonschaufi/gkh_rss_import/.Build/bin/phpcs
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
@@ -311,7 +314,8 @@ class RssImportController extends AbstractPlugin
             $itemSummary = $this->cObj->stdWrap($itemSummary, $this->conf['itemSummary_stdWrap.']);
         }
         $itemSummary = smart_trim($itemSummary, (int)$this->conf['itemLength']);
-        $markerArray['###SUMMARY###'] = $itemSummary; // no htmlspecialchars as this might contain html which should be rendered
+        // no htmlspecialchars as this might contain html which should be rendered
+        $markerArray['###SUMMARY###'] = $itemSummary;
 
         $markerArray['###CLASS_DOWNLOAD###'] = $this->pi_classParam('download');
         if (isset($item['enclosure']['prop']['url']) && $item['enclosure']['prop']['url'] !== '') {

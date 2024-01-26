@@ -35,8 +35,7 @@ class ImageFrontend extends AbstractFrontend
      * @param mixed $data The data to cache - also depends on the concrete cache implementation
      * @param array $tags Tags to associate with this cache entry
      * @param int|null $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws Exception
-     * @throws InvalidDataException
+     * @throws Exception|InvalidDataException|\InvalidArgumentException
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -55,6 +54,7 @@ class ImageFrontend extends AbstractFrontend
      *
      * @param string $entryIdentifier Something which identifies the cache entry - depends on concrete cache
      * @return mixed
+     * @throws \InvalidArgumentException
      */
     public function get($entryIdentifier)
     {
