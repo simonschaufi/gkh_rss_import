@@ -17,10 +17,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
         'defaultContentRendering'
     );
 
-    ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:gkh_rss_import/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.typoscript">'
-    );
-
     // Cache configuration
     if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][RssImportController::CACHE_IDENTIFIER] ?? null)) {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][RssImportController::CACHE_IDENTIFIER] = [

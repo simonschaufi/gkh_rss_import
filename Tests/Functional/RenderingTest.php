@@ -20,7 +20,8 @@ declare(strict_types=1);
 namespace GertKaaeHansen\GkhRssImport\Tests\Functional;
 
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
-use Symfony\Component\Yaml\Yaml;
+use GertKaaeHansen\GkhRssImport\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Core\Environment;
@@ -29,9 +30,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RenderingTest extends FunctionalTestCase
+final class RenderingTest extends FunctionalTestCase
 {
-    protected const VALUE_PAGE_ID = 1;
+    use SiteBasedTestTrait;
+
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
+    private const VALUE_PAGE_ID = 1;
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/gkh_rss_import'];
 
@@ -42,56 +49,26 @@ class RenderingTest extends FunctionalTestCase
         ],
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Database/pages.csv');
         $this->setUpFrontendRootPage(1, ['EXT:gkh_rss_import/Tests/Functional/Fixtures/Frontend/Basic.typoscript']);
-
-        $this->setUpFrontendSite(1);
-    }
-
-    /**
-     * Create a simple site config for the tests that call a frontend page.
-     */
-    protected function setUpFrontendSite(int $pageId): void
-    {
-        $configuration = [
-            'rootPageId' => $pageId,
-            'base' => '/',
-            'websiteTitle' => '',
-            'languages' => [
-                [
-                    'title' => 'English',
-                    'enabled' => true,
-                    'languageId' => '0',
-                    'base' => '/',
-                    'typo3Language' => 'default',
-                    'locale' => 'en_US.UTF-8',
-                    'iso-639-1' => 'en',
-                    'websiteTitle' => 'Site EN',
-                    'navigationTitle' => '',
-                    'hreflang' => '',
-                    'direction' => '',
-                    'flag' => 'us',
-                ],
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
-            'errorHandling' => [],
-            'routes' => [],
-        ];
-        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
-        $yamlFileContents = Yaml::dump($configuration, 99, 2);
-        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
-        GeneralUtility::writeFile($fileName, $yamlFileContents);
+        );
     }
 
     /**
-     * @test
      * @throws InvalidDataException
      * @throws NoSuchCacheException
      * @throws CoreException
      */
+    #[Test]
     public function renderFeed(): void
     {
         $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
@@ -146,7 +123,7 @@ class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('Example Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $content, 'Image link not found');
 
@@ -163,11 +140,11 @@ class RenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @throws InvalidDataException
      * @throws NoSuchCacheException
      * @throws CoreException
      */
+    #[Test]
     public function renderFeedWithImageEnclosure(): void
     {
         $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
@@ -221,7 +198,7 @@ class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('example.com Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString(
             'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
@@ -243,11 +220,11 @@ class RenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @throws InvalidDataException
      * @throws NoSuchCacheException
      * @throws CoreException
      */
+    #[Test]
     public function renderFeedWithErrorMessage(): void
     {
         $lastRssServiceMock = $this->getMockBuilder(LastRssService::class)

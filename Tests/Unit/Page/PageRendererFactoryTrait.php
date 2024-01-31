@@ -69,7 +69,6 @@ trait PageRendererFactoryTrait
                 new NullFrontend('runtime'),
             ),
             new MetaTagManagerRegistry(),
-            $packageManager,
             $assetRenderer,
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
