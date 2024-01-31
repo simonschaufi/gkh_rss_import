@@ -21,6 +21,7 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Functional;
 
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use GertKaaeHansen\GkhRssImport\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -62,9 +63,7 @@ final class RenderingTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeed(): void
     {
         $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
@@ -117,7 +116,7 @@ final class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('Example Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $content, 'Image link not found');
 
@@ -133,9 +132,7 @@ final class RenderingTest extends FunctionalTestCase
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeedInGerman(): void
     {
         $this->setUpFrontendRootPage(1, ['EXT:gkh_rss_import/Tests/Functional/Fixtures/Frontend/Basic-custom-date-format.typoscript']);
@@ -192,7 +189,7 @@ final class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('Example Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $content, 'Image link not found');
 
@@ -208,9 +205,7 @@ final class RenderingTest extends FunctionalTestCase
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeedWithImageEnclosure(): void
     {
         $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
@@ -262,7 +257,7 @@ final class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('example.com Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString(
             'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
@@ -283,9 +278,7 @@ final class RenderingTest extends FunctionalTestCase
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeedWithErrorMessage(): void
     {
         $lastRssServiceMock = $this->getMockBuilder(LastRssService::class)

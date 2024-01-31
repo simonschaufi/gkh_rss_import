@@ -40,10 +40,7 @@ class LastRssService
         $this->rss->cache_dir = $path;
     }
 
-    /**
-     * @return array|bool|mixed
-     */
-    public function getFeed(): mixed
+    public function getFeed(): bool|array
     {
         if ($this->url === null || $this->url === '') {
             throw new \RuntimeException('Feed URL is not set.', 1526816720);

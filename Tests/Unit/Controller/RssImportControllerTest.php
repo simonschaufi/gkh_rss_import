@@ -22,6 +22,8 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Page\PageRendererFactoryTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -144,10 +146,8 @@ final class RssImportControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cropHTMLDataProvider
-     */
+    #[DataProvider('cropHTMLDataProvider')]
+    #[Test]
     public function cropHtml(int $length, string $input, string $expected): void
     {
         $GLOBALS['TSFE']->register['RSS_IMPORT_ITEM_LENGTH'] = $length;
@@ -157,9 +157,7 @@ final class RssImportControllerTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCachedImageLocation(): void
     {
         GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
