@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 /*
- * smart_trim
  * This function trims a string to a specified length.
  * Words are separated by space characters, and they are not
  * chopped if possible.

@@ -1,6 +1,6 @@
 includes:
     - phpstan-baseline.neon
-    - ../../.Build/vendor/friendsoftypo3/phpstan-typo3/extension.neon
+    #- ../../.Build/vendor/friendsoftypo3/phpstan-typo3/extension.neon
 
 parameters:
   # Use local .cache dir instead of /tmp
@@ -13,14 +13,9 @@ parameters:
   level: 5
 
   bootstrapFiles:
-    - ../../.Build/vendor/autoload.php
+    - phpstan-constants.php
 
   paths:
-    - ../../Classes
-    - ../../Configuration
-    - ../../Tests
-
-  scanDirectories:
     - ../../Classes
     - ../../Configuration
     - ../../Tests

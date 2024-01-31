@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Controller;
 
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
@@ -109,14 +110,14 @@ class AbstractPlugin
     /**
      * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the config.language setting.
-     *
-     * @param null $_ unused,
      */
-    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct(?TypoScriptFrontendController $frontendController = null)
     {
         $this->frontendController = $frontendController instanceof TypoScriptFrontendController ? $frontendController : $GLOBALS['TSFE'];
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
+
+        $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
+        $this->LLkey = $language->getTypo3Language();
 
         $locales = GeneralUtility::makeInstance(Locales::class);
         if ($locales->isValidLanguageKey($this->LLkey)) {
@@ -147,25 +148,25 @@ class AbstractPlugin
      * @param string $class The class name (or the END of it since it will be prefixed by $this->prefixId.'-')
      * @return string The combined class name (with the correct prefix)
      */
-    public function pi_getClassName(string $class): string
+    public function getClassName(string $class): string
     {
-        return str_replace('_', '-', $this->prefixId) . ($this->prefixId ? '-' : '') . $class;
+        return str_replace('_', '-', $this->prefixId) . ($this->prefixId !== '' ? '-' : '') . $class;
     }
 
     /**
      * Returns the class-attribute with the correctly prefixed classname
-     * Using pi_getClassName()
+     * Using getClassName()
      *
      * @param string $class The class name(s) (suffix) - separate multiple classes with commas
      * @param string $addClasses Additional class names which should not be prefixed - separate multiple classes with commas
      * @return string A "class" attribute with value and a single space char before it.
      */
-    public function pi_classParam(string $class, string $addClasses = ''): string
+    public function classParam(string $class, string $addClasses = ''): string
     {
         $output = '';
         $classNames = GeneralUtility::trimExplode(',', $class);
         foreach ($classNames as $className) {
-            $output .= ' ' . $this->pi_getClassName($className);
+            $output .= ' ' . $this->getClassName($className);
         }
         $additionalClassNames = GeneralUtility::trimExplode(',', $addClasses);
         foreach ($additionalClassNames as $additionalClassName) {
@@ -181,7 +182,7 @@ class AbstractPlugin
      * @param string $str HTML content to wrap in the div-tags with the "main class" of the plugin
      * @return string HTML content wrapped, ready to return to the parent object.
      */
-    public function pi_wrapInBaseClass(string $str): string
+    public function wrapInBaseClass(string $str): string
     {
         $content = '<div class="' . str_replace('_', '-', $this->prefixId) . '">
 		' . $str . '
@@ -213,7 +214,7 @@ class AbstractPlugin
      * @param string $alternativeLabel Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
      * @return string|null The value from LOCAL_LANG.
      */
-    public function pi_getLL(string $key, string $alternativeLabel = ''): ?string
+    public function getLL(string $key, string $alternativeLabel = ''): ?string
     {
         $word = null;
         if (
@@ -259,7 +260,7 @@ class AbstractPlugin
      *
      * @param string $languageFilePath path to the plugin language file in format EXT:....
      */
-    public function pi_loadLL(string $languageFilePath = ''): void
+    public function loadLL(string $languageFilePath = ''): void
     {
         if ($this->LOCAL_LANG_loaded) {
             return;
@@ -321,7 +322,7 @@ class AbstractPlugin
      *
      * @param string $field Field name to convert
      */
-    public function pi_initPIflexForm(string $field = 'pi_flexform'): void
+    public function initPIflexForm(string $field = 'pi_flexform'): void
     {
         // Converting flexform data into array
         $fieldData = $this->cObj->data[$field] ?? null;
@@ -343,7 +344,7 @@ class AbstractPlugin
      * @param string $value Value pointer, eg. "vDEF
      * @return string|null The content.
      */
-    public function pi_getFFvalue(
+    public function getFFvalue(
         ?array $T3FlexForm_array,
         string $fieldName,
         string $sheet = 'sDEF',
@@ -356,7 +357,7 @@ class AbstractPlugin
 
         $sheetArray = $T3FlexForm_array['data'][$sheet][$lang] ?? null;
         if (is_array($sheetArray)) {
-            return $this->pi_getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
+            return $this->getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
         }
         return null;
     }
@@ -368,9 +369,9 @@ class AbstractPlugin
      * @param array $fieldNameArr Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array and return element number X (whether this is right behavior is not settled yet...)
      * @param string $value Value for outermost key, typ. "vDEF" depending on language.
      * @return mixed The value, typ. string.
-     * @see pi_getFFvalue()
+     * @see getFFvalue()
      */
-    public function pi_getFFvalueFromSheetArray(array $sheetArray, array $fieldNameArr, string $value)
+    public function getFFvalueFromSheetArray(array $sheetArray, array $fieldNameArr, string $value): mixed
     {
         $tempArr = $sheetArray;
         foreach ($fieldNameArr as $v) {
@@ -390,5 +391,10 @@ class AbstractPlugin
             }
         }
         return $tempArr[$value] ?? '';
+    }
+
+    private function getRequest(): ServerRequest
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

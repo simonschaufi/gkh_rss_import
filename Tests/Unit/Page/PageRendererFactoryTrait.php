@@ -25,14 +25,17 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
@@ -43,8 +46,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 trait PageRendererFactoryTrait
 {
     protected function getPageRendererConstructorArgs(
-        PackageManager $packageManager = null,
-        CacheManager $cacheManager = null,
+        ?PackageManager $packageManager = null,
+        ?CacheManager $cacheManager = null,
     ): array {
         $packageManager ??= new PackageManager(new DependencyOrderingService());
         $cacheManager ??= $this->createMock(CacheManager::class);
@@ -60,7 +63,7 @@ trait PageRendererFactoryTrait
             )
         );
 
-        $assetRenderer = new AssetRenderer();
+        $iconRegistry = $this->createMock(IconRegistry::class);
 
         return [
             new NullFrontend('assets'),
@@ -69,8 +72,8 @@ trait PageRendererFactoryTrait
                 new NullFrontend('runtime'),
             ),
             new MetaTagManagerRegistry(),
-            $packageManager,
-            $assetRenderer,
+            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher()),
+            new AssetCollector(),
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
@@ -80,6 +83,7 @@ trait PageRendererFactoryTrait
             ),
             new ResponseFactory(),
             new StreamFactory(),
+            $iconRegistry,
         ];
     }
 }

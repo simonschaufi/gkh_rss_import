@@ -58,9 +58,9 @@ class RssImportController extends AbstractPlugin
 
     protected DateFormatter $dateFormatter;
 
-    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct(?TypoScriptFrontendController $frontendController = null)
     {
-        parent::__construct($_, $frontendController);
+        parent::__construct($frontendController);
 
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
@@ -78,8 +78,8 @@ class RssImportController extends AbstractPlugin
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
-        $this->pi_loadLL('EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf');
-        $this->pi_initPIflexForm();
+        $this->loadLL('EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf');
+        $this->initPIflexForm();
         $this->mergeFlexFormValuesIntoConf();
 
         if (empty($this->conf['rssFeed'])) {
@@ -102,7 +102,7 @@ class RssImportController extends AbstractPlugin
 
         $this->template = $this->getTemplate();
 
-        return $this->pi_wrapInBaseClass($this->render());
+        return $this->wrapInBaseClass($this->render());
     }
 
     /**
@@ -130,7 +130,7 @@ class RssImportController extends AbstractPlugin
         $references = $fileRepository->findByRelation('tt_content', 'template', $uid);
 
         if (!empty($references)) {
-            /* @var FileReference $fileReference */
+            /** @var FileReference $fileReference */
             $fileReference = reset($references);
             $templateFile = $fileReference->getForLocalProcessing(false);
             if (!file_exists($templateFile)) {
@@ -152,7 +152,7 @@ class RssImportController extends AbstractPlugin
      */
     protected function render(): string
     {
-        $markerArray['###BOX###'] = $this->pi_classParam('rss_box');
+        $markerArray['###BOX###'] = $this->classParam('rss_box');
 
         // Try to load and parse RSS file
         $rss = $this->rssService->getFeed();
@@ -170,13 +170,13 @@ class RssImportController extends AbstractPlugin
             $markerArray['###IMAGE###'] = $this->getImage($rss, $target);
 
             // title
-            $markerArray['###CLASS_RSS_TITLE###'] = $this->pi_classParam('rss_title');
+            $markerArray['###CLASS_RSS_TITLE###'] = $this->classParam('rss_title');
             $markerArray['###URL###'] = $this->removeDoubleHTTP($rss['link']);
             $markerArray['###TARGET###'] = $target;
             // TODO: htmlspecialchars?
             $markerArray['###RSS_TITLE###'] = $rss['title'];
             // description
-            $markerArray['###CLASS_DESCRIPTION###'] = $this->pi_classParam('description');
+            $markerArray['###CLASS_DESCRIPTION###'] = $this->classParam('description');
             // TODO: htmlspecialchars?
             $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], (int)$this->conf['headerLength']);
 
@@ -223,7 +223,7 @@ class RssImportController extends AbstractPlugin
         $location = $this->getCachedImageLocation($rss['image_url']);
 
         if (!file_exists($location)) {
-            throw new \RuntimeException(sprintf('File %s could not be found!', $location));
+            throw new \RuntimeException(sprintf('File %s could not be found!', $location), 9859542783);
         }
 
         // Pass the combination of TS-defined values and php processing through the IMAGE cObject function
@@ -237,7 +237,7 @@ class RssImportController extends AbstractPlugin
         ]);
         return sprintf(
             '<div%s><a href="%s" target="%s">%s</a></div><br />',
-            $this->pi_classParam('RSS_h_image'),
+            $this->classParam('RSS_h_image'),
             $this->removeDoubleHTTP($rss['image_link']),
             $target,
             $imgOutput
@@ -282,16 +282,16 @@ class RssImportController extends AbstractPlugin
         $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];
 
         // Get item header
-        $markerArray['###CLASS_HEADER###'] = $this->pi_classParam('header');
+        $markerArray['###CLASS_HEADER###'] = $this->classParam('header');
         $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link']);
         $markerArray['###HEADER_TARGET###'] = $target;
         // TODO: htmlspecialchars?
         $markerArray['###HEADER###'] = smart_trim($item['title'], (int)$this->conf['headerLength']);
 
         // Get published date, author and category
-        $markerArray['###CLASS_PUBBOX###'] = $this->pi_classParam('pubbox');
+        $markerArray['###CLASS_PUBBOX###'] = $this->classParam('pubbox');
         if ($item['pubDate'] !== '01/01/1970') {
-            $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
+            $markerArray['###CLASS_RSS_DATE###'] = $this->classParam('date');
 
             $pubDate = strtotime((string)$item['pubDate']);
             if ($pubDate !== false) {
@@ -305,15 +305,15 @@ class RssImportController extends AbstractPlugin
                 $markerArray['###RSS_DATE###'] = '';
             }
         }
-        $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
+        $markerArray['###CLASS_AUTHOR###'] = $this->classParam('author');
         // TODO: htmlspecialchars?
         $markerArray['###AUTHOR###'] = $item['author'] ?? '';
-        $markerArray['###CLASS_CATEGORY###'] = $this->pi_classParam('category');
+        $markerArray['###CLASS_CATEGORY###'] = $this->classParam('category');
         // TODO: htmlspecialchars?
         $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? '');
 
         // Get item content
-        $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
+        $markerArray['###CLASS_SUMMARY###'] = $this->classParam('content');
         $itemSummary = $item['description'];
 
         // for UserFunction smart_trim
@@ -325,9 +325,9 @@ class RssImportController extends AbstractPlugin
         // no htmlspecialchars as this might contain html which should be rendered
         $markerArray['###SUMMARY###'] = $itemSummary;
 
-        $markerArray['###CLASS_DOWNLOAD###'] = $this->pi_classParam('download');
+        $markerArray['###CLASS_DOWNLOAD###'] = $this->classParam('download');
         if (isset($item['enclosure']['prop']['url']) && $item['enclosure']['prop']['url'] !== '') {
-            $download = $this->pi_getLL('Download');
+            $download = $this->getLL('Download');
             if (isset($item['enclosure']['prop']['length'])) {
                 $download .= ' (' . round((float)$item['enclosure']['prop']['length'] / (1024 * 1024), 1) . ' MB)';
             }
@@ -429,7 +429,7 @@ class RssImportController extends AbstractPlugin
      */
     protected function flexFormValue(string $variable, string $sheet): ?string
     {
-        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'] ?? null, $variable, $sheet);
+        return $this->getFFvalue($this->cObj->data['pi_flexform'] ?? null, $variable, $sheet);
     }
 
     /**
@@ -462,7 +462,9 @@ class RssImportController extends AbstractPlugin
         if ($itemLength === 0) {
             return $text;
         }
-        return $this->cObj->stdWrap_cropHTML($text, ['cropHTML' => $itemLength . '|...|1']);
+        return $this->cObj->stdWrap_cropHTML($text, [
+            'cropHTML' => $itemLength . '|...|1',
+        ]);
     }
 
     /**

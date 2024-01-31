@@ -21,6 +21,7 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Functional;
 
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use GertKaaeHansen\GkhRssImport\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -31,8 +32,16 @@ final class RenderingTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     private const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
+        'EN' => [
+            'id' => 0,
+            'title' => 'English',
+            'locale' => 'en_US.UTF8',
+        ],
+        'DE' => [
+            'id' => 1,
+            'title' => 'German',
+            'locale' => 'de_DE.UTF8',
+        ],
     ];
 
     private const VALUE_PAGE_ID = 1;
@@ -62,9 +71,7 @@ final class RenderingTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeed(): void
     {
         $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
@@ -73,36 +80,37 @@ final class RenderingTest extends FunctionalTestCase
             ->onlyMethods(['getFeed'])
             ->getMock();
 
-        $lastRssServiceMock->method('getFeed')->willReturn([
-            'encoding' => 'UTF-8',
-            'title' => 'RSS feed of example.com',
-            'link' => 'http://localhost/',
-            'description' => 'Example Description',
-            'language' => 'de-DE',
-            'lastBuildDate' => '05/19/2020',
-            'image_url' => $imageUrl,
-            'image_title' => 'Image Title',
-            'image_link' => 'http://localhost/Images/1-10.png',
-            'items' => [
-                [
-                    'title' => 'Example Title',
-                    'link' => 'http://localhost/example-title.html',
-                    'description' => 'VERY LONG DESCRIPTION',
-                    'category' => 'CATEGORY',
-                    'guid' => 'http://localhost/?p=1',
-                    'pubDate' => '01/31/2020',
-                    'author' => 'John Doe',
-                    'content' => 'CONTENT',
-                    'enclosure' => [
-                        'prop' => [
-                            'url' => 'http://localhost/download.pdf',
-                            'length' => 2097152,
+        $lastRssServiceMock->method('getFeed')
+            ->willReturn([
+                'encoding' => 'UTF-8',
+                'title' => 'RSS feed of example.com',
+                'link' => 'http://localhost/',
+                'description' => 'Example Description',
+                'language' => 'de-DE',
+                'lastBuildDate' => '05/19/2020',
+                'image_url' => $imageUrl,
+                'image_title' => 'Image Title',
+                'image_link' => 'http://localhost/Images/1-10.png',
+                'items' => [
+                    [
+                        'title' => 'Example Title',
+                        'link' => 'http://localhost/example-title.html',
+                        'description' => 'VERY LONG DESCRIPTION',
+                        'category' => 'CATEGORY',
+                        'guid' => 'http://localhost/?p=1',
+                        'pubDate' => '01/31/2020',
+                        'author' => 'John Doe',
+                        'content' => 'CONTENT',
+                        'enclosure' => [
+                            'prop' => [
+                                'url' => 'http://localhost/download.pdf',
+                                'length' => 2097152,
+                            ],
                         ],
                     ],
                 ],
-            ],
-            'items_count' => 1,
-        ]);
+                'items_count' => 1,
+            ]);
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
@@ -117,7 +125,7 @@ final class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('Example Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $content, 'Image link not found');
 
@@ -133,9 +141,7 @@ final class RenderingTest extends FunctionalTestCase
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeedInGerman(): void
     {
         $this->setUpFrontendRootPage(1, ['EXT:gkh_rss_import/Tests/Functional/Fixtures/Frontend/Basic-custom-date-format.typoscript']);
@@ -146,36 +152,37 @@ final class RenderingTest extends FunctionalTestCase
             ->onlyMethods(['getFeed'])
             ->getMock();
 
-        $lastRssServiceMock->method('getFeed')->willReturn([
-            'encoding' => 'UTF-8',
-            'title' => 'RSS feed of example.com',
-            'link' => 'http://localhost/',
-            'description' => 'Example Description',
-            'language' => 'de-DE',
-            'lastBuildDate' => '05/19/2020',
-            'image_url' => $imageUrl,
-            'image_title' => 'Image Title',
-            'image_link' => 'http://localhost/Images/1-10.png',
-            'items' => [
-                [
-                    'title' => 'Example Title',
-                    'link' => 'http://localhost/example-title.html',
-                    'description' => 'VERY LONG DESCRIPTION',
-                    'category' => 'CATEGORY',
-                    'guid' => 'http://localhost/?p=1',
-                    'pubDate' => '01/31/2020',
-                    'author' => 'John Doe',
-                    'content' => 'CONTENT',
-                    'enclosure' => [
-                        'prop' => [
-                            'url' => 'http://localhost/download.pdf',
-                            'length' => 2097152,
+        $lastRssServiceMock->method('getFeed')
+            ->willReturn([
+                'encoding' => 'UTF-8',
+                'title' => 'RSS feed of example.com',
+                'link' => 'http://localhost/',
+                'description' => 'Example Description',
+                'language' => 'de-DE',
+                'lastBuildDate' => '05/19/2020',
+                'image_url' => $imageUrl,
+                'image_title' => 'Image Title',
+                'image_link' => 'http://localhost/Images/1-10.png',
+                'items' => [
+                    [
+                        'title' => 'Example Title',
+                        'link' => 'http://localhost/example-title.html',
+                        'description' => 'VERY LONG DESCRIPTION',
+                        'category' => 'CATEGORY',
+                        'guid' => 'http://localhost/?p=1',
+                        'pubDate' => '01/31/2020',
+                        'author' => 'John Doe',
+                        'content' => 'CONTENT',
+                        'enclosure' => [
+                            'prop' => [
+                                'url' => 'http://localhost/download.pdf',
+                                'length' => 2097152,
+                            ],
                         ],
                     ],
                 ],
-            ],
-            'items_count' => 1,
-        ]);
+                'items_count' => 1,
+            ]);
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
@@ -192,7 +199,7 @@ final class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('Example Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString('http://localhost/Images/1-10.png', $content, 'Image link not found');
 
@@ -208,9 +215,7 @@ final class RenderingTest extends FunctionalTestCase
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeedWithImageEnclosure(): void
     {
         $imageUrl = __DIR__ . '/Fixtures/Images/1-10.png';
@@ -219,35 +224,36 @@ final class RenderingTest extends FunctionalTestCase
             ->onlyMethods(['getFeed'])
             ->getMock();
 
-        $lastRssServiceMock->method('getFeed')->willReturn([
-            'encoding' => 'UTF-8',
-            'title' => 'RSS feed of example.com',
-            'link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
-            'description' => 'example.com Description',
-            'language' => 'de',
-            'lastBuildDate' => '10/30/2020',
-            'image_url' => $imageUrl,
-            'image_title' => 'Image Title',
-            'image_link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
-            'image_width' => '273',
-            'image_height' => '121',
-            'items' => [
-                [
-                    'title' => 'Example Title',
-                    'link' => 'https://www.example.com/item.html',
-                    'description' => 'VERY LONG DESCRIPTION',
-                    'guid' => 'https://www.example.com/item.html',
-                    'pubDate' => '10/30/2020',
-                    'enclosure' => [
-                        'prop' => [
-                            'url' => 'https://www.example.com/typo3temp/pics/d69f9ef8c4.jpg',
-                            'type' => 'image/jpeg',
+        $lastRssServiceMock->method('getFeed')
+            ->willReturn([
+                'encoding' => 'UTF-8',
+                'title' => 'RSS feed of example.com',
+                'link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
+                'description' => 'example.com Description',
+                'language' => 'de',
+                'lastBuildDate' => '10/30/2020',
+                'image_url' => $imageUrl,
+                'image_title' => 'Image Title',
+                'image_link' => 'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
+                'image_width' => '273',
+                'image_height' => '121',
+                'items' => [
+                    [
+                        'title' => 'Example Title',
+                        'link' => 'https://www.example.com/item.html',
+                        'description' => 'VERY LONG DESCRIPTION',
+                        'guid' => 'https://www.example.com/item.html',
+                        'pubDate' => '10/30/2020',
+                        'enclosure' => [
+                            'prop' => [
+                                'url' => 'https://www.example.com/typo3temp/pics/d69f9ef8c4.jpg',
+                                'type' => 'image/jpeg',
+                            ],
                         ],
                     ],
                 ],
-            ],
-            'items_count' => 1,
-        ]);
+                'items_count' => 1,
+            ]);
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
@@ -262,7 +268,7 @@ final class RenderingTest extends FunctionalTestCase
         // Feed header
         self::assertStringContainsString('RSS feed of example.com', $content, 'Title not found');
         self::assertStringContainsString('example.com Description', $content, 'Description not found');
-        self::assertStringContainsString('/typo3temp/assets/_processed_/', $content, 'Image url not found');
+        self::assertStringContainsString('/typo3temp/assets/images/cache/data/gkh_rss_import_image/', $content, 'Image url not found');
         self::assertStringContainsString('Image Title', $content, 'Image title not found');
         self::assertStringContainsString(
             'https://www.example.com/rss.html?type=123&amp;cHash=xxx',
@@ -283,16 +289,15 @@ final class RenderingTest extends FunctionalTestCase
         self::assertFileExists(Environment::getPublicPath() . $expectedFilePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFeedWithErrorMessage(): void
     {
         $lastRssServiceMock = $this->getMockBuilder(LastRssService::class)
             ->onlyMethods(['getFeed'])
             ->getMock();
 
-        $lastRssServiceMock->method('getFeed')->willReturn(false);
+        $lastRssServiceMock->method('getFeed')
+            ->willReturn(false);
 
         GeneralUtility::addInstance(LastRssService::class, $lastRssServiceMock);
 
