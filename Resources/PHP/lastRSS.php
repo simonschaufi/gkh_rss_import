@@ -37,15 +37,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class lastRSS
 {
-    public $default_cp = 'UTF-8';
-    public $CDATA = 'nochange';
-    public $cp = '';
-    public $items_limit = 0;
-    public $stripHTML = false;
-    public $date_format = '';
-    public $cache_dir = '';
-    public $cache_time = 0;
-    public $rsscp = '';
+    public string $default_cp = 'UTF-8';
+    public string $CDATA = 'nochange';
+    public string $cp = '';
+    public int $items_limit = 0;
+    public bool $stripHTML = false;
+    public string $date_format = '';
+    public string $cache_dir = '';
+    public int $cache_time = 0;
+    public string $rsscp = '';
 
     // -------------------------------------------------------------------
     // Private variables
@@ -108,17 +108,23 @@ class lastRSS
             // Process CDATA (if present)
             if ($this->CDATA === 'content') { // Get CDATA content (without CDATA tag)
                 if (str_starts_with($out[1], '<![CDATA[')) {
-                    $out[1] = strtr($out[1], ['<![CDATA[' => '', ']]>' => '']);
+                    $out[1] = strtr($out[1], [
+                        '<![CDATA[' => '',
+                        ']]>' => '',
+                    ]);
                 } else {
                     $out[1] = html_entity_decode($out[1], ENT_QUOTES, $this->rsscp);
                 }
             } elseif ($this->CDATA === 'strip') { // Strip CDATA
-                $out[1] = strtr($out[1], ['<![CDATA[' => '', ']]>' => '']);
+                $out[1] = strtr($out[1], [
+                    '<![CDATA[' => '',
+                    ']]>' => '',
+                ]);
             }
 
             // If code page is set, convert character encoding to required
             if ($this->cp !== '') {
-                $out[1] = iconv((string) $this->rsscp, $this->cp . '//TRANSLIT', $out[1]);
+                $out[1] = iconv($this->rsscp, $this->cp . '//TRANSLIT', $out[1]);
             }
             return trim($out[1]);
         }
@@ -170,7 +176,7 @@ class lastRSS
         // Parse TEXTINPUT info
         preg_match("'<textinput(|[^>]*[^/])>(.*?)</textinput>'si", $content, $outTextInfo);
         // This a little strange regexp means:
-        // Look for tag <textinput> with or without any attributes, but skip truncated version <textinput /> (it's not beggining tag)
+        // Look for tag <textinput> with or without any attributes, but skip truncated version <textinput /> (it's not beginning tag)
         if (isset($outTextInfo[2])) {
             foreach ($this->textinputtags as $textInputTag) {
                 $temp = $this->my_preg_match("'<$textInputTag.*?>(.*?)</$textInputTag>'si", $outTextInfo[2]);
@@ -218,14 +224,14 @@ class lastRSS
 
                 // Strip HTML tags from DESCRIPTION
                 if ($this->stripHTML && $result['items'][$i]['description']) {
-                    $result['items'][$i]['description'] = strip_tags((string) $result['items'][$i]['description']);
+                    $result['items'][$i]['description'] = strip_tags((string)$result['items'][$i]['description']);
                 }
                 // Strip HTML tags from TITLE
                 if ($this->stripHTML && $result['items'][$i]['title']) {
-                    $result['items'][$i]['title'] = strip_tags((string) $result['items'][$i]['title']);
+                    $result['items'][$i]['title'] = strip_tags((string)$result['items'][$i]['title']);
                 }
                 // If date_format is specified and pubDate is valid
-                if ($this->date_format !== '' && ($timestamp = strtotime((string) $result['items'][$i]['pubDate'])) !==-1) {
+                if ($this->date_format !== '' && ($timestamp = strtotime((string)$result['items'][$i]['pubDate'])) !== -1) {
                     // convert pubDate to specified date format
                     $result['items'][$i]['pubDate'] = date($this->date_format, $timestamp);
                 }

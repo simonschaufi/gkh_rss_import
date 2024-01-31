@@ -9,16 +9,21 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 (static function (): void {
-    // Add default rendering for pi_layout plugin
+    // Add default rendering for pi_layout plugin. Similar like:
+    /** @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin */
+    $pluginSignature = 'gkh_rss_import_pi1';
+    $pluginContent = trim('
+tt_content.' . $pluginSignature . ' =< lib.contentElement
+tt_content.' . $pluginSignature . ' {
+    templateName = Generic
+    20 =< plugin.tx_gkhrssimport_pi1
+}');
+
     ExtensionManagementUtility::addTypoScript(
         'gkh_rss_import',
         'setup',
-        'tt_content.list.20.gkh_rss_import_pi1 =< plugin.tx_gkhrssimport_pi1',
+        $pluginContent,
         'defaultContentRendering'
-    );
-
-    ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:gkh_rss_import/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.typoscript">'
     );
 
     // Cache configuration
@@ -28,8 +33,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'backend' => Typo3TempSimpleFileBackend::class,
             'groups' => [
                 'all',
-                'gkh_rss_import'
-            ]
+                'gkh_rss_import',
+            ],
         ];
     }
 

@@ -11,9 +11,9 @@ assignees: ''
 
 ## Prerequisites
 
-* [ ] Can you reproduce the problem on TYPO3 v10.4 LTS
 * [ ] Can you reproduce the problem on TYPO3 v11.5 LTS
-* [ ] Can you reproduce the problem on TYPO3 v12.0
+* [ ] Can you reproduce the problem on TYPO3 v12.4 LTS
+* [ ] Can you reproduce the problem on TYPO3 v13.x
 * [ ] Can you reproduce the problem on TYPO3 dev-main
 * [ ] Did you [perform a search](https://github.com/simonschaufi/gkh_rss_import/issues)
   to see if your bug or enhancement is already reported?

@@ -9,6 +9,7 @@
 ## Prerequisites
 
 * [ ] Changes have been tested on TYPO3 v12.4 LTS
+* [ ] Changes have been tested on TYPO3 v13.x
 * [ ] Changes have been tested on TYPO3 dev-main
 * [ ] Changes have been tested on PHP 8.1.x
 * [ ] Changes have been tested on PHP 8.2.x

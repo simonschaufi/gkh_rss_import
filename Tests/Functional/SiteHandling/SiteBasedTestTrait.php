@@ -20,11 +20,11 @@ declare(strict_types=1);
 namespace GertKaaeHansen\GkhRssImport\Tests\Functional\SiteHandling;
 
 use GertKaaeHansen\GkhRssImport\Tests\Functional\Fixtures\Frontend\PhpError;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\InstructionInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -36,6 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  * Be sure to set the LANGUAGE_PRESETS const in your class.
  *
  * @note This file is copied from core
+ * @see https://github.com/TYPO3/typo3/blob/main/typo3/sysext/core/Tests/Functional/SiteHandling/SiteBasedTestTrait.php
  */
 trait SiteBasedTestTrait
 {
@@ -55,7 +56,8 @@ trait SiteBasedTestTrait
         string $identifier,
         array $site = [],
         array $languages = [],
-        array $errorHandling = []
+        array $errorHandling = [],
+        array $dependencies = [],
     ): void {
         $configuration = $site;
         if ($languages !== []) {
@@ -64,16 +66,14 @@ trait SiteBasedTestTrait
         if ($errorHandling !== []) {
             $configuration['errorHandling'] = $errorHandling;
         }
-        $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/',
-            $this->get(EventDispatcherInterface::class),
-            $this->get('cache.core')
-        );
-
+        if ($dependencies !== []) {
+            $configuration['dependencies'] = $dependencies;
+        }
+        $siteWriter = $this->get(SiteWriter::class);
         try {
             // ensure no previous site configuration influences the test
             GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
-            $siteConfiguration->write($identifier, $configuration);
+            $siteWriter->write($identifier, $configuration);
         } catch (\Exception $exception) {
             $this->markTestSkipped($exception->getMessage());
         }
@@ -83,15 +83,12 @@ trait SiteBasedTestTrait
         string $identifier,
         array $overrides
     ): void {
-        $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/',
-            $this->get(EventDispatcherInterface::class),
-            $this->get('cache.core')
-        );
+        $siteConfiguration = $this->get(SiteConfiguration::class);
+        $siteWriter = $this->get(SiteWriter::class);
         $configuration = $siteConfiguration->load($identifier);
         $configuration = array_merge($configuration, $overrides);
         try {
-            $siteConfiguration->write($identifier, $configuration);
+            $siteWriter->write($identifier, $configuration);
         } catch (\Exception $exception) {
             $this->markTestSkipped($exception->getMessage());
         }
@@ -121,7 +118,7 @@ trait SiteBasedTestTrait
         string $identifier,
         string $base,
         array $fallbackIdentifiers = [],
-        string $fallbackType = null
+        ?string $fallbackType = null
     ): array {
         $preset = $this->resolveLanguagePreset($identifier);
 
@@ -214,13 +211,13 @@ trait SiteBasedTestTrait
     /**
      * @todo Instruction handling should be part of Testing Framework (multiple instructions per identifier, merge in interface)
      */
-    protected function applyInstructions(InternalRequest $request, AbstractInstruction ...$instructions): InternalRequest
+    protected function applyInstructions(InternalRequest $request, InstructionInterface ...$instructions): InternalRequest
     {
         $modifiedInstructions = [];
 
         foreach ($instructions as $instruction) {
             $identifier = $instruction->getIdentifier();
-            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) instanceof AbstractInstruction) {
+            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) instanceof InstructionInterface) {
                 $modifiedInstructions[$identifier] = $this->mergeInstruction(
                     $modifiedInstructions[$identifier] ?? $request->getInstruction($identifier),
                     $instruction
@@ -233,7 +230,7 @@ trait SiteBasedTestTrait
         return $request->withInstructions($modifiedInstructions);
     }
 
-    protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction
+    protected function mergeInstruction(InstructionInterface $current, InstructionInterface $other): InstructionInterface
     {
         if ($current::class !== $other::class) {
             throw new \LogicException('Cannot merge different instruction types', 1565863174);

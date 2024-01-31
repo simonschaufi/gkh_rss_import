@@ -22,6 +22,8 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Page\PageRendererFactoryTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -51,13 +53,15 @@ final class RssImportControllerTest extends UnitTestCase
     private RssImportController $subject;
 
     /**
+     * @see https://github.com/TYPO3/typo3/commit/9429de02c789f245e7cb4337298b3653ad35219c for the last commit until the mocks are gone
      * @throws Exception
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(1);
+        $site = $this->createSiteWithLanguage();
+        $siteLanguage = $site->getLanguageById(1);
 
         /** @see https://github.com/TYPO3/typo3/blob/58fb6ad4b00e1a72d1e728e1db19760a52ff1449/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L61-L102 */
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
@@ -90,15 +94,19 @@ final class RssImportControllerTest extends UnitTestCase
         );
 
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromSiteLanguage')->willReturn($languageService);
+        $languageServiceFactoryMock->method('createFromSiteLanguage')
+            ->willReturn($languageService);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
         // This is needed for PageRenderer
         $importMapMock = $this->createMock(ImportMap::class);
-        $importMapMock->method('render')->willReturn('')->withAnyParameters();
+        $importMapMock->method('render')
+            ->willReturn('')
+            ->withAnyParameters();
 
         $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
-        $importMapFactoryMock->method('create')->willReturn($importMapMock);
+        $importMapFactoryMock->method('create')
+            ->willReturn($importMapMock);
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
 
         GeneralUtility::setSingletonInstance(
@@ -144,10 +152,8 @@ final class RssImportControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cropHTMLDataProvider
-     */
+    #[DataProvider('cropHTMLDataProvider')]
+    #[Test]
     public function cropHtml(int $length, string $input, string $expected): void
     {
         $GLOBALS['TSFE']->register['RSS_IMPORT_ITEM_LENGTH'] = $length;
@@ -157,9 +163,7 @@ final class RssImportControllerTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCachedImageLocation(): void
     {
         GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
