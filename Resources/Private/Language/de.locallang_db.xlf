@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.list_type_pi1">
+        <source>RSS Feed Import</source>
+        <target state="translated">RSS-Feed Import</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache" approved="yes">
+        <source>RSS Feed cache time</source>
+        <target state="final">RSS-Feed Cachezeit</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.0">
+        <source>1 hour</source>
+        <target state="translated">1 Stunde</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.1">
+        <source>2 hours</source>
+        <target state="translated">2 Stunden</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.2">
+        <source>6 hours</source>
+        <target state="translated">6 Stunden</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.3">
+        <source>12 hours</source>
+        <target state="translated">12 Stunden</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.4">
+        <source>24 hours</source>
+        <target state="translated">24 Stunden</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.5">
+        <source>20 min</source>
+        <target state="translated">20 Minuten</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.cache.I.off">
+        <source>Off</source>
+        <target state="translated">Aus</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.code_page">
+        <source>Page encoding</source>
+        <target state="translated">Seitencodierung</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format">
+        <source>Date format</source>
+        <target state="translated">Datumsformat</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format.I.1">
+        <source>Monday, 12. May 2008</source>
+        <target state="translated">Montag, 12. Mai 2008</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format.I.2">
+        <source>12. May 2008</source>
+        <target state="translated">12. Mai 2008</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.date_format.I.3">
+        <source>12/5-2008</source>
+        <target state="translated">12/5-2008</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.errorM">
+        <source>It's not possible to reach the RSS file...</source>
+        <target state="translated">Es ist nicht möglich, den RSS-Feed abzurufen...</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.errorMessage">
+        <source>Error message</source>
+        <target state="translated">Fehlermeldung</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.header_length">
+        <source>Length of header description</source>
+        <target state="translated">Textlänge der Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.item_length">
+        <source>Length of item content</source>
+        <target state="translated">Textlänge der Einträge</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logo_width">
+        <source>Width of logo image</source>
+        <target state="translated">Breite des Logos</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.max_feed">
+        <source>Maximum items to show</source>
+        <target state="translated">Maximale Anzahl Einträge zum Anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.settings">
+        <source>Settings</source>
+        <target state="translated">Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_RSS_Feed">
+        <source>RSS Feed settings</source>
+        <target state="translated">RSS-Feed-Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_url">
+        <source>RSS Feed URL</source>
+        <target state="translated">RSS-Feed-URL</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.striphtml">
+        <source>Remove HTML from RSS feed</source>
+        <target state="translated">HTML vom RSS-Feed entfernen</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.striphtml.I.1">
+        <source>Yes</source>
+        <target state="translated">Ja</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.striphtml.I.2">
+        <source>No</source>
+        <target state="translated">Nein</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target">
+        <source>Target of URL</source>
+        <target state="translated">URL-Ziel</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target.I.1">
+        <source>top</source>
+        <target state="translated">oben</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target.I.2">
+        <source>blank</source>
+        <target state="translated">leer</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.target.I.3">
+        <source>self</source>
+        <target state="translated">selbst</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_file" approved="yes">
+        <source>Template File</source>
+        <target state="final">Templatedatei</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_title">
+        <source>Template</source>
+        <target state="translated">Vorlage</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
