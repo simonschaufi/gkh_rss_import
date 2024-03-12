@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="Download">
+        <source><![CDATA[Download]]></source>
+        <target state="translated"><![CDATA[Descargar]]></target>
+      </trans-unit>
+      <trans-unit id="errorMessage">
+        <source><![CDATA[It's not possible to reach the RSS feed.]]></source>
+        <target state="translated"><![CDATA[No es posible acceder al feed RSS.]]></target>
+      </trans-unit>
+      <trans-unit id="pi1_plus_wiz_description">
+        <source><![CDATA[Shows the content of an RSS feed]]></source>
+        <target state="translated"><![CDATA[Muestra el contenido de un feed RSS]]></target>
+      </trans-unit>
+      <trans-unit id="pi1_title">
+        <source><![CDATA[gkh RSS import]]></source>
+        <target state="translated"><![CDATA[importación de RSS gkh]]></target>
+      </trans-unit>
+      <trans-unit id="tsce.templateFile">
+        <source><![CDATA[Template file]]></source>
+        <target state="translated"><![CDATA[Fichero de plantilla]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
