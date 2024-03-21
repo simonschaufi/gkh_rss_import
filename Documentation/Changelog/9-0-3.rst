@@ -1,0 +1,21 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+9.0.3
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2024-03-21 [RELEASE] Release v9.0.3 (Commit 72be85d by Simon Schaufelberger)
+   2024-03-21 [BUGFIX] PHP 8 compatibility (Commit 17f6d13 by Simon Schaufelberger)
+   2022-07-03 [TASK] Format table correctly (Commit 20f2f06 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
