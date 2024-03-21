@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
     );
 
     // Cache configuration
-    if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][RssImportController::CACHE_IDENTIFIER])) {
+    if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][RssImportController::CACHE_IDENTIFIER] ?? null)) {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][RssImportController::CACHE_IDENTIFIER] = [
             'frontend' => ImageFrontend::class,
             'backend' => Typo3TempSimpleFileBackend::class,
