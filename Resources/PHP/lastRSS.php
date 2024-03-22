@@ -46,7 +46,7 @@ class lastRSS
     public $date_format = '';
     public $cache_dir = '';
     public $cache_time = 0;
-    public $rsscp;
+    public $rsscp = '';
 
     // -------------------------------------------------------------------
     // Private variables
