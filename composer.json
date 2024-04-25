@@ -4,8 +4,9 @@
     "description": "Fetch an RSS / Atom Feed and display its content on the Frontend.",
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^11.4"
-    },
+		"ext-intl": "*",
+		"typo3/cms-core": "^11.4"
+	},
     "require-dev": {
         "ext-json": "*",
         "ezyang/htmlpurifier": "^4.13",
@@ -36,9 +37,10 @@
     },
     "config": {
 		"allow-plugins": {
-			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true
-		},
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "ergebnis/composer-normalize": true
+        },
         "bin-dir": ".Build/bin",
         "vendor-dir": ".Build/vendor"
     },

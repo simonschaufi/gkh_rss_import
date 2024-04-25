@@ -21,10 +21,7 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -45,12 +42,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RssImportControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected RssImportController $subject;
 
     /**
-     * @throws NoSuchCacheException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     protected function setUp(): void
     {
@@ -70,36 +65,39 @@ class RssImportControllerTest extends UnitTestCase
                         'languageId' => 0,
                         'title' => 'English',
                         'locale' => 'en_UK',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]
         );
 
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        $cacheFrontendMock->method('get')->willReturn(false);
+        $cacheFrontendMock->method('set')->willReturn(null);
+
+        // Define languageDebug because it's expected to be set in LanguageService
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'] = false;
 
         $languageService = new LanguageService(
             new Locales(),
             new LocalizationFactory(
-                new LanguageStore($packageManagerProphecy->reveal()),
-                $cacheManagerProphecy->reveal()
+                new LanguageStore($packageManagerMock),
+                $cacheManagerMock
             ),
-            $cacheFrontendProphecy->reveal()
+            $cacheFrontendMock
         );
 
-        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
+        $languageServiceFactoryMock->method('createFromSiteLanguage')->willReturn($languageService);
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
+        $frontendUserMock = $this->createMock(FrontendUserAuthentication::class);
 
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs(
@@ -108,7 +106,7 @@ class RssImportControllerTest extends UnitTestCase
                     $site,
                     $site->getDefaultLanguage(),
                     new PageArguments(1, '1', []),
-                    $frontendUserProphecy->reveal()
+                    $frontendUserMock,
                 ]
             )
             ->onlyMethods(['initCaches'])
@@ -153,7 +151,7 @@ class RssImportControllerTest extends UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function cropHTML(int $length, string $input, string $expected): void
+    public function cropHtml(int $length, string $input, string $expected): void
     {
         $GLOBALS['TSFE']->register['RSS_IMPORT_ITEM_LENGTH'] = $length;
 

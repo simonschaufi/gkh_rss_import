@@ -20,16 +20,18 @@ declare(strict_types=1);
 namespace GertKaaeHansen\GkhRssImport\Controller;
 
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
+use GertKaaeHansen\GkhRssImport\Localization\DateFormatter;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Exception;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 class RssImportController extends AbstractPlugin
 {
@@ -40,14 +42,14 @@ class RssImportController extends AbstractPlugin
      *
      * @var string
      */
-    public $prefixId = 'tx_gkhrssimport_pi1';
+    protected $prefixId = 'tx_gkhrssimport_pi1';
 
     /**
      * The extension key.
      *
      * @var string
      */
-    public $extKey = 'gkh_rss_import';
+    protected $extKey = 'gkh_rss_import';
 
     /**
      * Holds the template for FE rendering
@@ -60,12 +62,15 @@ class RssImportController extends AbstractPlugin
 
     protected LastRssService $rssService;
 
+    protected DateFormatter $dateFormatter;
+
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
         parent::__construct($_, $frontendController);
 
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
+        $this->dateFormatter = GeneralUtility::makeInstance(DateFormatter::class);
     }
 
     /**
@@ -80,7 +85,6 @@ class RssImportController extends AbstractPlugin
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
-        $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:gkh_rss_import/Resources/Private/Language/locallang.xlf');
         $this->pi_initPIflexForm();
         $this->mergeFlexFormValuesIntoConf();
@@ -186,9 +190,12 @@ class RssImportController extends AbstractPlugin
             $subPart = $this->getSubPart($this->template, '###RSSIMPORT_TEMPLATE###');
             $itemSubpart = $this->getSubPart($subPart, '###ITEM###');
 
+            $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
+            $locale = $this->conf['formattedDate.']['locale'] ?? $language->getLocale();
+
             $contentItem = '';
             foreach ($rss['items'] as $item) {
-                $contentItem .= $this->renderItem($item, $itemSubpart, $target);
+                $contentItem .= $this->renderItem($item, $itemSubpart, $target, $locale);
             }
             $subPartArray['###ITEM###'] = $contentItem;
 
@@ -276,7 +283,10 @@ class RssImportController extends AbstractPlugin
         return $this->templateService->getSubpart($template, $marker);
     }
 
-    protected function renderItem(array $item, string $itemSubpart, string $target): string
+    /**
+     * @param Locale|string $locale
+     */
+    protected function renderItem(array $item, string $itemSubpart, string $target, $locale): string
     {
         // for UserFunction fixRssURLs
         $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];
@@ -293,12 +303,17 @@ class RssImportController extends AbstractPlugin
         if ($item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
 
-            $date = \DateTimeImmutable::createFromFormat('U', (string)strtotime($item['pubDate']));
-            $markerArray['###RSS_DATE###'] = htmlentities(
-                $date->format($this->getDateFormat()),
-                ENT_QUOTES,
-                'utf-8'
-            );
+            $pubDate = strtotime($item['pubDate']);
+            if ($pubDate !== false) {
+                $date = \DateTimeImmutable::createFromFormat('U', (string)$pubDate);
+                $markerArray['###RSS_DATE###'] = htmlentities(
+                    $this->dateFormatter->strftime($this->getDateFormat(), $date, $locale),
+                    ENT_QUOTES,
+                    'utf-8'
+                );
+            } else {
+                $markerArray['###RSS_DATE###'] = '';
+            }
         }
         $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
         // TODO: htmlspecialchars?
@@ -307,7 +322,7 @@ class RssImportController extends AbstractPlugin
         // TODO: htmlspecialchars?
         $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? '');
 
-        // Get item content/home/simon/Code/github/simonschaufi/gkh_rss_import/.Build/bin/phpcs
+        // Get item content
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
         $itemSummary = $item['description'];
 
@@ -369,16 +384,13 @@ class RssImportController extends AbstractPlugin
     {
         switch ($this->conf['dateFormat'] ?? null) {
             case 1:
-                return 'l, d. F Y';
+                return '%A, %d. %B %Y';
             case 2:
-                return 'd. F Y';
+                return '%d. %B %Y';
             case 3:
-                return 'j/m - Y';
+                return '%e/%m - %Y';
             default:
-                if (!empty($this->conf['dateFormat'])) {
-                    return $this->conf['dateFormat'];
-                }
-                return 'j/m - Y';
+                return $this->conf['dateFormat'] ?? '%e/%m - %Y';
         }
     }
 
@@ -488,5 +500,10 @@ class RssImportController extends AbstractPlugin
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
