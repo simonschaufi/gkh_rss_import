@@ -21,9 +21,12 @@ namespace GertKaaeHansen\GkhRssImport\Controller;
 
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Localization\DateFormatter;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,12 +62,15 @@ class RssImportController extends AbstractPlugin
 
     protected LastRssService $rssService;
 
+    protected DateFormatter $dateFormatter;
+
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
         parent::__construct($_, $frontendController);
 
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
+        $this->dateFormatter = GeneralUtility::makeInstance(DateFormatter::class);
     }
 
     /**
@@ -183,9 +189,12 @@ class RssImportController extends AbstractPlugin
             $subPart = $this->getSubPart($this->template, '###RSSIMPORT_TEMPLATE###');
             $itemSubpart = $this->getSubPart($subPart, '###ITEM###');
 
+            $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
+            $locale = $this->conf['formattedDate.']['locale'] ?? $language->getLocale();
+
             $contentItem = '';
             foreach ($rss['items'] as $item) {
-                $contentItem .= $this->renderItem($item, $itemSubpart, $target);
+                $contentItem .= $this->renderItem($item, $itemSubpart, $target, $locale);
             }
             $subPartArray['###ITEM###'] = $contentItem;
 
@@ -273,7 +282,7 @@ class RssImportController extends AbstractPlugin
         return $this->templateService->getSubpart($template, $marker);
     }
 
-    protected function renderItem(array $item, string $itemSubpart, string $target): string
+    protected function renderItem(array $item, string $itemSubpart, string $target, Locale|string $locale): string
     {
         // for UserFunction fixRssURLs
         $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];
@@ -290,12 +299,13 @@ class RssImportController extends AbstractPlugin
         if ($item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->pi_classParam('date');
 
-            $date = \DateTimeImmutable::createFromFormat('U', (string)strtotime($item['pubDate']));
-            $markerArray['###RSS_DATE###'] = htmlentities(
-                $date->format($this->getDateFormat()),
-                ENT_QUOTES,
-                'utf-8'
-            );
+            $date = strtotime($item['pubDate']);
+            if ($date === false) {
+                $markerArray['###RSS_DATE###'] = '';
+            } else {
+                $rssDate = $this->dateFormatter->format($date, $this->getDateFormat(), $locale);
+                $markerArray['###RSS_DATE###'] = $rssDate;
+            }
         }
         $markerArray['###CLASS_AUTHOR###'] = $this->pi_classParam('author');
         // TODO: htmlspecialchars?
@@ -304,7 +314,7 @@ class RssImportController extends AbstractPlugin
         // TODO: htmlspecialchars?
         $markerArray['###CATEGORY###'] = htmlentities($item['category'] ?? '');
 
-        // Get item content/home/simon/Code/github/simonschaufi/gkh_rss_import/.Build/bin/phpcs
+        // Get item content
         $markerArray['###CLASS_SUMMARY###'] = $this->pi_classParam('content');
         $itemSummary = $item['description'];
 
@@ -362,16 +372,16 @@ class RssImportController extends AbstractPlugin
     {
         switch ($this->conf['dateFormat'] ?? null) {
             case 1:
-                return 'l, d. F Y';
+                return 'EEEE, dd. LLLL y';
             case 2:
-                return 'd. F Y';
+                return 'dd. LLLL y';
             case 3:
-                return 'j/m - Y';
+                return 'dd/MM - y';
             default:
                 if (!empty($this->conf['dateFormat'])) {
                     return $this->conf['dateFormat'];
                 }
-                return 'j/m - Y';
+                return 'dd/MM - y';
         }
     }
 
@@ -481,5 +491,10 @@ class RssImportController extends AbstractPlugin
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

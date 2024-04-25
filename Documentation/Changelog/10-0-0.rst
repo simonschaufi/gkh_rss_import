@@ -1,0 +1,48 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+10.0.0
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2024-04-25 [!!!][BUGFIX] Make date format locale aware (Commit 54cc4c3 by Simon Schaufelberger)
+   2024-04-24 [TASK] Move phpunit configuration files back to where they belong (Commit 69e2929 by Simon Schaufelberger)
+   2024-04-24 [TASK] Update squizlabs/php_codesniffer requirement (Commit 42ee93d by dependabot[bot])
+   2024-04-17 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit c0e58db by dependabot[bot])
+   2024-04-09 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit 159af14 by dependabot[bot])
+   2024-04-01 [TASK] Update squizlabs/php_codesniffer requirement (Commit f50e867 by dependabot[bot])
+   2024-03-20 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit 3d555d7 by dependabot[bot])
+   2024-03-19 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit d701ce1 by dependabot[bot])
+   2024-03-13 [FEATURE] Rename crowdin.yml to .crowdin.yml (Commit 8fd6587 by Simon Schaufelberger)
+   2024-02-29 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit 33a0a91 by dependabot[bot])
+   2024-02-29 [TASK] Update helmich/typo3-typoscript-lint requirement (Commit 774b269 by dependabot[bot])
+   2024-02-27 [TASK] Update helmich/typo3-typoscript-lint requirement (Commit 6aa4206 by dependabot[bot])
+   2024-02-26 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit 1e908fe by dependabot[bot])
+   2024-02-19 [TASK] Update squizlabs/php_codesniffer requirement (Commit 66f2c77 by dependabot[bot])
+   2024-02-16 [TASK] Update typo3/tailor requirement from ^1.5.0 to ^1.6.0 (Commit 1838860 by dependabot[bot])
+   2024-02-02 [TASK] Add commit message prefix (Commit 8f88205 by Simon Schaufelberger)
+   2024-02-02 Update friendsofphp/php-cs-fixer requirement from ^3.48.0 to ^3.49.0 (Commit c9d16bb by dependabot[bot])
+   2024-02-01 Update typo3/testing-framework requirement from ^8.0.8 to ^8.0.9 (Commit 37b1df2 by dependabot[bot])
+   2024-01-31 Update ergebnis/composer-normalize requirement from ^2.41.1 to ^2.42.0 (Commit 2c9d4da by dependabot[bot])
+   2024-01-26 [TASK] Move translation to Crowdin (Commit d133435 by Simon Schaufelberger)
+   2024-01-26 [TASK] Move translation to Crowdin (Commit 2494194 by Simon Schaufelberger)
+   2024-01-26 Bump actions/cache from 3 to 4 (Commit 3e80a44 by dependabot[bot])
+   2024-01-26 Bump actions/checkout from 2 to 4 (Commit aabc946 by dependabot[bot])
+   2024-01-26 Update ergebnis/composer-normalize requirement from ^2.28.3 to ^2.41.1 (Commit 927b58a by dependabot[bot])
+   2024-01-26 [TASK] Remove untranslated languages (Commit 4e05ebc by Simon Schaufelberger)
+   2024-01-26 [TASK] Remove untranslated languages (Commit cc616e2 by Simon Schaufelberger)
+   2024-01-26 [TASK] Use CI tools from EXT:tea (Commit 57d2964 by Simon Schaufelberger)
+   2023-06-09 [TASK] TYPO3 12 LTS compatibility (Commit 705690b by Simon Schaufelberger)
+   2022-10-06 [TASK] TYPO3 12 compatibility (#24) (Commit 7b4b576 by Simon Schaufelberger)
+   2022-07-03 [TASK] Format table correctly (Commit 20f2f06 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
