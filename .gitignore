@@ -1,9 +1,8 @@
 /.Build
 /.idea
+/Build/php-cs-fixer/.php-cs-fixer.cache
 /var
 /.env
 /.env.dist
-/.php-cs-fixer.cache
-/.phpunit.result.cache
 /composer.lock
 /release.sh

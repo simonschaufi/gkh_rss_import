@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3') or die();
+defined('TYPO3') || die();
 
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Cache\Frontend\ImageFrontend;
@@ -8,7 +8,7 @@ use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-(static function () {
+(static function (): void {
     // Add default rendering for pi_layout plugin
     ExtensionManagementUtility::addTypoScript(
         'gkh_rss_import',

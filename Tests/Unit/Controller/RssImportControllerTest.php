@@ -22,6 +22,7 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Page\PageRendererFactoryTrait;
+use PHPUnit\Framework\MockObject\Exception;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -46,40 +47,24 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RssImportControllerTest extends UnitTestCase
+final class RssImportControllerTest extends UnitTestCase
 {
     use PageRendererFactoryTrait;
 
-    protected RssImportController $subject;
+    private RssImportController $subject;
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws Exception
      */
     protected function setUp(): void
     {
         parent::setUp();
 
+        $site = $this->createSiteWithLanguage();
+
         /** @see https://github.com/TYPO3/typo3/blob/58fb6ad4b00e1a72d1e728e1db19760a52ff1449/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L61-L102 */
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-
-        $site = new Site(
-            'test',
-            1,
-            [
-                'base' => 'https://www.example.com',
-                'languages' => [
-                    [
-                        'languageId' => 0,
-                        'title' => 'English',
-                        'locale' => 'en_UK',
-                        'base' => '/',
-                    ],
-                ],
-            ]
-        );
-
-        $packageManagerMock = $this->createMock(PackageManager::class);
 
         $cacheManagerMock = $this->createMock(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
@@ -95,7 +80,7 @@ class RssImportControllerTest extends UnitTestCase
         $languageService = new LanguageService(
             new Locales(),
             new LocalizationFactory(
-                new LanguageStore($packageManagerMock),
+                new LanguageStore($this->createMock(PackageManager::class)),
                 $cacheManagerMock
             ),
             $cacheFrontendMock
@@ -105,6 +90,7 @@ class RssImportControllerTest extends UnitTestCase
         $languageServiceFactoryMock->method('createFromSiteLanguage')->willReturn($languageService);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
+        // This is needed for PageRenderer
         $importMapMock = $this->createMock(ImportMap::class);
         $importMapMock->method('render')->willReturn('')->withAnyParameters();
 
@@ -171,9 +157,6 @@ class RssImportControllerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider cropHTMLDataProvider
-     * @param int $length
-     * @param string $input
-     * @param string $expected
      */
     public function cropHtml(int $length, string $input, string $expected): void
     {
@@ -200,5 +183,22 @@ class RssImportControllerTest extends UnitTestCase
         );
 
         self::assertEquals('png', $result);
+    }
+
+    private function createSiteWithLanguage(): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                [
+                    'languageId' => 1,
+                    'title' => 'Default',
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/',
+                ],
+            ],
+        ]);
     }
 }
