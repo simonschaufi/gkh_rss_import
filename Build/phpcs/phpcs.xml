@@ -57,7 +57,7 @@
         <properties>
             <property name="lineLimit" value="366"/>
         </properties>
-        <exclude-pattern>Configuration/TCA/</exclude-pattern>
+        <exclude-pattern>../../Configuration/TCA/</exclude-pattern>
     </rule>
     <rule ref="Generic.Files.OneClassPerFile"/>
     <rule ref="Generic.Files.OneInterfacePerFile"/>

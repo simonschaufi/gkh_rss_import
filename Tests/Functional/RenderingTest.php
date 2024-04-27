@@ -26,16 +26,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RenderingTest extends FunctionalTestCase
+final class RenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const LANGUAGE_PRESETS = [
+    private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
-    protected const VALUE_PAGE_ID = 1;
+    private const VALUE_PAGE_ID = 1;
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/gkh_rss_import'];
 
@@ -46,10 +46,9 @@ class RenderingTest extends FunctionalTestCase
         ],
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Database/pages.csv');
         $this->setUpFrontendRootPage(1, ['EXT:gkh_rss_import/Tests/Functional/Fixtures/Frontend/Basic.typoscript']);
 
