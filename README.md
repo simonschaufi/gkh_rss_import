@@ -44,12 +44,12 @@ Download and install the [extension][3] with the extension manager module in the
 
 ### Versions and support
 
-| Branch     | TYPO3       | PHP       | Support / Development       |
-|------------|-------------|-----------|-----------------------------|
-| dev-master | 12.0 - 12.0 | 8.1       | unstable development branch |
-| 9.x        | 11.5 - 11.5 | 7.4 - 8.1 | bugfixes, security updates  |
-| 8.x        | 9.5 - 11.5  | 7.2 - 7.4 | no more support             |
-| 6.x        | 8.7 - 8.7   | 7.0 - 7.4 | no more support             |
+| Branch   | TYPO3       | PHP       | Support / Development       |
+|----------|-------------|-----------|-----------------------------|
+| dev-main | 12.0 - 12.0 | 8.1       | unstable development branch |
+| 9.x      | 11.5 - 11.5 | 7.4 - 8.1 | bugfixes, security updates  |
+| 8.x      | 9.5 - 11.5  | 7.2 - 7.4 | no more support             |
+| 6.x      | 8.7 - 8.7   | 7.0 - 7.4 | no more support             |
 
 ### Changelog
 

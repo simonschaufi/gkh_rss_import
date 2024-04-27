@@ -8,16 +8,11 @@
 
 ## Prerequisites
 
-* [ ] Changes have been tested on TYPO3 v10.4 LTS
-* [ ] Changes have been tested on TYPO3 v11.5 LTS
+* [ ] Changes have been tested on TYPO3 v12.4 LTS
 * [ ] Changes have been tested on TYPO3 dev-main
-* [ ] Changes have been tested on PHP 7.0.x
-* [ ] Changes have been tested on PHP 7.1.x
-* [ ] Changes have been tested on PHP 7.2.x
-* [ ] Changes have been tested on PHP 7.3.x
-* [ ] Changes have been tested on PHP 7.4.x
-* [ ] Changes have been tested on PHP 8.0.x
 * [ ] Changes have been tested on PHP 8.1.x
+* [ ] Changes have been tested on PHP 8.2.x
+* [ ] Changes have been tested on PHP 8.3.x
 * [ ] Changes have been checked for CGL compliance `php-cs-fixer fix`
 
 ## Description
