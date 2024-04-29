@@ -221,7 +221,7 @@ class AbstractPlugin
             || isset($this->LOCAL_LANG_UNSET[$this->LLkey][$key])
         ) {
             $word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
-        } elseif ($this->altLLkey) {
+        } elseif ($this->altLLkey !== '') {
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
             foreach ($alternativeLanguageKeys as $languageKey) {
                 if (
@@ -243,10 +243,10 @@ class AbstractPlugin
                 $word = $this->LOCAL_LANG['default'][$key][0]['target'];
             } else {
                 // Return alternative string or empty
-                $word = !empty($this->LLtestPrefixAlt) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
+                $word = $this->LLtestPrefixAlt !== '' ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
             }
         }
-        return !empty($this->LLtestPrefix) ? $this->LLtestPrefix . $word : $word;
+        return $this->LLtestPrefix !== '' ? $this->LLtestPrefix . $word : $word;
     }
 
     /**
@@ -336,7 +336,7 @@ class AbstractPlugin
     /**
      * Return value from somewhere inside a FlexForm structure
      *
-     * @param array $T3FlexForm_array FlexForm data
+     * @param array|null $T3FlexForm_array FlexForm data
      * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
      * @param string $sheet Sheet pointer, eg. "sDEF
      * @param string $lang Language pointer, eg. "lDEF

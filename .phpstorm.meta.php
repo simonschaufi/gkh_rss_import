@@ -1,36 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 /**
- * @see https://www.jetbrains.com/help/phpstorm/ide-advanced-metadata.html
+ * Extend PhpStorms code completion capabilities by providing a meta file
+ *
+ * @link https://www.jetbrains.com/help/phpstorm/ide-advanced-metadata.html
  */
 namespace PHPSTORM_META {
-
-    override(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(0), type(0));
-
-    // TYPO3 testing framework
-    // The accesible mock will be of type `self` as well as `MockObject` and `AccessibleObjectInterface`.
-    override(
-        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMock(0),
-        map(
-            [
-                '' => '@|\\PHPUnit\\Framework\\MockObject\\MockObject'
-                    . '|\\TYPO3\\TestingFramework\\Core\\AccessibleObjectInterface',
-            ]
-        )
-    );
-    override(
-        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMockForAbstractClass(0),
-        map(
-            [
-                '' => '@|\\PHPUnit\\Framework\\MockObject\\MockObject'
-                    . '|\\TYPO3\TestingFramework\\Core\\AccessibleObjectInterface',
-            ]
-        )
-    );
-
     // Contexts
-    // @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
+    // @see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
     expectedArguments(
         \TYPO3\CMS\Core\Context\Context::getAspect(),
         0,
@@ -165,4 +144,39 @@ namespace PHPSTORM_META {
         \TYPO3\CMS\Core\Routing\PageArguments::class,
         \TYPO3\CMS\Core\Routing\RouteResultInterface::class
     ));
+
+    override(\Psr\Container\ContainerInterface::get(0), map([
+        '' => '@',
+    ]));
+
+    override(\Psr\EventDispatcher\EventDispatcherInterface::dispatch(0), map([
+        '' => '@',
+    ]));
+
+    override(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(0), map([
+        '' => '@'
+    ]));
+
+    // My own
+
+    // TYPO3 testing framework
+    // The accesible mock will be of type `self` as well as `MockObject` and `AccessibleObjectInterface`.
+    override(
+        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMock(0),
+        map(
+            [
+                '' => '@|\\PHPUnit\\Framework\\MockObject\\MockObject'
+                    . '|\\TYPO3\\TestingFramework\\Core\\AccessibleObjectInterface',
+            ]
+        )
+    );
+    override(
+        \TYPO3\TestingFramework\Core\BaseTestCase::getAccessibleMockForAbstractClass(0),
+        map(
+            [
+                '' => '@|\\PHPUnit\\Framework\\MockObject\\MockObject'
+                    . '|\\TYPO3\TestingFramework\\Core\\AccessibleObjectInterface',
+            ]
+        )
+    );
 }

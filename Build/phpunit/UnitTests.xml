@@ -16,9 +16,7 @@
     failOnNotice="true"
     failOnRisky="true"
     failOnWarning="true"
-    requireCoverageMetadata="false"
 >
-    <coverage/>
     <testsuites>
         <testsuite name="Unit tests">
             <directory>../../Tests/Unit/</directory>
@@ -26,11 +24,7 @@
     </testsuites>
     <php>
         <ini name="display_errors" value="1"/>
+        <ini name="error_reporting" value="E_ALL"/>
         <env name="TYPO3_CONTEXT" value="Testing"/>
     </php>
-    <source>
-        <include>
-            <directory>../../Classes/</directory>
-        </include>
-    </source>
 </phpunit>

@@ -15,7 +15,9 @@ jobs:
     name: "Dependabot auto-merge"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+
     if: ${{ github.actor == 'dependabot[bot]' }}
+
     steps:
       - name: "Dependabot metadata"
         # https://docs.github.com/en/enterprise-cloud@latest/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions#fetch-metadata-about-a-pull-request
@@ -24,16 +26,23 @@ jobs:
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: "Auto-merge Dependabot PRs for semver-minor updates"
-        if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-minor' }}
-        run: gh pr merge --auto --rebase "$PR_URL"
-        env:
-          PR_URL: "${{ github.event.pull_request.html_url }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+# does not work, see https://github.com/dependabot/fetch-metadata/issues/499
+#      - name: "Auto-merge Dependabot PRs for semver-minor updates"
+#        if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-minor' }}
+#        run: gh pr merge --auto --rebase "$PR_URL"
+#        env:
+#          PR_URL: "${{ github.event.pull_request.html_url }}"
+#          github-token: "${{ secrets.GITHUB_TOKEN }}"
+#
+#      - name: "Auto-merge Dependabot PRs for semver-patch updates"
+#        if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-patch' }}
+#        run: gh pr merge --auto --rebase "$PR_URL"
+#        env:
+#          PR_URL: "${{ github.event.pull_request.html_url }}"
+#          github-token: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: "Auto-merge Dependabot PRs for semver-patch updates"
-        if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-patch' }}
-        run: gh pr merge --auto --rebase "$PR_URL"
+      - name: "Enable auto-merge"
+        if: ${{ steps.metadata.outputs.dependency-type == 'direct:development' }}
+        run: gh pr merge -R "${{ github.repository }}" --squash --auto "${{ github.event.pull_request.number }}"
         env:
-          PR_URL: "${{ github.event.pull_request.html_url }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
