@@ -41,12 +41,12 @@ class LastRssService
     }
 
     /**
-     * @return bool|string
+     * @return bool|array
      * @throws \RuntimeException
      */
     public function getFeed()
     {
-        if (empty($this->url)) {
+        if ($this->url === null || $this->url === '') {
             throw new \RuntimeException('Feed URL is not set.', 1526816720);
         }
         return $this->rss->Get($this->url);

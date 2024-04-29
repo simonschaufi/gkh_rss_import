@@ -123,7 +123,7 @@ class RssImportController extends AbstractPlugin
             return file_get_contents($template);
         }
 
-        // Check if template is given via flex form
+        // Check if template is given via FlexForm
         $uid = $this->cObj->data['uid'];
 
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
@@ -216,32 +216,32 @@ class RssImportController extends AbstractPlugin
      */
     protected function getImage(array $rss, string $target): string
     {
-        if (isset($rss['image_url'], $rss['image_title'], $rss['image_link']) && $rss['image_url'] !== '') {
-            $location = $this->getCachedImageLocation($rss['image_url']);
-
-            if (!file_exists($location)) {
-                throw new \RuntimeException(sprintf('File %s could not be found!', $location));
-            }
-
-            // Pass the combination of TS-defined values and php processing through the IMAGE cObject function
-            $imgOutput = $this->cObj->cObjGetSingle('IMAGE', [
-                'altText' => $rss['image_title'],
-                'titleText' => $rss['image_title'],
-                'file' => $location,
-                'file.' => [
-                    'maxW' => $this->conf['logoWidth'] ?? 0,
-                ],
-            ]);
-            return sprintf(
-                '<div%s><a href="%s" target="%s">%s</a></div><br />',
-                $this->pi_classParam('RSS_h_image'),
-                $this->removeDoubleHTTP($rss['image_link']),
-                $target,
-                $imgOutput
-            );
+        if (!isset($rss['image_url'], $rss['image_title'], $rss['image_link']) || $rss['image_url'] === '') {
+            return '';
         }
 
-        return '';
+        $location = $this->getCachedImageLocation($rss['image_url']);
+
+        if (!file_exists($location)) {
+            throw new \RuntimeException(sprintf('File %s could not be found!', $location));
+        }
+
+        // Pass the combination of TS-defined values and php processing through the IMAGE cObject function
+        $imgOutput = $this->cObj->cObjGetSingle('IMAGE', [
+            'altText' => $rss['image_title'],
+            'titleText' => $rss['image_title'],
+            'file' => $location,
+            'file.' => [
+                'maxW' => $this->conf['logoWidth'] ?? 0,
+            ],
+        ]);
+        return sprintf(
+            '<div%s><a href="%s" target="%s">%s</a></div><br />',
+            $this->pi_classParam('RSS_h_image'),
+            $this->removeDoubleHTTP($rss['image_link']),
+            $target,
+            $imgOutput
+        );
     }
 
     /**

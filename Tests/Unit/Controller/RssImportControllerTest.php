@@ -26,7 +26,6 @@ use PHPUnit\Framework\MockObject\Exception;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -38,11 +37,9 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -60,30 +57,36 @@ final class RssImportControllerTest extends UnitTestCase
     {
         parent::setUp();
 
-        $site = $this->createSiteWithLanguage();
+        $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(1);
 
         /** @see https://github.com/TYPO3/typo3/blob/58fb6ad4b00e1a72d1e728e1db19760a52ff1449/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L61-L102 */
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('language', $siteLanguage);
 
+        /** @see https://github.com/TYPO3/typo3/blob/a61d15b47346fc0eeac03907bd089aebc1980f76/typo3/sysext/backend/Tests/Unit/Form/InlineStackProcessorTest.php#L35-L40 */
         $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock
+            ->method('getCache')
+            ->with('runtime')
+            ->willReturn($this->createMock(FrontendInterface::class));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-
-        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
-        $cacheFrontendMock->method('get')->willReturn(false);
-        $cacheFrontendMock->method('set')->willReturn(null);
 
         // Define languageDebug because it's expected to be set in LanguageService
         $GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'] = false;
+
+        $localizationFactoryCacheManagerMock = $this->createMock(CacheManager::class);
+        $localizationFactoryCacheManagerMock->method('getCache')
+            ->with('l10n')
+            ->willReturn($this->createMock(FrontendInterface::class));
 
         $languageService = new LanguageService(
             new Locales(),
             new LocalizationFactory(
                 new LanguageStore($this->createMock(PackageManager::class)),
-                $cacheManagerMock
+                $localizationFactoryCacheManagerMock
             ),
-            $cacheFrontendMock
+            $this->createMock(FrontendInterface::class)
         );
 
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
@@ -102,23 +105,10 @@ final class RssImportControllerTest extends UnitTestCase
             PageRenderer::class,
             new PageRenderer(...$this->getPageRendererConstructorArgs()),
         );
-        $frontendUserMock = $this->createMock(FrontendUserAuthentication::class);
 
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setConstructorArgs(
-                [
-                    new Context(),
-                    $site,
-                    $site->getDefaultLanguage(),
-                    new PageArguments(1, '1', []),
-                    $frontendUserMock,
-                ]
-            )
-            ->onlyMethods(['initCaches'])
+            ->disableOriginalConstructor()
             ->getMock();
-
-        $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
-        $GLOBALS['TSFE']->page = [];
 
         GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
             new NullFrontend('hash'),
@@ -126,7 +116,7 @@ final class RssImportControllerTest extends UnitTestCase
         ));
 
         $this->subject = new RssImportController();
-        $this->subject->setContentObjectRenderer($GLOBALS['TSFE']->cObj);
+        $this->subject->setContentObjectRenderer(new ContentObjectRenderer());
     }
 
     protected function tearDown(): void
