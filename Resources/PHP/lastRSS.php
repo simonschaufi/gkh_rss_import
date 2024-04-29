@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  ======================================================================
  lastRSS 0.9.1
@@ -96,7 +98,7 @@ class lastRSS
     // Modification of preg_match(); return trimmed field with index 1
     // from 'classic' preg_match() array output
     // -------------------------------------------------------------------
-    public function my_preg_match($pattern, $subject)
+    public function my_preg_match($pattern, $subject): string
     {
         preg_match($pattern, $subject, $out);
 
@@ -104,7 +106,7 @@ class lastRSS
         if (isset($out[1])) {
             // Process CDATA (if present)
             if ($this->CDATA === 'content') { // Get CDATA content (without CDATA tag)
-                if (substr($out[1], 0, 9) === '<![CDATA[') {
+                if (str_starts_with($out[1], '<![CDATA[')) {
                     $out[1] = strtr($out[1], ['<![CDATA[' => '', ']]>' => '']);
                 } else {
                     $out[1] = html_entity_decode($out[1], ENT_QUOTES, $this->rsscp);
@@ -127,7 +129,7 @@ class lastRSS
     // -------------------------------------------------------------------
     // Replace HTML entities &something; by real characters
     // -------------------------------------------------------------------
-    public function unhtmlentities($string)
+    public function unhtmlentities($string): string
     {
         return html_entity_decode($string, ENT_QUOTES, $this->cp);
     }
@@ -136,7 +138,7 @@ class lastRSS
     // Parse() is private method used by Get() to load and parse RSS file.
     // Don't use Parse() in your scripts - use Get($rss_file) instead.
     // -------------------------------------------------------------------
-    public function Parse($rss_url)
+    public function Parse($rss_url): bool|array
     {
         $content = GeneralUtility::getURL($rss_url);
 
