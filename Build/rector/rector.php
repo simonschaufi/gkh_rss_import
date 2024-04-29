@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\Ternary\SwitchNegatedTernaryRector;
 use Rector\Config\RectorConfig;
-use Rector\PostRector\Rector\NameImportingPostRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
@@ -56,12 +55,10 @@ return static function (RectorConfig $rectorConfig) {
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses(false);
     $rectorConfig->skip([
-        // PostRector
-        NameImportingPostRector::class => [
-            'ClassAliasMap.php',
-        ],
-        DisallowedEmptyRuleFixerRector::class,
-        SwitchNegatedTernaryRector::class,
+        // CodeQuality
         ExplicitBoolCompareRector::class,
+        SwitchNegatedTernaryRector::class,
+        // Strict
+        DisallowedEmptyRuleFixerRector::class,
     ]);
 };
