@@ -37,15 +37,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class lastRSS
 {
-    public $default_cp = 'UTF-8';
-    public $CDATA = 'nochange';
-    public $cp = '';
-    public $items_limit = 0;
-    public $stripHTML = false;
-    public $date_format = '';
-    public $cache_dir = '';
-    public $cache_time = 0;
-    public $rsscp;
+    public string $default_cp = 'UTF-8';
+    public string $CDATA = 'nochange';
+    public string $cp = '';
+    public int $items_limit = 0;
+    public bool $stripHTML = false;
+    public string $date_format = '';
+    public string $cache_dir = '';
+    public int $cache_time = 0;
+    public string $rsscp = '';
 
     // -------------------------------------------------------------------
     // Private variables
