@@ -45,7 +45,7 @@ class lastRSS
     public $date_format = '';
     public $cache_dir = '';
     public $cache_time = 0;
-    public $rsscp;
+    public $rsscp = '';
 
     // -------------------------------------------------------------------
     // Private variables
@@ -56,25 +56,26 @@ class lastRSS
     protected $imagetags = ['title', 'url', 'link', 'width', 'height'];
     protected $textinputtags = ['title', 'description', 'name', 'link'];
 
-    // -------------------------------------------------------------------
-    // Parse RSS file and returns associative array.
-    // -------------------------------------------------------------------
-    public function Get($rss_url)
+    /**
+     * Parse RSS file and returns associative array.
+     * @return array|bool|mixed
+     */
+    public function Get(string $rssUrl): mixed
     {
-        // If CACHE ENABLED
+        // if the cache is enabled
         if ($this->cache_dir !== '') {
-            $cacheFile = $this->cache_dir . '/rsscache_' . $this->items_limit . '_' . md5($rss_url);
+            $cacheFile = $this->cache_dir . '/rsscache_' . $this->items_limit . '_' . md5($rssUrl);
             $timeDiff = @(time() - filemtime($cacheFile));
             if ($timeDiff < $this->cache_time) {
                 // cached file is fresh enough, return cached array
-                $result = unserialize(join('', file($cacheFile)));
+                $result = unserialize(implode('', file($cacheFile)));
                 // set 'cached' to 1 only if cached file is correct
                 if ($result) {
                     $result['cached'] = 1;
                 }
             } else {
                 // cached file is too old, create new
-                $result = $this->Parse($rss_url);
+                $result = $this->Parse($rssUrl);
                 $serialized = serialize($result);
                 if ($f = @fopen($cacheFile, 'wb')) {
                     fwrite($f, $serialized, strlen($serialized));
@@ -85,8 +86,8 @@ class lastRSS
                 }
             }
         } else {
-            // If CACHE DISABLED >> load and parse the file directly
-            $result = $this->Parse($rss_url);
+            // if the cache is disabled, then load and parse the file directly
+            $result = $this->Parse($rssUrl);
             if ($result) {
                 $result['cached'] = 0;
             }
@@ -94,11 +95,11 @@ class lastRSS
         return $result;
     }
 
-    // -------------------------------------------------------------------
-    // Modification of preg_match(); return trimmed field with index 1
-    // from 'classic' preg_match() array output
-    // -------------------------------------------------------------------
-    public function my_preg_match($pattern, $subject): string
+    /**
+     * Modification of preg_match(); return trimmed field with index 1
+     * from 'classic' preg_match() array output
+     */
+    public function my_preg_match(string $pattern, string $subject): string
     {
         preg_match($pattern, $subject, $out);
 
@@ -115,10 +116,9 @@ class lastRSS
                 $out[1] = strtr($out[1], ['<![CDATA[' => '', ']]>' => '']);
             }
 
-            // If code page is set convert character encoding to required
+            // If code page is set, convert character encoding to required
             if ($this->cp !== '') {
-                //$out[1] = $this->MyConvertEncoding($this->rsscp, $this->cp, $out[1]);
-                $out[1] = iconv($this->rsscp, $this->cp . '//TRANSLIT', $out[1]);
+                $out[1] = iconv((string) $this->rsscp, $this->cp . '//TRANSLIT', $out[1]);
             }
             return trim($out[1]);
         }
@@ -126,21 +126,22 @@ class lastRSS
         return '';
     }
 
-    // -------------------------------------------------------------------
-    // Replace HTML entities &something; by real characters
-    // -------------------------------------------------------------------
-    public function unhtmlentities($string): string
+    /**
+     * Replace HTML entities by real characters
+     */
+    public function unhtmlentities(string $string): string
     {
         return html_entity_decode($string, ENT_QUOTES, $this->cp);
     }
 
-    // -------------------------------------------------------------------
-    // Parse() is private method used by Get() to load and parse RSS file.
-    // Don't use Parse() in your scripts - use Get($rss_file) instead.
-    // -------------------------------------------------------------------
-    public function Parse($rss_url): bool|array
+    /**
+     * Parse() is a private method used by Get() to load and parse RSS file.
+     * Don't use Parse() in your scripts - use Get($rss_file) instead.
+     * @internal
+     */
+    public function Parse(string $rssUrl): bool|array
     {
-        $content = GeneralUtility::getURL($rss_url);
+        $content = GeneralUtility::getURL($rssUrl);
 
         if (!$content) {
             // Error in opening return False
@@ -150,19 +151,14 @@ class lastRSS
         // Parse document encoding
         $result['encoding'] = $this->my_preg_match("'encoding=[\'\"](.*?)[\'\"]'si", $content);
         // if document codepage is specified, use it
-        if ($result['encoding'] !== '') {
-            $this->rsscp = $result['encoding'];
-        } else {
-            // otherwise use the default codepage
-            $this->rsscp = $this->default_cp;
-        }
+        $this->rsscp = $result['encoding'] !== '' ? $result['encoding'] : $this->default_cp;
 
         // Parse CHANNEL info
         preg_match("'<channel.*?>(.*?)</channel>'si", $content, $out_channel);
-        foreach ($this->channeltags as $channeltag) {
-            $temp = $this->my_preg_match("'<$channeltag.*?>(.*?)</$channeltag>'si", $out_channel[1]);
+        foreach ($this->channeltags as $channelTag) {
+            $temp = $this->my_preg_match("'<$channelTag.*?>(.*?)</$channelTag>'si", $out_channel[1]);
             if ($temp !== '') {
-                $result[$channeltag] = $temp;
+                $result[$channelTag] = $temp;
             }
         }
         // If date_format is specified and lastBuildDate is valid
@@ -179,17 +175,17 @@ class lastRSS
             foreach ($this->textinputtags as $textInputTag) {
                 $temp = $this->my_preg_match("'<$textInputTag.*?>(.*?)</$textInputTag>'si", $outTextInfo[2]);
                 if ($temp !== '') {
-                    $result['textinput_'.$textInputTag] = $temp;
+                    $result['textinput_' . $textInputTag] = $temp;
                 }
             }
         }
         // Parse IMAGE info
-        preg_match("'<image.*?>(.*?)</image>'si", $content, $out_imageinfo);
-        if (isset($out_imageinfo[1])) {
+        preg_match("'<image.*?>(.*?)</image>'si", $content, $outImageInfo);
+        if (isset($outImageInfo[1])) {
             foreach ($this->imagetags as $imagetag) {
-                $temp = $this->my_preg_match("'<$imagetag.*?>(.*?)</$imagetag>'si", $out_imageinfo[1]);
+                $temp = $this->my_preg_match("'<$imagetag.*?>(.*?)</$imagetag>'si", $outImageInfo[1]);
                 if ($temp !== '') {
-                    $result['image_'.$imagetag] = $temp;
+                    $result['image_' . $imagetag] = $temp;
                 }
             }
         }
@@ -203,7 +199,7 @@ class lastRSS
             if ($i < $this->items_limit || $this->items_limit == 0) {
                 foreach ($this->itemtags as $itemTag) {
                     $temp = $this->my_preg_match("'<$itemTag.*?>(.*?)</$itemTag>'si", $rssItem);
-                    if ($temp != '') {
+                    if ($temp !== '') {
                         $result['items'][$i][$itemTag] = $temp;
                     }
                 }
@@ -220,16 +216,16 @@ class lastRSS
                     }
                 }
 
-                // Strip HTML tags and other bullshit from DESCRIPTION
+                // Strip HTML tags from DESCRIPTION
                 if ($this->stripHTML && $result['items'][$i]['description']) {
-                    $result['items'][$i]['description'] = strip_tags($result['items'][$i]['description']);
+                    $result['items'][$i]['description'] = strip_tags((string) $result['items'][$i]['description']);
                 }
-                // Strip HTML tags and other bullshit from TITLE
+                // Strip HTML tags from TITLE
                 if ($this->stripHTML && $result['items'][$i]['title']) {
-                    $result['items'][$i]['title'] = strip_tags($result['items'][$i]['title']);
+                    $result['items'][$i]['title'] = strip_tags((string) $result['items'][$i]['title']);
                 }
                 // If date_format is specified and pubDate is valid
-                if ($this->date_format !== '' && ($timestamp = strtotime($result['items'][$i]['pubDate'])) !==-1) {
+                if ($this->date_format !== '' && ($timestamp = strtotime((string) $result['items'][$i]['pubDate'])) !==-1) {
                     // convert pubDate to specified date format
                     $result['items'][$i]['pubDate'] = date($this->date_format, $timestamp);
                 }

@@ -75,9 +75,8 @@ class ImageFrontend extends AbstractFrontend
      * Checks the validity of an entry identifier. Returns TRUE if it's valid.
      *
      * @param string $identifier An identifier to be checked for validity
-     * @return bool
      */
-    public function isValidEntryIdentifier($identifier)
+    public function isValidEntryIdentifier($identifier): bool
     {
         return preg_match('/^[a-zA-Z0-9_%\\-&.]{1,250}$/', $identifier) === 1;
     }

@@ -20,6 +20,7 @@ return static function (RectorConfig $rectorConfig) {
     $rectorConfig->paths([
         __DIR__ . '/../../Classes',
         __DIR__ . '/../../Configuration',
+        __DIR__ . '/../../Resources/PHP',
         __DIR__ . '/../../Tests',
         __DIR__ . '/../../ext_emconf.php',
         __DIR__ . '/../../ext_localconf.php',
