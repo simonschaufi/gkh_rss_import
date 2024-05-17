@@ -1,0 +1,25 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+=====
+9.0.6
+=====
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2024-05-17 [RELEASE] Release v9.0.6 (Commit 55e99d6 by Simon Schaufelberger)
+   2024-05-17 [TASK] Improve code quality (Commit c341a0a by Simon Schaufelberger)
+   2024-05-17 [BUGFIX] Fix TypoScript constants category (Commit 8a2c651 by Simon Schaufelberger)
+   2024-05-17 [TASK] Improve composer.json (Commit 8177e80 by Simon Schaufelberger)
+   2024-05-17 [TASK] Fix comments (Commit ea8f5c7 by Simon Schaufelberger)
+   2024-05-17 [TASK] Add phpstan (Commit 44235b0 by Simon Schaufelberger)
+   2024-05-17 [TASK] Normalize composer.json (Commit 6850b34 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
