@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constructor of class GertKaaeHansen\\\\GkhRssImport\\\\Controller\\\\AbstractPlugin has an unused parameter \\$_\\.$#"
+			count: 1
+			path: ../../Classes/Controller/AbstractPlugin.php

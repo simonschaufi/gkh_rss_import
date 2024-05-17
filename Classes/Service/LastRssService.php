@@ -41,7 +41,7 @@ class LastRssService
     }
 
     /**
-     * @return bool|string
+     * @return bool|array
      * @throws \RuntimeException
      */
     public function getFeed()

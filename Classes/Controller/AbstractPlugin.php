@@ -129,12 +129,10 @@ class AbstractPlugin
     protected MarkerBasedTemplateService $templateService;
 
     /**
-     * Class Constructor (true constructor)
      * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the config.language setting.
      *
      * @param null $_ unused,
-     * @param TypoScriptFrontendController $frontendController
      */
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
@@ -241,7 +239,7 @@ class AbstractPlugin
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string $alternativeLabel Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
-     * @return string The value from LOCAL_LANG.
+     * @return string|null The value from LOCAL_LANG.
      */
     public function pi_getLL($key, $alternativeLabel = '')
     {
@@ -381,7 +379,6 @@ class AbstractPlugin
      * @param array $fieldNameArr Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array and return element number X (whether this is right behavior is not settled yet...)
      * @param string $value Value for outermost key, typ. "vDEF" depending on language.
      * @return mixed The value, typ. string.
-     * @internal
      * @see pi_getFFvalue()
      */
     public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value)
