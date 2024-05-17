@@ -189,7 +189,7 @@ trait SiteBasedTestTrait
         $baseConfiguration['errorHandler'] = $handler;
 
         return array_map(
-            static function (int $code) use ($baseConfiguration) {
+            static function (int $code) use ($baseConfiguration): array {
                 $baseConfiguration['errorCode'] = $code;
                 return $baseConfiguration;
             },
