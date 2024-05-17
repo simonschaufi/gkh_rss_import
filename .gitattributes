@@ -20,11 +20,10 @@
 *.xlf text eol=lf
 *.sh text eol=lf
 *.sql text eol=lf
-*.t3s text eol=lf
 *.txt text eol=lf
 
+/.* export-ignore
 /Build export-ignore
 /Documentation export-ignore
 /Tests export-ignore
-/.* export-ignore
 /crowdin.yml export-ignore

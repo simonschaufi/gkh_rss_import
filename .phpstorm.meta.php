@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Extend PhpStorms code completion capabilities by providing a meta file
  *
- * Kudos to Alexander Schnitzler's work, see https://github.com/alexanderschnitzler/phpstorm.meta.php-typo3
  * @link https://www.jetbrains.com/help/phpstorm/ide-advanced-metadata.html
  */
-
 namespace PHPSTORM_META {
     override(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(0), type(0));
 
     // Contexts
-    // @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
+    // @see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
     expectedArguments(
         \TYPO3\CMS\Core\Context\Context::getAspect(),
         0,

@@ -4,3 +4,4 @@
 /.env
 /.php-cs-fixer.cache
 /composer.lock
+/release*.sh

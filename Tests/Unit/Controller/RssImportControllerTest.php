@@ -21,6 +21,7 @@ namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Controller;
 
 use GertKaaeHansen\GkhRssImport\Controller\RssImportController;
 use GertKaaeHansen\GkhRssImport\Tests\Unit\Fixtures\Controller\RssImportControllerFixture;
+use PHPUnit\Framework\MockObject\Exception;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -40,12 +41,12 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RssImportControllerTest extends UnitTestCase
+final class RssImportControllerTest extends UnitTestCase
 {
-    protected RssImportController $subject;
+    private RssImportController $subject;
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws Exception
      */
     protected function setUp(): void
     {
@@ -147,9 +148,6 @@ class RssImportControllerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider cropHTMLDataProvider
-     * @param int $length
-     * @param string $input
-     * @param string $expected
      */
     public function cropHtml(int $length, string $input, string $expected): void
     {

@@ -33,12 +33,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  * Mainly used when testing Site-related tests in Frontend requests.
  *
  * Be sure to set the LANGUAGE_PRESETS const in your class.
+ *
+ * @note This file is copied from core
  */
 trait SiteBasedTestTrait
 {
     protected static function failIfArrayIsNotEmpty(array $items): void
     {
-        if (empty($items)) {
+        if ($items === []) {
             return;
         }
 
@@ -55,10 +57,10 @@ trait SiteBasedTestTrait
         array $errorHandling = []
     ): void {
         $configuration = $site;
-        if (!empty($languages)) {
+        if ($languages !== []) {
             $configuration['languages'] = $languages;
         }
-        if (!empty($errorHandling)) {
+        if ($errorHandling !== []) {
             $configuration['errorHandling'] = $errorHandling;
         }
         $siteConfiguration = new SiteConfiguration(
@@ -214,7 +216,7 @@ trait SiteBasedTestTrait
 
         foreach ($instructions as $instruction) {
             $identifier = $instruction->getIdentifier();
-            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) !== null) {
+            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) instanceof AbstractInstruction) {
                 $modifiedInstructions[$identifier] = $this->mergeInstruction(
                     $modifiedInstructions[$identifier] ?? $request->getInstruction($identifier),
                     $instruction
@@ -229,7 +231,7 @@ trait SiteBasedTestTrait
 
     protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction
     {
-        if (get_class($current) !== get_class($other)) {
+        if ($current::class !== $other::class) {
             throw new \LogicException('Cannot merge different instruction types', 1565863174);
         }
 
@@ -247,7 +249,7 @@ trait SiteBasedTestTrait
                 $current = $current->withTypoScript($typoScript);
             }
             if ($constants !== []) {
-                $current = $current->withConstants($constants);
+                return $current->withConstants($constants);
             }
             return $current;
         }

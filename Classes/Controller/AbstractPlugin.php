@@ -211,17 +211,12 @@ class AbstractPlugin
 	</div>
 	';
         if (!($this->frontendController->config['config']['disablePrefixComment'] ?? false)) {
-            $content = '
-
-
+            return '
 	<!--
-
 		BEGIN: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '"
-
 	-->
 	' . $content . '
 	<!-- END: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '" -->
-
 	';
         }
         return $content;
@@ -249,7 +244,7 @@ class AbstractPlugin
             || isset($this->LOCAL_LANG_UNSET[$this->LLkey][$key])
         ) {
             $word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
-        } elseif ($this->altLLkey) {
+        } elseif ($this->altLLkey !== '') {
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
             foreach ($alternativeLanguageKeys as $languageKey) {
                 if (
@@ -271,10 +266,10 @@ class AbstractPlugin
                 $word = $this->LOCAL_LANG['default'][$key][0]['target'];
             } else {
                 // Return alternative string or empty
-                $word = !empty($this->LLtestPrefixAlt) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
+                $word = $this->LLtestPrefixAlt !== '' ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
             }
         }
-        return !empty($this->LLtestPrefix) ? $this->LLtestPrefix . $word : $word;
+        return $this->LLtestPrefix !== '' ? $this->LLtestPrefix . $word : $word;
     }
 
     /**
@@ -302,9 +297,13 @@ class AbstractPlugin
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
             foreach ($alternativeLanguageKeys as $languageKey) {
                 $tempLL = $languageFactory->getParsedData($languageFilePath, $languageKey);
-                if ($this->LLkey !== 'default' && isset($tempLL[$languageKey])) {
-                    $this->LOCAL_LANG[$languageKey] = $tempLL[$languageKey];
+                if ($this->LLkey === 'default') {
+                    continue;
                 }
+                if (!isset($tempLL[$languageKey])) {
+                    continue;
+                }
+                $this->LOCAL_LANG[$languageKey] = $tempLL[$languageKey];
             }
             // Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
             if (isset($this->conf['_LOCAL_LANG.'])) {
@@ -312,15 +311,19 @@ class AbstractPlugin
                 $this->LOCAL_LANG_UNSET = [];
                 foreach ($this->conf['_LOCAL_LANG.'] as $languageKey => $languageArray) {
                     // Remove the dot after the language key
-                    $languageKey = substr($languageKey, 0, -1);
+                    $languageKey = substr((string)$languageKey, 0, -1);
                     // Don't process label if the language is not loaded
-                    if (is_array($languageArray) && isset($this->LOCAL_LANG[$languageKey])) {
-                        foreach ($languageArray as $labelKey => $labelValue) {
-                            if (!is_array($labelValue)) {
-                                $this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
-                                if ($labelValue === '') {
-                                    $this->LOCAL_LANG_UNSET[$languageKey][$labelKey] = '';
-                                }
+                    if (!is_array($languageArray)) {
+                        continue;
+                    }
+                    if (!isset($this->LOCAL_LANG[$languageKey])) {
+                        continue;
+                    }
+                    foreach ($languageArray as $labelKey => $labelValue) {
+                        if (!is_array($labelValue)) {
+                            $this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
+                            if ($labelValue === '') {
+                                $this->LOCAL_LANG_UNSET[$languageKey][$labelKey] = '';
                             }
                         }
                     }
@@ -356,16 +359,25 @@ class AbstractPlugin
     /**
      * Return value from somewhere inside a FlexForm structure
      *
-     * @param array $T3FlexForm_array FlexForm data
+     * @param array|null $T3FlexForm_array FlexForm data
      * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
      * @param string $sheet Sheet pointer, eg. "sDEF
      * @param string $lang Language pointer, eg. "lDEF
      * @param string $value Value pointer, eg. "vDEF
      * @return string|null The content.
      */
-    public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF')
-    {
-        $sheetArray = $T3FlexForm_array['data'][$sheet][$lang] ?? '';
+    public function pi_getFFvalue(
+        $T3FlexForm_array,
+        $fieldName,
+        $sheet = 'sDEF',
+        $lang = 'lDEF',
+        $value = 'vDEF'
+    ) {
+        if ($T3FlexForm_array === null) {
+            return null;
+        }
+
+        $sheetArray = $T3FlexForm_array['data'][$sheet][$lang] ?? null;
         if (is_array($sheetArray)) {
             return $this->pi_getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
         }
@@ -384,7 +396,7 @@ class AbstractPlugin
     public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value)
     {
         $tempArr = $sheetArray;
-        foreach ($fieldNameArr as $k => $v) {
+        foreach ($fieldNameArr as $v) {
             if (MathUtility::canBeInterpretedAsInteger($v)) {
                 if (is_array($tempArr)) {
                     $c = 0;
