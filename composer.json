@@ -3,6 +3,11 @@
     "description": "Fetch an RSS / Atom Feed and display its content on the Frontend.",
     "license": "GPL-2.0-or-later",
     "type": "typo3-cms-extension",
+    "keywords": [
+        "TYPO3",
+        "Atom Feed",
+        "RSS Feed"
+    ],
     "require": {
         "ext-intl": "*",
         "typo3/cms-core": "^11.4"
@@ -45,6 +50,7 @@
             "typo3/cms-composer-installers": true
         },
         "bin-dir": ".Build/bin",
+        "sort-packages": true,
         "vendor-dir": ".Build/vendor"
     },
     "extra": {
