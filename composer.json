@@ -1,12 +1,12 @@
 {
     "name": "gkh/gkh-rss-import",
-    "type": "typo3-cms-extension",
     "description": "Fetch an RSS / Atom Feed and display its content on the Frontend.",
     "license": "GPL-2.0-or-later",
+    "type": "typo3-cms-extension",
     "require": {
-		"ext-intl": "*",
-		"typo3/cms-core": "^11.4"
-	},
+        "ext-intl": "*",
+        "typo3/cms-core": "^11.4"
+    },
     "require-dev": {
         "ext-json": "*",
         "ezyang/htmlpurifier": "^4.13",
@@ -17,6 +17,9 @@
         "typo3/cms-install": "^11.4",
         "typo3/tailor": "^1.3",
         "typo3/testing-framework": "^6.10"
+    },
+    "replace": {
+        "typo3-ter/gkh-rss-import": "self.version"
     },
     "autoload": {
         "psr-4": {
@@ -32,35 +35,32 @@
             "GertKaaeHansen\\GkhRssImport\\Tests\\": "Tests"
         }
     },
-    "replace": {
-        "typo3-ter/gkh-rss-import": "self.version"
-    },
     "config": {
-		"allow-plugins": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
             "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true,
-            "ergebnis/composer-normalize": true
+            "typo3/cms-composer-installers": true
         },
         "bin-dir": ".Build/bin",
         "vendor-dir": ".Build/vendor"
     },
+    "extra": {
+        "typo3/cms": {
+            "app-dir": ".Build",
+            "extension-key": "gkh_rss_import",
+            "web-dir": ".Build/public"
+        }
+    },
     "scripts": {
-        "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/UnitTests.xml --stop-on-failure",
         "functional-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public typo3DatabaseDriver=pdo_sqlite .Build/bin/phpunit --colors -c Build/FunctionalTests.xml --stop-on-failure",
         "test": [
             "@test-php-cs-fixer",
             "@test-typoscript-lint",
-			"@unit-tests",
-			"@functional-tests"
+            "@unit-tests",
+            "@functional-tests"
         ],
         "test-php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation",
-        "test-typoscript-lint": ".Build/bin/typoscript-lint -c .typoscript-lint.yml"
-    },
-    "extra": {
-        "typo3/cms": {
-			"app-dir": ".Build",
-			"extension-key": "gkh_rss_import",
-            "web-dir": ".Build/public"
-        }
+        "test-typoscript-lint": ".Build/bin/typoscript-lint -c .typoscript-lint.yml",
+        "unit-tests": "TYPO3_PATH_ROOT=$PWD/.Build/public .Build/bin/phpunit --colors -c Build/UnitTests.xml --stop-on-failure"
     }
 }
