@@ -28,6 +28,7 @@ return (new \PhpCsFixer\Config())
             ->in([
                 __DIR__ . '/../../Classes/',
                 __DIR__ . '/../../Configuration/',
+                //__DIR__ . '/../../Resources/PHP/',
                 __DIR__ . '/../../Tests/',
             ])
             // warning: these are relative paths!

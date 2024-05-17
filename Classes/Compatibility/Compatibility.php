@@ -26,7 +26,7 @@ class Compatibility
     /**
      * Returns true if the current TYPO3 version is at least 8.7.0
      */
-    public static function isAtLeastVersion8Dot7Dot0(): bool
+    public static function isAtLeastVersion8Dot7Dot0(): bool|int
     {
         return version_compare(VersionNumberUtility::getNumericTypo3Version(), '8.7.0', '>=');
     }

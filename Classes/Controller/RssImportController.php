@@ -178,7 +178,7 @@ class RssImportController extends AbstractPlugin
             // description
             $markerArray['###CLASS_DESCRIPTION###'] = $this->pi_classParam('description');
             // TODO: htmlspecialchars?
-            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], $this->conf['headerLength']);
+            $markerArray['###DESCRIPTION###'] = smart_trim($rss['description'], (int)$this->conf['headerLength']);
 
             $subPart = $this->getSubPart($this->template, '###RSSIMPORT_TEMPLATE###');
             $itemSubpart = $this->getSubPart($subPart, '###ITEM###');
@@ -286,7 +286,7 @@ class RssImportController extends AbstractPlugin
         $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link']);
         $markerArray['###HEADER_TARGET###'] = $target;
         // TODO: htmlspecialchars?
-        $markerArray['###HEADER###'] = smart_trim($item['title'], $this->conf['headerLength']);
+        $markerArray['###HEADER###'] = smart_trim($item['title'], (int)$this->conf['headerLength']);
 
         // Get published date, author and category
         $markerArray['###CLASS_PUBBOX###'] = $this->pi_classParam('pubbox');
