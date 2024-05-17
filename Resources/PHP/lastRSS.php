@@ -4,7 +4,7 @@
  ======================================================================
  lastRSS 0.9.1
 
- Simple yet powerfull PHP class to parse RSS files.
+ Simple yet powerful PHP class to parse RSS files.
 
  by Vojtech Semecky, webmaster @ oslab . net
 
@@ -31,13 +31,10 @@
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Simple yet powerfull PHP class to parse RSS files.
+ * Simple yet powerful PHP class to parse RSS files.
  */
 class lastRSS
 {
-    // -------------------------------------------------------------------
-    // Public properties
-    // -------------------------------------------------------------------
     public $default_cp = 'UTF-8';
     public $CDATA = 'nochange';
     public $cp = '';
@@ -96,7 +93,7 @@ class lastRSS
     }
 
     // -------------------------------------------------------------------
-    // Modification of preg_match(); return trimed field with index 1
+    // Modification of preg_match(); return trimmed field with index 1
     // from 'classic' preg_match() array output
     // -------------------------------------------------------------------
     public function my_preg_match($pattern, $subject)
