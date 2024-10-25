@@ -368,7 +368,7 @@ class RssImportController extends AbstractPlugin
 
     protected function getDateFormat(): string
     {
-        return match ($this->conf['dateFormat'] ?? null) {
+        return match ((int)($this->conf['dateFormat'] ?? 0)) {
             1 => '%A, %d. %B %Y',
             2 => '%d. %B %Y',
             3 => '%e/%m - %Y',
