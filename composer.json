@@ -18,7 +18,7 @@
         "ext-json": "*",
         "ergebnis/composer-normalize": "^2.45.0",
         "ezyang/htmlpurifier": "^4.18.0",
-        "friendsofphp/php-cs-fixer": "^3.72.0",
+        "friendsofphp/php-cs-fixer": "^3.73.1",
         "friendsoftypo3/phpstan-typo3": "^0.9.0",
         "helmich/typo3-typoscript-lint": "^3.3.0",
         "phpstan/phpstan": "^1.12.7",
