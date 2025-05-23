@@ -1,0 +1,48 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+======
+11.0.0
+======
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2025-05-24 [RELEASE] Release v11.0.0 (Commit 06a33d5 by Simon Schaufelberger)
+   2024-01-31 [FEATURE] Upgrade to TYPO3 13.4 (Commit d3e2ac0 by Simon Schaufelberger)
+   2025-05-22 [TASK] Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 (Commit 0fe85aa by dependabot[bot])
+   2025-05-13 [TASK] Update ergebnis/composer-normalize requirement (Commit 525fe8a by dependabot[bot])
+   2025-04-07 [TASK] Update friendsofphp/php-cs-fixer requirement (Commit 1d7226c by dependabot[bot])
+   2025-05-12 [TASK] Update squizlabs/php_codesniffer requirement (Commit a2f8587 by dependabot[bot])
+   2025-01-27 [TASK] Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 (Commit 794cd5b by dependabot[bot])
+   2025-03-17 [TASK] Update friendsofphp/php-cs-fixer requirement (#143) (Commit 8a134e9 by dependabot[bot])
+   2025-03-10 [TASK] Update friendsofphp/php-cs-fixer requirement (#142) (Commit 85249a0 by dependabot[bot])
+   2025-03-03 [TASK] Update friendsofphp/php-cs-fixer requirement (#141) (Commit a7c1eaa by dependabot[bot])
+   2025-02-24 [TASK] Update friendsofphp/php-cs-fixer requirement (#140) (Commit 2908662 by dependabot[bot])
+   2025-02-17 [TASK] Update friendsofphp/php-cs-fixer requirement (#139) (Commit 1709a69 by dependabot[bot])
+   2025-02-03 [TASK] Update helmich/typo3-typoscript-lint requirement (#138) (Commit e62a5f7 by dependabot[bot])
+   2025-02-03 [TASK] Update phpunit/phpunit requirement from ^10.5.41 to ^10.5.44 (#137) (Commit cac418c by dependabot[bot])
+   2025-02-03 [TASK] Update friendsofphp/php-cs-fixer requirement (#136) (Commit 80ede84 by dependabot[bot])
+   2025-01-27 [TASK] Update squizlabs/php_codesniffer requirement (#135) (Commit 14574f3 by dependabot[bot])
+   2025-01-20 [TASK] Update friendsofphp/php-cs-fixer requirement (#133) (Commit 860169e by dependabot[bot])
+   2025-01-13 [TASK] Update phpunit/phpunit requirement from ^10.5.40 to ^10.5.41 (#131) (Commit 2e1b0cc by dependabot[bot])
+   2025-01-06 [TASK] Update friendsofphp/php-cs-fixer requirement (#130) (Commit c732bb0 by dependabot[bot])
+   2024-12-30 [TASK] Update friendsofphp/php-cs-fixer requirement (#129) (Commit 72c8446 by dependabot[bot])
+   2024-12-23 [TASK] Update phpunit/phpunit requirement from ^10.5.39 to ^10.5.40 (#128) (Commit 6a87498 by dependabot[bot])
+   2024-12-16 [TASK] Update phpunit/phpunit requirement from ^10.5.38 to ^10.5.39 (#127) (Commit 5b788e6 by dependabot[bot])
+   2024-12-16 [TASK] Update squizlabs/php_codesniffer requirement (#126) (Commit a255100 by dependabot[bot])
+   2024-12-09 [TASK] Update ergebnis/composer-normalize requirement (#125) (Commit 0055d9d by dependabot[bot])
+   2024-11-25 [TASK] Update friendsofphp/php-cs-fixer requirement (#124) (Commit 119c8b1 by dependabot[bot])
+   2024-11-25 [TASK] Update ssch/typo3-rector requirement from ^2.11.0 to ^2.12.0 (#123) (Commit 133ff82 by dependabot[bot])
+   2024-11-18 [TASK] Update squizlabs/php_codesniffer requirement (#122) (Commit 8df090d by dependabot[bot])
+   2024-11-04 [TASK] Update ezyang/htmlpurifier requirement from ^4.17.0 to ^4.18.0 (#121) (Commit 2f7e734 by dependabot[bot])
+   2024-11-04 [TASK] Update phpunit/phpunit requirement from ^10.5.37 to ^10.5.38 (#120) (Commit 3b9aedd by dependabot[bot])
+   2024-10-28 [TASK] Update ssch/typo3-rector requirement from ^2.10.2 to ^2.11.0 (#119) (Commit 64443f0 by dependabot[bot])
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
