@@ -17,7 +17,7 @@
     "require-dev": {
         "ext-json": "*",
         "a9f/fractor-composer-json": "^0.5.2",
-        "a9f/typo3-fractor": "^0.5.2",
+        "a9f/typo3-fractor": "^0.5.5",
         "composer/pcre": "^3.3.2",
         "ergebnis/composer-normalize": "^2.47.0",
         "ezyang/htmlpurifier": "^4.18.0",
