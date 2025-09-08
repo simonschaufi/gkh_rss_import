@@ -23,7 +23,7 @@
         "ezyang/htmlpurifier": "^4.18.0",
         "friendsofphp/php-cs-fixer": "^3.86.0",
         "helmich/typo3-typoscript-lint": "^3.3.0",
-        "helmich/typo3-typoscript-parser": "^2.8.0",
+        "helmich/typo3-typoscript-parser": "^2.8.1",
         "league/flysystem": "^3.30.0",
         "league/flysystem-local": "^3.30.0",
         "league/mime-type-detection": "^1.16.0",
