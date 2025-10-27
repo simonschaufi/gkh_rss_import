@@ -21,7 +21,7 @@
         "composer/pcre": "^3.3.2",
         "ergebnis/composer-normalize": "^2.48.2",
         "ezyang/htmlpurifier": "^4.19.0",
-        "friendsofphp/php-cs-fixer": "^3.88.2",
+        "friendsofphp/php-cs-fixer": "^3.89.1",
         "helmich/typo3-typoscript-lint": "^3.3.0",
         "helmich/typo3-typoscript-parser": "^2.8.1",
         "league/flysystem": "^3.30.0",
