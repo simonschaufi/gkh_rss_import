@@ -44,7 +44,7 @@
         "symplify/easy-coding-standard": "^13.0.0",
         "typo3/class-alias-loader": "^1.2.0",
         "typo3/cms-install": "^13.4.10",
-        "typo3/testing-framework": "^9.2.0"
+        "typo3/testing-framework": "^9.2.1"
     },
     "replace": {
         "typo3-ter/gkh-rss-import": "self.version"
