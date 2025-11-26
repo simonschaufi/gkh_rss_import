@@ -60,15 +60,19 @@ Please look into the [official extension documentation in changelog chapter][4].
 We follow [**semantic versioning**][5], which means, that
 * **bugfix updates** (e.g. 1.0.0 => 1.0.1) just includes small bugfixes or security relevant stuff without breaking changes,
 * **minor updates** (e.g. 1.0.0 => 1.1.0) includes new features and smaller tasks without breaking changes,
-* and **major updates** (e.g. 1.0.0 => 2.0.0) breaking changes wich can be refactorings, features or bugfixes.
+* and **major updates** (e.g. 1.0.0 => 2.0.0) breaking changes which can be refactorings, features or bugfixes.
 
 ### Contribution
 
-**Pull Requests** are gladly welcome! Please don't forget to add an issue and connect it to your pull requests. This
-is very helpful to understand what kind of issue the **PR** is going to solve.
+**Pull Requests** are gladly welcome!
+Please remember to add an issue and connect it to your pull requests.
+This is very helpful to understand
+what kind of issue the **PR** is going to solve.
 
-Bugfixes: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're going
-to accept only bugfixes if we can reproduce the issue.
+Bugfixes:
+Please describe what kind of bug your fix solve
+and give us feedback on how to reproduce the issue.
+We're going to accept only bugfixes if we can reproduce the issue.
 
 ### Similar extensions
 
