@@ -64,11 +64,7 @@ class ImageFrontend extends AbstractFrontend
                 1233058294
             );
         }
-        $rawResult = $this->backend->get($entryIdentifier);
-        if ($rawResult === false) {
-            return false;
-        }
-        return $rawResult;
+        return $this->backend->get($entryIdentifier);
     }
 
     /**
