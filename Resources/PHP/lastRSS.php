@@ -202,7 +202,7 @@ class lastRSS
         $result['items'] = []; // create array even if there are no items
         foreach ($rssItems as $rssItem) {
             // If number of items is lower then limit: Parse one item
-            if ($i < $this->items_limit || $this->items_limit == 0) {
+            if ($i < $this->items_limit || $this->items_limit === 0) {
                 foreach ($this->itemtags as $itemTag) {
                     $temp = $this->my_preg_match("'<$itemTag.*?>(.*?)</$itemTag>'si", $rssItem);
                     if ($temp !== '') {
