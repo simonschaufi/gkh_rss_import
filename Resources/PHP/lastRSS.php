@@ -168,7 +168,7 @@ class lastRSS
             }
         }
         // If date_format is specified and lastBuildDate is valid
-        if ($this->date_format !== '' && ($timestamp = strtotime($result['lastBuildDate'])) !== -1) {
+        if ($this->date_format !== '' && isset($result['lastBuildDate']) && $result['lastBuildDate'] !== '' && ($timestamp = strtotime($result['lastBuildDate'])) !== -1) {
             // convert lastBuildDate to specified date format
             $result['lastBuildDate'] = date($this->date_format, $timestamp);
         }
@@ -223,15 +223,15 @@ class lastRSS
                 }
 
                 // Strip HTML tags from DESCRIPTION
-                if ($this->stripHTML && $result['items'][$i]['description']) {
+                if ($this->stripHTML && isset($result['items'][$i]['description']) && $result['items'][$i]['description']) {
                     $result['items'][$i]['description'] = strip_tags((string)$result['items'][$i]['description']);
                 }
                 // Strip HTML tags from TITLE
-                if ($this->stripHTML && $result['items'][$i]['title']) {
+                if ($this->stripHTML && isset($result['items'][$i]['title']) && $result['items'][$i]['title']) {
                     $result['items'][$i]['title'] = strip_tags((string)$result['items'][$i]['title']);
                 }
                 // If date_format is specified and pubDate is valid
-                if ($this->date_format !== '' && ($timestamp = strtotime((string)$result['items'][$i]['pubDate'])) !== -1) {
+                if ($this->date_format !== '' && isset($result['items'][$i]['pubDate']) && $result['items'][$i]['pubDate'] !== '' && ($timestamp = strtotime((string)$result['items'][$i]['pubDate'])) !== -1) {
                     // convert pubDate to specified date format
                     $result['items'][$i]['pubDate'] = date($this->date_format, $timestamp);
                 }

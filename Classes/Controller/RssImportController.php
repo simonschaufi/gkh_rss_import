@@ -279,18 +279,18 @@ class RssImportController extends AbstractPlugin
     protected function renderItem(array $item, string $itemSubpart, string $target, Locale|string $locale): string
     {
         // for UserFunction fixRssURLs
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'];
+        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'] ?? '';
 
         // Get item header
         $markerArray['###CLASS_HEADER###'] = $this->classParam('header');
-        $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link']);
+        $markerArray['###HEADER_URL###'] = $this->removeDoubleHTTP($item['link'] ?? '');
         $markerArray['###HEADER_TARGET###'] = $target;
         // TODO: htmlspecialchars?
-        $markerArray['###HEADER###'] = smart_trim($item['title'], (int)$this->conf['headerLength']);
+        $markerArray['###HEADER###'] = smart_trim($item['title'] ?? '', (int)$this->conf['headerLength']);
 
         // Get published date, author and category
         $markerArray['###CLASS_PUBBOX###'] = $this->classParam('pubbox');
-        if ($item['pubDate'] !== '01/01/1970') {
+        if (isset($item['pubDate']) && $item['pubDate'] !== '01/01/1970') {
             $markerArray['###CLASS_RSS_DATE###'] = $this->classParam('date');
 
             $pubDate = strtotime((string)$item['pubDate']);
@@ -314,7 +314,7 @@ class RssImportController extends AbstractPlugin
 
         // Get item content
         $markerArray['###CLASS_SUMMARY###'] = $this->classParam('content');
-        $itemSummary = $item['description'];
+        $itemSummary = $item['description'] ?? '';
 
         // for UserFunction smart_trim
         $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = (int)$this->conf['itemLength'];
