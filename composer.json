@@ -27,7 +27,7 @@
         "league/flysystem": "^3.31.0",
         "league/flysystem-local": "^3.31.0",
         "league/mime-type-detection": "^1.16.0",
-        "phpstan/phpstan": "^2.1.37",
+        "phpstan/phpstan": "^2.1.38",
         "phpstan/phpstan-phpunit": "^2.0.12",
         "phpunit/phpunit": "^11.5.21",
         "roave/security-advisories": "dev-latest",
