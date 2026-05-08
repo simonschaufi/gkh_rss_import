@@ -37,7 +37,7 @@ class ImageFrontend extends AbstractFrontend
      * @param int|null $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws Exception|InvalidDataException|\InvalidArgumentException
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException(
@@ -53,10 +53,9 @@ class ImageFrontend extends AbstractFrontend
      * Finds and returns data from the cache.
      *
      * @param string $entryIdentifier Something which identifies the cache entry - depends on concrete cache
-     * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException(
@@ -72,7 +71,7 @@ class ImageFrontend extends AbstractFrontend
      *
      * @param string $identifier An identifier to be checked for validity
      */
-    public function isValidEntryIdentifier($identifier): bool
+    public function isValidEntryIdentifier(string $identifier): bool
     {
         return preg_match('/^[a-zA-Z0-9_%\\-&.]{1,250}$/', $identifier) === 1;
     }

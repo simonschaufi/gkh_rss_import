@@ -25,30 +25,41 @@ use GertKaaeHansen\GkhRssImport\Tests\Unit\Page\PageRendererFactoryTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
+use Psr\Log\NullLogger;
+use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LabelFileResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
+use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\ContentObject\RegisterStack;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RssImportControllerTest extends UnitTestCase
 {
     use PageRendererFactoryTrait;
+
+    protected bool $resetSingletonInstances = true;
 
     private RssImportController $subject;
 
@@ -66,31 +77,56 @@ final class RssImportControllerTest extends UnitTestCase
         /** @see https://github.com/TYPO3/typo3/blob/58fb6ad4b00e1a72d1e728e1db19760a52ff1449/typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php#L61-L102 */
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('language', $siteLanguage);
+            ->withAttribute('language', $siteLanguage)
+            ->withAttribute('frontend.register.stack', new RegisterStack());
 
         /** @see https://github.com/TYPO3/typo3/blob/a61d15b47346fc0eeac03907bd089aebc1980f76/typo3/sysext/backend/Tests/Unit/Form/InlineStackProcessorTest.php#L35-L40 */
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheManagerMock
             ->method('getCache')
             ->with('runtime')
-            ->willReturn($this->createMock(FrontendInterface::class));
+            ->willReturn(self::createStub(FrontendInterface::class));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         // Define languageDebug because it's expected to be set in LanguageService
         $GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'] = false;
 
-        $localizationFactoryCacheManagerMock = $this->createMock(CacheManager::class);
-        $localizationFactoryCacheManagerMock->method('getCache')
-            ->with('l10n')
-            ->willReturn($this->createMock(FrontendInterface::class));
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheFrontendMock->method('get')
+            ->with(self::anything())->willReturn(false);
+        $cacheFrontendMock->method('set')
+            ->withAnyParameters();
+
+        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
+        $labelMapperMock->method('mapDomainToFileName')
+            ->willReturnArgument(0);
+
+        // See \TYPO3\CMS\Core\Tests\Unit\Package\PackageManagerTest::setUp from Core
+        $packageManager = $this->getAccessibleMock(
+            PackageManager::class,
+            ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
+            [new DependencyOrderingService()]
+        );
+        $package = new Package($packageManager, 'core', __DIR__ . '/../../../.Build/vendor/typo3/cms-core/');
+        $packageManager->registerPackage($package);
+        $packageManager->activatePackage('core');
+
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
+        ExtensionManagementUtility::setPackageManager($packageManager);
+
+        $translationDomainResolverMock = $this->createMock(TranslationDomainResolver::class);
 
         $languageService = new LanguageService(
             new Locales(),
             new LocalizationFactory(
-                new LanguageStore($this->createMock(PackageManager::class)),
-                $localizationFactoryCacheManagerMock
+                self::createStub(Translator::class),
+                $cacheFrontendMock,
+                new NullFrontend('runtime'),
+                $labelMapperMock,
+                new LabelFileResolver($packageManager, $translationDomainResolverMock),
+                $translationDomainResolverMock
             ),
-            $this->createMock(FrontendInterface::class)
+            self::createStub(FrontendInterface::class)
         );
 
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
@@ -100,31 +136,42 @@ final class RssImportControllerTest extends UnitTestCase
 
         // This is needed for PageRenderer
         $importMapMock = $this->createMock(ImportMap::class);
-        $importMapMock->method('render')
-            ->willReturn('')
-            ->withAnyParameters();
-
-        $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
-        $importMapFactoryMock->method('create')
+        $importMapMock->expects($this->atMost(PHP_INT_MAX))
+            ->method('render')
+            ->with(self::isString(), self::isInstanceOf(ConsumableNonce::class))
+            ->willReturn('');
+        $importMapFactoryStub = self::createStub(ImportMapFactory::class);
+        $importMapFactoryStub->method('create')
             ->willReturn($importMapMock);
-        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryStub);
 
         GeneralUtility::setSingletonInstance(
             PageRenderer::class,
             new PageRenderer(...$this->getPageRendererConstructorArgs()),
         );
 
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
             new NullFrontend('hash'),
             new NullFrontend('runtime'),
         ));
 
+        $htmlCropper = new HtmlCropper(new NullLogger());
+
+        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRendererMock
+            ->method('stdWrap_cropHTML')
+            ->willReturnCallback(static function (string $content, array $conf) use ($htmlCropper): string {
+                $cropHtmlConf = explode('|', (string)($conf['cropHTML'] ?? ''));
+                return $htmlCropper->crop(
+                    $content,
+                    (int)($cropHtmlConf[0]),
+                    trim($cropHtmlConf[1] ?? ''),
+                    trim($cropHtmlConf[2] ?? '') === '1'
+                );
+            });
+
         $this->subject = new RssImportController();
-        $this->subject->setContentObjectRenderer(new ContentObjectRenderer());
+        $this->subject->setContentObjectRenderer($contentObjectRendererMock);
     }
 
     protected function tearDown(): void
@@ -156,7 +203,8 @@ final class RssImportControllerTest extends UnitTestCase
     #[Test]
     public function cropHtml(int $length, string $input, string $expected): void
     {
-        $GLOBALS['TSFE']->register['RSS_IMPORT_ITEM_LENGTH'] = $length;
+        $register = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.register.stack')->current();
+        $register->set('RSS_IMPORT_ITEM_LENGTH', $length);
 
         $result = $this->subject->cropHTML($input, []);
 

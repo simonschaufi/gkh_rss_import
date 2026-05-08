@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
+use CustomRectorRules\MethodCallToSelfStaticCallRector;
 use Rector\CodeQuality\Rector\Ternary\SwitchNegatedTernaryRector;
 use Rector\Config\RectorConfig;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -33,20 +33,19 @@ return static function (RectorConfig $rectorConfig): void {
         LevelSetList::UP_TO_PHP_82,
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
-        //SetList::STRICT_BOOLEANS,
-        //SetList::NAMING,
+        // SetList::STRICT_BOOLEANS,
+        // SetList::NAMING,
         SetList::PRIVATIZATION,
         SetList::TYPE_DECLARATION,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         // phpunit
-        PHPUnitSetList::PHPUNIT_100,
-        PHPUnitSetList::PHPUNIT_110,
+        PHPUnitSetList::COMPOSER_BASED,
 
         // TYPO3 Sets
         Typo3SetList::CODE_QUALITY,
         Typo3SetList::GENERAL,
-        Typo3LevelSetList::UP_TO_TYPO3_13,
+        Typo3LevelSetList::UP_TO_TYPO3_14,
     ]);
     $rectorConfig->phpstanConfig(Typo3Option::PHPSTAN_FOR_RECTOR_PATH);
     $rectorConfig->rules([
@@ -54,15 +53,20 @@ return static function (RectorConfig $rectorConfig): void {
         ConvertImplicitVariablesToExplicitGlobalsRector::class,
     ]);
     $rectorConfig->ruleWithConfiguration(ExtEmConfRector::class, [
-        ExtEmConfRector::PHP_VERSION_CONSTRAINT => '8.2.0-8.4.99',
-        ExtEmConfRector::TYPO3_VERSION_CONSTRAINT => '13.4.10-13.4.99',
+        ExtEmConfRector::PHP_VERSION_CONSTRAINT => '8.2.0-8.5.99',
+        ExtEmConfRector::TYPO3_VERSION_CONSTRAINT => '14.3.5-14.3.99',
         ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => [],
+    ]);
+    /*$rectorConfig->ruleWithConfiguration(MethodCallToStaticCallRector::class, [
+        new MethodCallToStaticCall(TestCase::class, 'createStub', 'self', 'createStub'),
+    ]);*/
+    $rectorConfig->ruleWithConfiguration(MethodCallToSelfStaticCallRector::class, [
+        'createStub',
     ]);
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses(false);
     $rectorConfig->skip([
         // CodeQuality
-        ExplicitBoolCompareRector::class,
         SwitchNegatedTernaryRector::class,
         // Strict
         DisallowedEmptyRuleFixerRector::class,

@@ -40,7 +40,7 @@ tt_content.' . $pluginSignature . ' {
 
     if (!Environment::isComposerMode()) {
         $extPath = ExtensionManagementUtility::extPath('gkh_rss_import');
-        require_once($extPath . 'Resources/PHP/lastRSS.php');
-        require_once($extPath . 'Resources/PHP/smarttrim.php');
+        require_once $extPath . 'Resources/PHP/lastRSS.php';
+        require_once $extPath . 'Resources/PHP/smarttrim.php';
     }
 })();

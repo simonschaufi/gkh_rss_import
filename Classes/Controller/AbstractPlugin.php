@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class AbstractPlugin
 {
@@ -100,20 +99,14 @@ class AbstractPlugin
      */
     protected array $conf = [];
 
-    /**
-     * Property for accessing TypoScriptFrontendController centrally
-     */
-    protected TypoScriptFrontendController $frontendController;
-
     protected MarkerBasedTemplateService $templateService;
 
     /**
      * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the config.language setting.
      */
-    public function __construct(?TypoScriptFrontendController $frontendController = null)
+    public function __construct()
     {
-        $this->frontendController = $frontendController instanceof TypoScriptFrontendController ? $frontendController : $GLOBALS['TSFE'];
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 
         $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
@@ -136,11 +129,9 @@ class AbstractPlugin
         $this->cObj = $cObj;
     }
 
-    /***************************
-     *
+    /*
      * Stylesheet, CSS
-     *
-     **************************/
+     */
 
     /**
      * Returns a class-name prefixed with $this->prefixId and with all underscores substituted to dashes (-)
@@ -184,27 +175,12 @@ class AbstractPlugin
      */
     public function wrapInBaseClass(string $str): string
     {
-        $content = '<div class="' . str_replace('_', '-', $this->prefixId) . '">
-		' . $str . '
-	</div>
-	';
-        if (!($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['disablePrefixComment'] ?? false)) {
-            return '
-	<!--
-		BEGIN: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '"
-	-->
-	' . $content . '
-	<!-- END: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '" -->
-	';
-        }
-        return $content;
+        return '<div class="' . str_replace('_', '-', $this->prefixId) . '">' . $str . '</div>';
     }
 
-    /***************************
-     *
+    /*
      * Localization, locallang functions
-     *
-     **************************/
+     */
 
     /**
      * Returns the localized label of the LOCAL_LANG key, $key
@@ -311,11 +287,9 @@ class AbstractPlugin
         $this->LOCAL_LANG_loaded = true;
     }
 
-    /*******************************
-     *
+    /*
      * FlexForms related functions
-     *
-     *******************************/
+     */
 
     /**
      * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
