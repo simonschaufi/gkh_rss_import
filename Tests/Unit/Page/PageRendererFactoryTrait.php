@@ -19,29 +19,31 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Tests\Unit\Page;
 
-use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\NullLogger;
+use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
-use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Localization\LabelFileResolver;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
+use TYPO3\CMS\Core\Page\ResourceHashCollection;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
-use TYPO3\CMS\Core\Resource\ResourceCompressor;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\DirectiveHashCollection;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 
 trait PageRendererFactoryTrait
 {
@@ -50,40 +52,41 @@ trait PageRendererFactoryTrait
         ?CacheManager $cacheManager = null,
     ): array {
         $packageManager ??= new PackageManager(new DependencyOrderingService());
-        $cacheManager ??= $this->createMock(CacheManager::class);
-
-        /**
-         * prepare an EventDispatcher for ::makeInstance(AssetRenderer)
-         * @see \TYPO3\CMS\Core\Page\PageRenderer::renderJavaScriptAndCss
-         */
-        GeneralUtility::setSingletonInstance(
-            EventDispatcherInterface::class,
-            new EventDispatcher(
-                new ListenerProvider($this->createMock(ContainerInterface::class))
-            )
-        );
-
-        $iconRegistry = $this->createMock(IconRegistry::class);
-
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock->method('getCache')
+            ->with('l10n')
+            ->willReturn(new NullFrontend('l10n'));
+        $cacheManager ??= $cacheManagerMock;
+        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
+        $labelMapperMock->method('mapDomainToFileName')
+            ->willReturnArgument(0);
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
+        $resourceHashCollection = new ResourceHashCollection(new NullLogger(), $resourceFactory, new NullFrontend('assets'));
+        $directiveHashCollection = new DirectiveHashCollection($resourceHashCollection);
         return [
+            new Context(),
             new NullFrontend('assets'),
             new MarkerBasedTemplateService(
                 new NullFrontend('hash'),
                 new NullFrontend('runtime'),
             ),
             new MetaTagManagerRegistry(),
-            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher()),
+            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory, $resourceHashCollection, $directiveHashCollection),
             new AssetCollector(),
-            new ResourceCompressor(),
-            new RelativeCssPathFixer(),
+            new RelativeCssPathFixer($resourceFactory, $resourcePublisher),
             new LanguageServiceFactory(
                 new Locales(),
-                new LocalizationFactory(new LanguageStore($packageManager), $cacheManager),
+                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManager)),
                 new NullFrontend('null')
             ),
             new ResponseFactory(),
             new StreamFactory(),
-            $iconRegistry,
+            $this->createMock(IconRegistry::class),
+            $resourcePublisher,
+            $resourceFactory,
+            $resourceHashCollection,
+            $directiveHashCollection,
         ];
     }
 }

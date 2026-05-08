@@ -19,21 +19,16 @@ declare(strict_types=1);
 
 defined('TYPO3') || die();
 
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 ExtensionManagementUtility::addPlugin(
-    [
+    new SelectItem(
+        'select',
         'LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
         'gkh_rss_import_pi1',
-    ],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
-    'gkh_rss_import'
+        'content-plugin',
+    ),
+    'FILE:EXT:gkh_rss_import/Configuration/FlexForm/flexform.xml'
 );
 ExtensionManagementUtility::addToAllTCAtypes('tt_content', '--div--;Configuration,pi_flexform,', 'gkh_rss_import_pi1', 'after:subheader');
-
-ExtensionManagementUtility::addPiFlexFormValue(
-    '*',
-    'FILE:EXT:gkh_rss_import/Configuration/FlexForm/flexform.xml',
-    'gkh_rss_import_pi1'
-);
