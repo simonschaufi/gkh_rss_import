@@ -25,19 +25,18 @@ The TYPO3 project - inspiring people to share!
 EOF;
 
 return (new Config())
-    //->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
+    // ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setFinder(
         (new Finder())
             ->ignoreVCSIgnored(true)
             ->in([
                 __DIR__ . '/../../Classes/',
                 __DIR__ . '/../../Configuration/',
-                //__DIR__ . '/../../Resources/PHP/',
+                // __DIR__ . '/../../Resources/PHP/',
                 __DIR__ . '/../../Tests/',
             ])
             // warning: these are relative paths!
-            ->notPath([
-            ])
+            ->notPath([])
     )
     ->setCacheFile('Build/php-cs-fixer/.php-cs-fixer.cache')
     ->setRiskyAllowed(true)

@@ -17,6 +17,7 @@ use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
+use Symplify\CodingStandard\Fixer\Commenting\MergeDocBlockStartFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
@@ -120,5 +121,9 @@ EOF
             __DIR__ . '/../../Resources/PHP/*',
             __DIR__ . '/../../ext_emconf.php',
             __DIR__ . '/../../ext_localconf.php',
+        ],
+
+        MergeDocBlockStartFixer::class => [
+            __DIR__ . '/../../Resources/PHP/*',
         ],
     ]);

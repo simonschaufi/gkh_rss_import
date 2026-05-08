@@ -22,6 +22,7 @@ namespace GertKaaeHansen\GkhRssImport\Controller;
 use GertKaaeHansen\GkhRssImport\Cache\Backend\Typo3TempSimpleFileBackend;
 use GertKaaeHansen\GkhRssImport\Service\LastRssService;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -30,7 +31,6 @@ use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Exception;
 
 class RssImportController extends AbstractPlugin
@@ -58,9 +58,9 @@ class RssImportController extends AbstractPlugin
 
     protected DateFormatter $dateFormatter;
 
-    public function __construct(?TypoScriptFrontendController $frontendController = null)
+    public function __construct()
     {
-        parent::__construct($frontendController);
+        parent::__construct();
 
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->rssService = GeneralUtility::makeInstance(LastRssService::class);
@@ -75,6 +75,7 @@ class RssImportController extends AbstractPlugin
      * @return string The content that is displayed on the website
      * @throws Exception|NoSuchCacheException|\ErrorException
      */
+    #[AsAllowedCallable]
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
@@ -279,7 +280,8 @@ class RssImportController extends AbstractPlugin
     protected function renderItem(array $item, string $itemSubpart, string $target, Locale|string $locale): string
     {
         // for UserFunction fixRssURLs
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK'] = $item['link'] ?? '';
+        $register = $this->getRequest()->getAttribute('frontend.register.stack')->current();
+        $register->set('RSS_IMPORT_ITEM_LINK', $item['link'] ?? '');
 
         // Get item header
         $markerArray['###CLASS_HEADER###'] = $this->classParam('header');
@@ -317,7 +319,7 @@ class RssImportController extends AbstractPlugin
         $itemSummary = $item['description'] ?? '';
 
         // for UserFunction smart_trim
-        $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'] = (int)$this->conf['itemLength'];
+        $register->set('RSS_IMPORT_ITEM_LENGTH', (int)$this->conf['itemLength']);
         if (isset($this->conf['itemSummary_stdWrap.'])) {
             $itemSummary = $this->cObj->stdWrap($itemSummary, $this->conf['itemSummary_stdWrap.']);
         }
@@ -450,7 +452,8 @@ class RssImportController extends AbstractPlugin
             return $attribute;
         }
 
-        $linkURL = parse_url((string)$this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LINK']);
+        $register = $this->getRequest()->getAttribute('frontend.register.stack')->current();
+        $linkURL = parse_url((string)$register->get('RSS_IMPORT_ITEM_LINK'));
 
         return $linkURL['scheme'] . '://' . $linkURL['host'] . $linkURL['port'] . $imgURL['path'] . $imgURL['query']
             . $imgURL['fragment'];
@@ -458,7 +461,8 @@ class RssImportController extends AbstractPlugin
 
     public function cropHTML(string $text, array $conf): string
     {
-        $itemLength = $this->getTypoScriptFrontendController()->register['RSS_IMPORT_ITEM_LENGTH'];
+        $register = $this->getRequest()->getAttribute('frontend.register.stack')->current();
+        $itemLength = (int)$register->get('RSS_IMPORT_ITEM_LENGTH');
         if ($itemLength === 0) {
             return $text;
         }
@@ -478,11 +482,6 @@ class RssImportController extends AbstractPlugin
             return 'http://' . substr($url, 14, strlen($url));
         }
         return $url;
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 
     protected function getRequest(): ServerRequestInterface

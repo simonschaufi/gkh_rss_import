@@ -6,6 +6,7 @@ use a9f\Fractor\Configuration\FractorConfiguration;
 use a9f\Fractor\ValueObject\Indent;
 use a9f\FractorComposerJson\ChangePackageVersionComposerJsonFractor;
 use a9f\FractorComposerJson\ValueObject\PackageAndVersion;
+use a9f\FractorXliff\XliffFileProcessor;
 use a9f\FractorXml\Configuration\XmlProcessorOption;
 use a9f\Typo3Fractor\Set\Typo3LevelSetList;
 
@@ -20,16 +21,29 @@ return FractorConfiguration::configure()
         __DIR__ . '/../../ext_localconf.php',
     ])
     ->withSets([
-        Typo3LevelSetList::UP_TO_TYPO3_13,
+        Typo3LevelSetList::UP_TO_TYPO3_14,
     ])
     ->withConfiguredRule(
         ChangePackageVersionComposerJsonFractor::class,
         [
-            new PackageAndVersion('typo3/cms-core', '^13.4.10'),
-            new PackageAndVersion('typo3/cms-install', '^13.4.10'),
+            new PackageAndVersion('typo3/cms-core', '^14.3.5'),
+            // require-dev
+            new PackageAndVersion('symfony/cache', '^7.3.6'),
+            new PackageAndVersion('symfony/cache-contracts', '^3.7.1'),
+            new PackageAndVersion('symfony/console', '^7.3.6'),
+            new PackageAndVersion('symfony/event-dispatcher', '^7.3.3'),
+            new PackageAndVersion('symfony/event-dispatcher-contracts', '^3.7.1'),
+            new PackageAndVersion('symfony/translation', '^7.3.4'),
+            new PackageAndVersion('symfony/var-exporter', '^7.3.4'),
+            new PackageAndVersion('symfony/yaml', '^7.3.5'),
+            new PackageAndVersion('typo3/cms-install', '^14.3'),
+            new PackageAndVersion('typo3/testing-framework', '^9.6.1'),
         ]
     )
     ->withOptions([
         XmlProcessorOption::INDENT_CHARACTER => Indent::STYLE_TAB,
         XmlProcessorOption::INDENT_SIZE => 1,
+    ])
+    ->withSkip([
+        XliffFileProcessor::class,
     ]);
