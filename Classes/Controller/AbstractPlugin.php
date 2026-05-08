@@ -188,7 +188,7 @@ class AbstractPlugin
 		' . $str . '
 	</div>
 	';
-        if (!($this->frontendController->config['config']['disablePrefixComment'] ?? false)) {
+        if (!($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['disablePrefixComment'] ?? false)) {
             return '
 	<!--
 		BEGIN: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '"
