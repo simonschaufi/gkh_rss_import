@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'RSS feed import',
     'description' => 'Fetch an RSS / Atom Feed and display its content on the Frontend.',

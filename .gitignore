@@ -5,6 +5,4 @@
 /Build/phpunit/.phpunit.cache/
 /var
 /.env
-/.env.dist
 /composer.lock
-/release*.sh
