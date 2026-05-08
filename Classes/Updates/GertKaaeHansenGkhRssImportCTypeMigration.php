@@ -19,8 +19,8 @@ declare(strict_types=1);
 
 namespace GertKaaeHansen\GkhRssImport\Updates;
 
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate;
 
 #[UpgradeWizard('gertkaaehansenGkhRssImportCTypeMigration')]
 final class GertKaaeHansenGkhRssImportCTypeMigration extends AbstractListTypeToCTypeUpdate
