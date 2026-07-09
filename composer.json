@@ -16,8 +16,8 @@
     },
     "require-dev": {
         "ext-json": "*",
-        "a9f/fractor-composer-json": "^0.5.10",
-        "a9f/typo3-fractor": "^0.5.11",
+        "a9f/fractor-composer-json": "^1.0.0",
+        "a9f/typo3-fractor": "^1.0.0",
         "composer/pcre": "^3.4.0",
         "ergebnis/composer-normalize": "^2.52.0",
         "ezyang/htmlpurifier": "^4.19.0",
@@ -85,7 +85,7 @@
     "scripts": {
         "ci:composer:normalize": "@composer normalize --no-check-lock --dry-run",
         "ci:composer:psr-verify": "@composer dumpautoload --optimize --strict-psr --no-plugins",
-        "ci:php:ecs": ".Build/bin/ecs --config=Build/ecs/ecs.php",
+        "ci:php:ecs": ".Build/bin/ecs --config Build/ecs/ecs.php",
         "ci:php:fractor": ".Build/bin/fractor process --config Build/fractor/fractor.php --dry-run --no-progress-bar --ansi",
         "ci:php:rector": ".Build/bin/rector process --config Build/rector/rector.php --dry-run --no-progress-bar --ansi",
         "ci:php:sniff": ".Build/bin/phpcs Classes Configuration Tests",
@@ -100,7 +100,7 @@
         "ci:xliff:lint": "php Build/bin/console lint:xliff Resources/Private/Language",
         "ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -regextype egrep -regex '.*.ya?ml$' | xargs -r php ./.Build/bin/yaml-lint",
         "fix:composer:normalize": "@composer normalize --no-check-lock",
-        "fix:php:ecs": ".Build/bin/ecs --config=Build/ecs/ecs.php --fix --no-progress-bar --ansi",
+        "fix:php:ecs": ".Build/bin/ecs --config Build/ecs/ecs.php --fix --no-progress-bar --ansi",
         "fix:php:fractor": [
             ".Build/bin/fractor process --config Build/fractor/fractor.php --no-progress-bar --ansi",
             "@fix:composer:normalize"
