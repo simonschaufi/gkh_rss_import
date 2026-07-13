@@ -26,7 +26,7 @@
         "helmich/typo3-typoscript-parser": "^2.8.1",
         "league/flysystem": "^3.35.1",
         "league/flysystem-local": "^3.31.0",
-        "league/mime-type-detection": "^1.16.0",
+        "league/mime-type-detection": "^1.17.0",
         "phpstan/phpstan": "^2.2.5",
         "phpstan/phpstan-phpunit": "^2.0.18",
         "phpunit/phpunit": "^11.5.21",
