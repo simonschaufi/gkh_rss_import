@@ -43,7 +43,7 @@
         "symfony/yaml": "^7.1.4",
         "symplify/easy-coding-standard": "^13.2.17",
         "typo3/cms-install": "^13.4.10",
-        "typo3/testing-framework": "^9.5.0"
+        "typo3/testing-framework": "^9.6.1"
     },
     "replace": {
         "typo3-ter/gkh-rss-import": "self.version"
