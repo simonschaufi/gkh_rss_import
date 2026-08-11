@@ -1,0 +1,63 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+======
+12.0.0
+======
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2026-08-12 [RELEASE] Release v12.0.0 (Commit 34bcc24 by Simon Schaufelberger)
+   2026-05-08 [FEATURE] Upgrade to TYPO3 14.3 (Commit 9b7f0fc by Simon Schaufelberger)
+   2026-08-10 [TASK] Update squizlabs/php_codesniffer requirement (#339) (Commit c6cc396 by dependabot[bot])
+   2026-08-10 [TASK] Update phpstan/phpstan requirement from ^2.2.7 to ^2.2.8 (#340) (Commit 923a209 by dependabot[bot])
+   2026-08-10 [TASK] Update ssch/typo3-rector requirement from ^3.14.3 to ^3.14.4 (#338) (Commit 1bac743 by dependabot[bot])
+   2026-08-03 [TASK] Update phpstan/phpstan requirement from ^2.2.6 to ^2.2.7 (#337) (Commit 7bc46a2 by dependabot[bot])
+   2026-08-03 [TASK] Update friendsofphp/php-cs-fixer requirement (#336) (Commit e283946 by dependabot[bot])
+   2026-07-27 [TASK] Update phpstan/phpstan requirement from ^2.2.5 to ^2.2.6 (#335) (Commit 4c2f30a by dependabot[bot])
+   2026-07-27 [TASK] Update friendsofphp/php-cs-fixer requirement (#334) (Commit f833b31 by dependabot[bot])
+   2026-07-27 [TASK] Update typo3/testing-framework requirement from ^9.5.0 to ^9.6.1 (#333) (Commit 6b9ce90 by dependabot[bot])
+   2026-07-27 [TASK] Update symplify/easy-coding-standard requirement (#332) (Commit 4e7bc4f by dependabot[bot])
+   2026-07-20 [TASK] Update friendsofphp/php-cs-fixer requirement (#331) (Commit 8147a2b by dependabot[bot])
+   2026-07-20 [TASK] Update symplify/easy-coding-standard requirement (#330) (Commit 93ccaf7 by dependabot[bot])
+   2026-07-13 [TASK] Update league/flysystem requirement from ^3.35.1 to ^3.35.2 (#329) (Commit c5cee26 by dependabot[bot])
+   2026-07-13 [TASK] Update friendsofphp/php-cs-fixer requirement (#328) (Commit 109a420 by dependabot[bot])
+   2026-07-13 [TASK] Update symplify/easy-coding-standard requirement (#327) (Commit b8cbb1e by dependabot[bot])
+   2026-07-13 [TASK] Update league/mime-type-detection requirement (#326) (Commit e89f0b6 by dependabot[bot])
+   2026-07-09 [TASK] Upgrade Fractor (Commit 27cebcc by Simon Schaufelberger)
+   2026-06-22 [TASK] Update a9f/typo3-fractor requirement from ^0.5.10 to ^0.5.11 (Commit ef15fe6 by dependabot[bot])
+   2026-06-29 [TASK] Bump actions/cache from 5 to 6 (Commit ea86ed6 by dependabot[bot])
+   2026-06-22 [TASK] Bump actions/checkout from 6 to 7 (Commit 294ab97 by dependabot[bot])
+   2026-07-06 [TASK] Update phpstan/phpstan requirement from ^2.2.1 to ^2.2.5 (#322) (Commit 579ada3 by dependabot[bot])
+   2026-07-06 [TASK] Update ssch/typo3-rector requirement from ^3.14.2 to ^3.14.3 (#324) (Commit 68c1942 by dependabot[bot])
+   2026-07-06 [TASK] Update symplify/easy-coding-standard requirement (#323) (Commit 6ce89ff by dependabot[bot])
+   2026-07-06 [TASK] Update phpstan/phpstan-phpunit requirement (#321) (Commit 88c9cb4 by dependabot[bot])
+   2026-06-29 [TASK] Update friendsofphp/php-cs-fixer requirement (#320) (Commit 6dd9d9a by dependabot[bot])
+   2026-06-29 [TASK] Update league/flysystem requirement from ^3.34.0 to ^3.35.1 (#319) (Commit b24a998 by dependabot[bot])
+   2026-06-29 [TASK] Update symfony/event-dispatcher-contracts requirement (#318) (Commit 3e1b68f by dependabot[bot])
+   2026-06-29 [TASK] Update symfony/cache-contracts requirement from ^3.7.0 to ^3.7.1 (#317) (Commit ecd3727 by dependabot[bot])
+   2026-06-22 [TASK] Update symplify/easy-coding-standard requirement (#314) (Commit 3d7921b by dependabot[bot])
+   2026-06-22 [TASK] Update ssch/typo3-rector requirement from ^3.14.1 to ^3.14.2 (#313) (Commit 326bd26 by dependabot[bot])
+   2026-06-22 [TASK] Update friendsofphp/php-cs-fixer requirement (#311) (Commit 1c6caad by dependabot[bot])
+   2026-06-15 [TASK] Update composer/pcre requirement from ^3.3.2 to ^3.4.0 (#309) (Commit 45d6546 by dependabot[bot])
+   2026-06-15 [TASK] Update friendsofphp/php-cs-fixer requirement (#308) (Commit 4014386 by dependabot[bot])
+   2026-06-15 [TASK] Update symplify/easy-coding-standard requirement (#307) (Commit c5e4f10 by dependabot[bot])
+   2026-06-08 [TASK] Update friendsofphp/php-cs-fixer requirement (#305) (Commit 88014a3 by dependabot[bot])
+   2026-06-02 [TASK] Update symplify/easy-coding-standard requirement (#304) (Commit 829bf04 by dependabot[bot])
+   2026-06-02 [TASK] Update friendsofphp/php-cs-fixer requirement (#303) (Commit 971f8d7 by dependabot[bot])
+   2026-06-02 [TASK] Update phpstan/phpstan requirement from ^2.1.55 to ^2.2.1 (#302) (Commit a9f86f1 by dependabot[bot])
+   2026-05-18 [TASK] Update league/flysystem requirement from ^3.33.0 to ^3.34.0 (#300) (Commit 14abfb6 by dependabot[bot])
+   2026-05-18 [TASK] Update friendsofphp/php-cs-fixer requirement (#301) (Commit e791c4f by dependabot[bot])
+   2026-05-18 [TASK] Update ergebnis/composer-normalize requirement (#299) (Commit 762dbac by dependabot[bot])
+   2026-05-18 [TASK] Update phpstan/phpstan requirement from ^2.1.54 to ^2.1.55 (#298) (Commit d199d13 by dependabot[bot])
+   2026-05-11 [TASK] Update symfony/event-dispatcher-contracts requirement (#296) (Commit 0c24a3f by dependabot[bot])
+   2026-05-11 [TASK] Update symfony/cache-contracts requirement from ^3.6.0 to ^3.7.0 (#295) (Commit 1665ceb by dependabot[bot])
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
