@@ -26,3 +26,5 @@
 /Build export-ignore
 /Documentation export-ignore
 /Tests export-ignore
+/.crowdin.yml export-ignore
+/.env.dist export-ignore
