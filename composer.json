@@ -80,7 +80,7 @@
                 "providesPackages": {}
             },
             "extension-key": "gkh_rss_import",
-            "version": "12.0.0",
+            "version": "12.0.1",
             "web-dir": ".Build/public"
         }
     },

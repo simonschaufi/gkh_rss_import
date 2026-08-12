@@ -1,0 +1,20 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+======
+12.0.1
+======
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2026-08-12 [RELEASE] Release v12.0.1 (Commit c0bf9fe by Simon Schaufelberger)
+   2026-08-12 [BUGFIX] Do not add strict type in ext_emconf.php (Commit 7d3b211 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
