@@ -1,0 +1,20 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+======
+12.0.2
+======
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2026-08-12 [RELEASE] Release v12.0.2 (Commit dc04008 by Simon Schaufelberger)
+   2026-08-12 [TASK] Exclude more files from release zip (Commit 97468ac by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
