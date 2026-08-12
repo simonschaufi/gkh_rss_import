@@ -1,0 +1,21 @@
+.. include:: ../Includes.txt
+
+.. only:: html
+
+======
+12.0.3
+======
+
+.. contents::
+        :local:
+        :depth: 3
+
+All Changes
+-----------
+This is a list of all changes in this release: ::
+
+   2026-08-12 [RELEASE] Release v12.0.3 (Commit 5f0d10b by Simon Schaufelberger)
+   2026-08-12 [TASK] Final Upgrade to TYPO3 14.3 (Commit 3bcb8a4 by Simon Schaufelberger)
+   2026-08-12 [TASK] Exclude more files from release zip (Commit 70c4747 by Simon Schaufelberger)
+
+This list has been created by using `git log $(git describe --tags --abbrev=0)..HEAD --abbrev-commit --pretty='%ad %s (Commit %h by %an)' --date=short`.
