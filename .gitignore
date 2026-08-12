@@ -4,5 +4,6 @@
 /Build/php-cs-fixer/.php-cs-fixer.cache
 /Build/phpunit/.phpunit.cache/
 /var
+/config/
 /.env
 /composer.lock

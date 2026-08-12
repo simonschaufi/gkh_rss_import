@@ -3,20 +3,11 @@
 	<file source-language="en" datatype="plaintext" original="messages">
 		<header/>
 		<body>
-			<trans-unit id="Download" resname="Download" approved="yes">
+			<trans-unit id="Download">
 				<source><![CDATA[Download]]></source>
 			</trans-unit>
-			<trans-unit id="errorMessage" resname="errorMessage" approved="yes">
+			<trans-unit id="errorMessage">
 				<source><![CDATA[It's not possible to reach the RSS feed.]]></source>
-			</trans-unit>
-			<trans-unit id="pi1_plus_wiz_description" resname="pi1_plus_wiz_description" approved="yes">
-				<source><![CDATA[Shows the content of an RSS feed]]></source>
-			</trans-unit>
-			<trans-unit id="pi1_title" resname="pi1_title" approved="yes">
-				<source><![CDATA[gkh RSS import]]></source>
-			</trans-unit>
-			<trans-unit id="tsce.templateFile" resname="tsce.templateFile" approved="yes">
-				<source><![CDATA[Template file]]></source>
 			</trans-unit>
 		</body>
 	</file>

@@ -19,6 +19,7 @@ tt_content.' . $pluginSignature . ' {
     20 =< plugin.tx_gkhrssimport_pi1
 }');
 
+    // Add plugin frontend rendering
     ExtensionManagementUtility::addTypoScript(
         'gkh_rss_import',
         'setup',

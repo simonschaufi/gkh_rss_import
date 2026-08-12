@@ -459,6 +459,7 @@ class RssImportController extends AbstractPlugin
             . $imgURL['fragment'];
     }
 
+    #[AsAllowedCallable]
     public function cropHTML(string $text, array $conf): string
     {
         $register = $this->getRequest()->getAttribute('frontend.register.stack')->current();

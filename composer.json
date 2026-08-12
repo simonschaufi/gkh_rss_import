@@ -43,6 +43,7 @@
         "symfony/yaml": "^7.3.5",
         "symplify/easy-coding-standard": "^13.2.17",
         "typo3/class-alias-loader": "^2.0",
+        "typo3/cms-fluid-styled-content": "^14.3",
         "typo3/cms-install": "^14.3",
         "typo3/testing-framework": "^9.6.1"
     },

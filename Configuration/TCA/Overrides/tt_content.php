@@ -27,7 +27,9 @@ ExtensionManagementUtility::addPlugin(
         'select',
         'LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
         'gkh_rss_import_pi1',
-        'content-plugin',
+        'ext-gkhrssimport-wizard-icon',
+        null,
+        'LLL:EXT:gkh_rss_import/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1.description'
     ),
     'FILE:EXT:gkh_rss_import/Configuration/FlexForm/flexform.xml'
 );

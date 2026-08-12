@@ -3,101 +3,107 @@
 	<file source-language="en" datatype="plaintext" original="messages">
 		<header/>
 		<body>
-			<trans-unit id="tt_content.list_type_pi1" resname="tt_content.list_type_pi1" approved="yes">
+			<trans-unit id="tt_content.list_type_pi1">
 				<source>RSS Feed Import</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache" resname="tt_content.pi_flexform.cache" approved="yes">
+			<trans-unit id="tt_content.list_type_pi1.description">
+				<source>Shows the content of an RSS feed</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.cache">
 				<source>RSS Feed cache time</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.0" resname="tt_content.pi_flexform.cache.I.0" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.0">
 				<source>1 hour</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.1" resname="tt_content.pi_flexform.cache.I.1" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.1">
 				<source>2 hours</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.2" resname="tt_content.pi_flexform.cache.I.2" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.2">
 				<source>6 hours</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.3" resname="tt_content.pi_flexform.cache.I.3" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.3">
 				<source>12 hours</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.4" resname="tt_content.pi_flexform.cache.I.4" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.4">
 				<source>24 hours</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.5" resname="tt_content.pi_flexform.cache.I.5" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.5">
 				<source>20 min</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cache.I.off" resname="tt_content.pi_flexform.cache.I.off" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.cache.I.off">
 				<source>Off</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.code_page" resname="tt_content.pi_flexform.code_page" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.code_page">
 				<source>Page encoding</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.date_format" resname="tt_content.pi_flexform.date_format" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.date_format">
 				<source>Date format</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.date_format.I.1" resname="tt_content.pi_flexform.date_format.I.1" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.date_format.I.1">
 				<source>Monday, 12. May 2008</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.date_format.I.2" resname="tt_content.pi_flexform.date_format.I.2" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.date_format.I.2">
 				<source>12. May 2008</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.date_format.I.3" resname="tt_content.pi_flexform.date_format.I.3" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.date_format.I.3">
 				<source>12/5-2008</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.errorM" resname="tt_content.pi_flexform.errorM" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.errorM">
 				<source>It's not possible to reach the RSS file...</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.errorMessage" resname="tt_content.pi_flexform.errorMessage" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.errorMessage">
 				<source>Error message</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.header_length" resname="tt_content.pi_flexform.header_length" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.header_length">
 				<source>Length of header description</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.item_length" resname="tt_content.pi_flexform.item_length" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.item_length">
 				<source>Length of item content</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.logo_width" resname="tt_content.pi_flexform.logo_width" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.logo_width">
 				<source>Width of logo image</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.max_feed" resname="tt_content.pi_flexform.max_feed" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.max_feed">
 				<source>Maximum items to show</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.settings" resname="tt_content.pi_flexform.settings" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.sheet_RSS_Feed" resname="tt_content.pi_flexform.sheet_RSS_Feed" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.sheet_RSS_Feed">
 				<source>RSS Feed settings</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.sheet_url" resname="tt_content.pi_flexform.sheet_url" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.sheet_url">
 				<source>RSS Feed URL</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.striphtml" resname="tt_content.pi_flexform.striphtml" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.striphtml">
 				<source>Remove HTML from RSS feed</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.striphtml.I.1" resname="tt_content.pi_flexform.striphtml.I.1" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.striphtml.I.1">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.striphtml.I.2" resname="tt_content.pi_flexform.striphtml.I.2" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.striphtml.I.2">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.target" resname="tt_content.pi_flexform.target" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.target">
 				<source>Target of URL</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.target.I.1" resname="tt_content.pi_flexform.target.I.1" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.target.I.1">
 				<source>top</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.target.I.2" resname="tt_content.pi_flexform.target.I.2" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.target.I.2">
 				<source>blank</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.target.I.3" resname="tt_content.pi_flexform.target.I.3" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.target.I.3">
 				<source>self</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.template_file" resname="tt_content.pi_flexform.template_file" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.template_file">
 				<source>Template File</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.template_title" resname="tt_content.pi_flexform.template_title" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.template_title">
 				<source>Template</source>
+			</trans-unit>
+			<trans-unit id="tsce.templateFile">
+				<source>Template file</source>
 			</trans-unit>
 		</body>
 	</file>

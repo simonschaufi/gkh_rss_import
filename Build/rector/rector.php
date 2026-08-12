@@ -3,12 +3,10 @@
 declare(strict_types=1);
 
 use CustomRectorRules\MethodCallToSelfStaticCallRector;
-use Rector\CodeQuality\Rector\Ternary\SwitchNegatedTernaryRector;
 use Rector\Config\RectorConfig;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\SafeDeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
@@ -67,10 +65,6 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses(false);
     $rectorConfig->skip([
-        // CodeQuality
-        SwitchNegatedTernaryRector::class,
-        // Strict
-        DisallowedEmptyRuleFixerRector::class,
         SafeDeclareStrictTypesRector::class => [
             __DIR__ . '/../../ext_emconf.php',
         ],
