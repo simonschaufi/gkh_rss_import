@@ -113,6 +113,10 @@
         "local:test-typoscript-lint": ".Build/bin/typoscript-lint -c .typoscript-lint.yml",
         "local:unit-tests": ".Build/bin/phpunit --colors -c Build/phpunit/UnitTests.xml --stop-on-failure",
         "phpstan:baseline": ".Build/bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon --allow-empty-baseline",
+        "prepare-release": [
+            "rm .crowdin.yml",
+            "rm .env.dist"
+        ],
         "test": [
             "@fix:composer:normalize",
             "@local:test-typoscript-lint",
