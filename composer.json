@@ -41,7 +41,7 @@
         "symfony/translation": "^7.3.4",
         "symfony/var-exporter": "^7.3.4",
         "symfony/yaml": "^7.3.5",
-        "symplify/easy-coding-standard": "^13.2.18",
+        "symplify/easy-coding-standard": "^13.2.19",
         "typo3/class-alias-loader": "^2.0",
         "typo3/cms-fluid-styled-content": "^14.3",
         "typo3/cms-install": "^14.3",
