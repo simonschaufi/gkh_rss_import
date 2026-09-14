@@ -19,7 +19,7 @@
         "a9f/fractor-composer-json": "^1.0.0",
         "a9f/typo3-fractor": "^1.0.0",
         "composer/pcre": "^3.4.0",
-        "ergebnis/composer-normalize": "^2.52.0",
+        "ergebnis/composer-normalize": "^2.53.0",
         "ezyang/htmlpurifier": "^4.19.0",
         "friendsofphp/php-cs-fixer": "^3.95.24",
         "helmich/typo3-typoscript-lint": "^3.3.0",
