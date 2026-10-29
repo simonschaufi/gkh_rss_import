@@ -12,13 +12,10 @@ use a9f\Typo3Fractor\Set\Typo3LevelSetList;
 
 return FractorConfiguration::configure()
     ->withPaths([
-        __DIR__ . '/../../Classes/',
         __DIR__ . '/../../Configuration/',
         __DIR__ . '/../../Resources/',
         __DIR__ . '/../../Tests/',
         __DIR__ . '/../../composer.json',
-        __DIR__ . '/../../ext_emconf.php',
-        __DIR__ . '/../../ext_localconf.php',
     ])
     ->withSets([
         Typo3LevelSetList::UP_TO_TYPO3_14,
